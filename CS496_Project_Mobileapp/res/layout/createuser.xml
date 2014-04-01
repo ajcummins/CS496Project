@@ -8,4 +8,99 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
+    <TextView
+        android:id="@+id/passwordTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createUserNameTxtBox"
+        android:text="@string/PassTxtStr" />
+
+    <EditText
+        android:id="@+id/createPasswordTxtBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/createUserNameTxtBox"
+        android:layout_below="@+id/passwordTxt"
+        android:ems="10"
+        android:inputType="textVisiblePassword" />
+
+    <TextView
+        android:id="@+id/confirmPassTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createPasswordTxtBox"
+        android:text="@string/ConfirmPassTxtStr" />
+
+    <TextView
+        android:id="@+id/firstNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordTxt"
+        android:layout_alignRight="@+id/confirmPassTxt"
+        android:layout_below="@+id/confirmPassTxtBox"
+        android:text="@string/FirstName" />
+
+    <EditText
+        android:id="@+id/createLastNameTxtBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lastNameTxt"
+        android:layout_below="@+id/lastNameTxt"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/createUserNameTxtBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordTxt"
+        android:layout_below="@+id/userNameTxt"
+        android:ems="10"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/userNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/createUserNameTxtBox"
+        android:layout_alignParentTop="true"
+        android:text="@string/UsernameTxtStr" />
+
+    <EditText
+        android:id="@+id/createFirstNameTxtBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/firstNameTxt"
+        android:layout_below="@+id/firstNameTxt"
+        android:ems="10"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/confirmPassTxtBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/firstNameTxt"
+        android:layout_below="@+id/confirmPassTxt"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/lastNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/createFirstNameTxtBox"
+        android:layout_below="@+id/createFirstNameTxtBox"
+        android:text="@string/LastName" />
+
+    <Button
+        android:id="@+id/submitCreateUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/lastNameTxt"
+        android:layout_below="@+id/createLastNameTxtBox"
+        android:text="@string/Submit" />
+
 </RelativeLayout>
