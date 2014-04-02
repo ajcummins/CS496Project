@@ -3,6 +3,7 @@ package edu.ycp.cs496.eduapp.model;
 import java.sql.Time;
 
 public class Course {
+	private String courseID;
 	private User professor;
 	private String resources;
 	private String courseTitle;
@@ -21,7 +22,8 @@ public class Course {
 		iniTimes();
 	}
 	
-	public Course(User Professor, String CourseTitle, String CourseLocation, String res){
+	public Course(String inCourseID, User Professor, String CourseTitle, String CourseLocation, String res){
+		courseID = inCourseID;
 		this.professor = Professor;
 		this.courseTitle = CourseTitle;
 		coursetimes = new CourseTime[7];
@@ -67,5 +69,15 @@ public class Course {
 			coursetimes[i].setStartTime(new Time(0));
 			coursetimes[i].setEndTime(new Time(0));
 		}
+	}
+	
+	public CourseTime getClassTime(Day inDay)
+	{
+		return coursetimes[inDay.getNumVal()];
+	}
+	
+	public void setClassTime(Day inDay, CourseTime inCourseTime)
+	{
+		coursetimes[inDay.getNumVal()] = inCourseTime;
 	}
 }

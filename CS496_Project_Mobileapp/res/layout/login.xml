@@ -6,10 +6,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".LoginActivity" >
 
     <TextView
-        android:id="@+id/usernameTxt"
+        android:id="@+id/loginUsernameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,11 +17,11 @@
         android:text="@string/UsernameTxtStr" />
 
     <EditText
-        android:id="@+id/createUsernameTxtBox"
+        android:id="@+id/loginUsernameTxtBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/usernameTxt"
-        android:layout_below="@+id/usernameTxt"
+        android:layout_alignLeft="@+id/loginUsernameTxt"
+        android:layout_below="@+id/loginUsernameTxt"
         android:ems="10"
         android:inputType="text" >
 
@@ -29,19 +29,19 @@
     </EditText>
 
     <TextView
-        android:id="@+id/passTxt"
+        android:id="@+id/loginPassTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/createUsernameTxtBox"
-        android:layout_below="@+id/createUsernameTxtBox"
+        android:layout_alignLeft="@+id/loginUsernameTxtBox"
+        android:layout_below="@+id/loginUsernameTxtBox"
         android:text="@string/PassTxtStr" />
 
     <EditText
-        android:id="@+id/passTxtBox"
+        android:id="@+id/loginPassTxtBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/passTxt"
-        android:layout_below="@+id/passTxt"
+        android:layout_alignLeft="@+id/loginPassTxt"
+        android:layout_below="@+id/loginPassTxt"
         android:ems="10"
         android:inputType="textPassword" />
 
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/passTxtBox"
+        android:layout_below="@+id/loginPassTxtBox"
         android:text="@string/LogMeInChkBoxStr" />
 
     <Button
@@ -59,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/loginChkBox"
         android:layout_below="@+id/loginChkBox"
-        android:text="@string/LoginButtonStr" />
+        android:text="@string/LoginButtonStr"
+        android:onClick="authenticate" />
 
     <Button
         android:id="@+id/createAcctBut"
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginChkBox"
         android:layout_toRightOf="@+id/loginButton"
-        android:text="@string/CreateAcctButtonStr" />
+        android:text="@string/CreateAcctButtonStr"
+        android:onClick="createAcct" />
 
 </RelativeLayout>
