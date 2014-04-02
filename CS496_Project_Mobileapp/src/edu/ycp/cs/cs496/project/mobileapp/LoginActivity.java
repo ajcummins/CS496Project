@@ -1,7 +1,7 @@
 package edu.ycp.cs.cs496.project.mobileapp;
 
 
-import edu.ycp.cs496.eduapp.model.controllers.LoginController;
+import edu.ycp.cs496.eduapp.model.User;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +37,7 @@ public class LoginActivity extends Activity {
 		String passText = passTextInput.getText().toString();
 		if(userText.equals("") || passText.equals("") || userText != null || passText != null)
 		{
+			/*
 			//Call controller and authenticate
 			LoginController controller = new LoginController();
 			boolean success = controller.authenticateUser(userText, passText);
@@ -55,7 +56,9 @@ public class LoginActivity extends Activity {
 			{
 				Toast.makeText(LoginActivity.this, "Username or Password did not match", Toast.LENGTH_LONG).show();
 			}
-			
+			*/
+			User user = new User();
+			Toast.makeText(LoginActivity.this, "Made a User object", Toast.LENGTH_LONG).show();
 			
 		} 
 		else
