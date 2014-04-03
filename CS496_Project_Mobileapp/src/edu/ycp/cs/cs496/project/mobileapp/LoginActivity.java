@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		setDefaultView();
 	}
 
 	@Override
@@ -69,13 +72,61 @@ public class LoginActivity extends Activity {
 	
 	public void createAcct()
 	{
-		//On Click Create Account Button
+		//On Click submit Button
 		setContentView(R.layout.createuser);
-		//Set activity to home activity
+		Button submitCreateAcc = (Button) findViewById(R.id.submitCreateUser);
+		submitCreateAcc.setOnClickListener(new View.OnClickListener() {
+			//on click
+			@Override
+			public void onClick(View v) {
+				//go to the users home
+			}
+		});
+        //Set activity to home activity
 		// Intent intent = new Intent(Gra.this??, HomeActivty.class);
         // startActivity(intent);
 		
 		
 	}
-
+	
+	//default view 
+	 public void setDefaultView() {
+		 //buttons on main page
+		 Button createAccount = (Button) findViewById(R.id.createAcctBut);
+		 Button login = (Button) findViewById(R.id.loginButton);
+		
+		 //when login button press
+		 login.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					try {
+						//go to login account
+						authenticate();
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+			});
+		 
+		 //when createAccount button press
+		 createAccount.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					try {
+						//go to create account
+						createAcct();
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+			});
+	 }
 }
