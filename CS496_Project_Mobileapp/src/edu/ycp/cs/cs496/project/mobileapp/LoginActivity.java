@@ -80,6 +80,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//go to the users home
+				setContentView(R.layout.login); //back button
 			}
 		});
         //Set activity to home activity
