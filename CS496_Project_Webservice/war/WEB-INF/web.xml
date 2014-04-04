@@ -6,14 +6,14 @@
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>Home</servlet-name>
-		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.Home</servlet-class>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.Login</servlet-class>
 	</servlet>
 	
 	<!-- Servlet mappings (mapping of paths to servlets). -->
 	<servlet-mapping>
-		<servlet-name>Home</servlet-name>
-		<url-pattern>/home/*</url-pattern>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/Login/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

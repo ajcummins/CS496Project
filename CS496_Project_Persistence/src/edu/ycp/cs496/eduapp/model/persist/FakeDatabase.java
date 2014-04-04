@@ -68,4 +68,29 @@ public class FakeDatabase implements IDatabase {
 			}
 			return false;
 		}
+
+		@Override
+		public boolean createAccount(User inUser,boolean isProf) {
+			
+			if(inUser != null)
+			{
+				// Set the User to Professor or Student based off boolean input
+				if(isProf)
+				{
+					inUser.setToProfessor();
+				}
+				else
+				{
+					inUser.setToStudent();
+				}
+				allUsers.add(inUser);
+				// Add was successful
+				return true;
+			}
+			else
+			{
+				// Add User failed
+				return false;
+			}
+		}
 }
