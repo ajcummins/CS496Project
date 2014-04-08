@@ -27,11 +27,11 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		
 		// Obtain User & Password entry from the view
-		String userString = (String) req.getAttribute("userName");
-		String passString = (String) req.getAttribute("password");
+		String userString = (String) req.getParameter("userName");
+		String passString = (String) req.getParameter("password");
 		
 		// Check for empty fields
-		if(userString != null && passString !=null && !userString.equals("") && passString.equals(""))
+		if(userString != null && passString !=null && !userString.equals("") && !passString.equals(""))
 		{		
 			// Use Login Controller to check their credentials
 			LoginController controller = new LoginController();

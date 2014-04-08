@@ -66,6 +66,7 @@ public class Course {
 	
 	private void iniTimes(){
 		for(int i=0; i<7;i++){
+			coursetimes[i] = new CourseTime();
 			coursetimes[i].setStartTime(new Time(0));
 			coursetimes[i].setEndTime(new Time(0));
 		}

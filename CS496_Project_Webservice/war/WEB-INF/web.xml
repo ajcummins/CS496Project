@@ -10,10 +10,24 @@
 		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.Login</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>CreateAccount</servlet-name>
+		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.CreateAccount</servlet-class>
+	</servlet>
+	
 	<!-- Servlet mappings (mapping of paths to servlets). -->
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/Login/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateAccount</servlet-name>
+		<url-pattern>/CreateAccount/*</url-pattern>
+	</servlet-mapping>
+	<!-- Servlet context listeners -->
+	<listener>
+	    <listener-class>edu.ycp.cs496.eduapp.webapp.servlets.DatabaseInitListener</listener-class>
+	</listener>
 
 </web-app>
