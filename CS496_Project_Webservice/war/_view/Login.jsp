@@ -20,6 +20,9 @@
 		</table>
 		<button type="button">Submit</button>
 		<button type="button">Create Account</button>
-		<!--div class="link"><a href="${pageContext.servletContext.contextPath}/inventory/NewItem?action=add">Add item</a></div-->
+		<c:set var="result"/>
+		<c:if test="${result != null}">
+			<p><c:out value="${result}"/><p>
+		</c:if>
 	</body>
 </html>
