@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
 
 public class Login extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4174367399316027618L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
