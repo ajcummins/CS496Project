@@ -1,7 +1,17 @@
 package edu.ycp.cs.cs496.project.mobileapp;
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.client.ClientProtocolException;
+import org.xml.sax.SAXException;
+
 import edu.ycp.cs496.eduapp.model.User;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +31,15 @@ public class LoginActivity extends Activity {
 		setDefaultView();
 	}
 
+	//handlers for get my course list
+	public void getMyCourse(List<String> CourseIds) throws URISyntaxException, ClientProtocolException,
+	IOException, ParserConfigurationException, SAXException{
+		GetMyCourseList controller = new GetMyCourseList();
+		if (controller.getMyCourseList(CourseIds) != null){
+			//display my course list
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
