@@ -98,8 +98,7 @@ public class MyCourseList extends HttpServlet {
 		return courseID;
 	}
 	
-	private void showUI(HttpServletRequest req, HttpServletResponse resp,
-			String courseID) throws ServletException, IOException {
+	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseID) throws ServletException, IOException {
 		if(courseID == null)
 		{
 			// Adapt this code to use a controller to get the SPECIFIC Courses from the main course list using User.courseListIDs

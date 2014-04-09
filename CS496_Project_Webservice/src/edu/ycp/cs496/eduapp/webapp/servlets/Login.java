@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
 
 public class Login extends HttpServlet {
@@ -35,12 +36,14 @@ public class Login extends HttpServlet {
 		{		
 			// Use Login Controller to check their credentials
 			LoginController controller = new LoginController();
-			boolean success = controller.authenticateUser(userString, passString);
+			User thisUser = controller.authenticateUser(userString, passString);
 			
-			if(success)
+			if(thisUser != null)
 			{
-				// Login Successful, redirect to home page... 
-				// (Shouldn't the controller return their User Data??)
+				// Login Successful
+				// FIXME: Store User in Session
+				
+				//  Redirect to My Course List... 
 				req.setAttribute("result", "Login Successful, Implement the rest");
 				this.doGet(req, resp);
 				

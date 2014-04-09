@@ -55,33 +55,38 @@ public class CreateAccount extends HttpServlet {
 				// Fill User class with fields
 				User newUser = new User(username,pass,firstName,lastName);
 				// Set whether user is prof or student
-				boolean success;
+				
 				if(!profPass.equals("") && profPass != null)
 				{
 					// There is something in the field we must check it
-					// FIXME: Implement this
-					// boolean temp = controller.checkIfProf(profPass);
-					boolean temp = false;
-					success = controller.createAccount(newUser, temp);
+					// Check to see if the password was correct
+					boolean success = controller.checkIfProf(profPass);
+					if(success)
+					{
+						// Prof Pass was correct, create new account as Prof!
+						controller.createAccount(newUser, success);
+						// FIXME: Add User to Session
+						
+					}
+					else
+					{
+						// Prof Pass was incorrect, but there was a value in the field meaning they could have mis-typed
+						req.setAttribute("result", "Professor Password was incorrect, Please try agian or delete Professor Password field");
+						this.doGet(req, resp);
+					}
+					
 				}
 				else
 				{
 					// There is nothing in this field, so it must be a student
-					success = controller.createAccount(newUser, false);
+					controller.createAccount(newUser, false);
+					// FIXME: Add User to session
+					
 				}
 				
-				if(success)
-				{
-					// Account creation was successful redirect to home.. again shouldn't it give back a User class??
-					req.setAttribute("result", "Account Creation was Successful! Implement the rest!");
-					this.doGet(req, resp);
-				}
-				else
-				{
-					// Account creation failed...
-					req.setAttribute("result", "Account Creation failed");
-					this.doGet(req, resp);
-				}
+				/* FIXME: The check after the controller runs to see if it worked will be replaced when an actual database is implemented
+				 * It will be replaced with try/catch blocks in which we can output an error in the catch block...
+				 */
 				
 			}
 			else

@@ -13,6 +13,7 @@ public class FakeDatabase implements IDatabase {
 		private List<String> userCourses;
 		private List<Course> allCourses;
 		private List<User> allUsers;
+		private List<String> profPasses;
 		
 		public FakeDatabase() {
 			// Initialize Lists
@@ -21,6 +22,7 @@ public class FakeDatabase implements IDatabase {
 			// Main Database Lists
 			allCourses = new ArrayList<Course>();
 			allUsers = new ArrayList<User>();
+			profPasses = new ArrayList<String>();
 			// Populate Lists
 			
 			// Create Users
@@ -37,8 +39,7 @@ public class FakeDatabase implements IDatabase {
 			CS496.setClassTime(Day.THURSDAY, new CourseTime(11.00f,12.15f));
 			Course CS456 = new Course("CS456",dbab,"Social and Prfessional Issues in Computing","KEC117");
 			CS456.setClassTime(Day.TUESDAY, new CourseTime(9.30f, 10.45f));
-			CS456.setClassTime(Day.THURSDAY, new CourseTime(9.30f, 10.45f));
-			
+			CS456.setClassTime(Day.THURSDAY, new CourseTime(9.30f, 10.45f));			
 			
 			// Add to respective lists
 			userCourses.add("CS496");
@@ -52,25 +53,30 @@ public class FakeDatabase implements IDatabase {
 			allUsers.add(thon);
 			allUsers.add(ao);
 			
+			// Populate prof Passes
+			profPasses.add("ihatemondays");
+			
 		}
 
 		@Override
-		public boolean authenticateUser(String user, String pass) {
+		public User authenticateUser(String user, String pass) {
+			User temp = null;
 			for(int i = 0; i < allUsers.size(); i++)
 			{
 				if(allUsers.get(i).getUsername().equals(user))
 				{
 					if(allUsers.get(i).getPassword().equals(pass))
 					{
-						return true;
+						temp =  allUsers.get(i);
 					}
 				}
 			}
-			return false;
+			return temp;
+			// returns the User or returns null
 		}
 
 		@Override
-		public boolean createAccount(User inUser,boolean isProf) {
+		public void createAccount(User inUser,boolean isProf) {
 			
 			if(inUser != null)
 			{
@@ -84,13 +90,6 @@ public class FakeDatabase implements IDatabase {
 					inUser.setToStudent();
 				}
 				allUsers.add(inUser);
-				// Add was successful
-				return true;
-			}
-			else
-			{
-				// Add User failed
-				return false;
 			}
 		}
 
@@ -136,6 +135,23 @@ public class FakeDatabase implements IDatabase {
 			}
 			return temp;
 			// if temp != null then we know the course was found
+		}
+
+		@Override
+		public boolean checkIfProf(String inProfPass) {
+			boolean key = false;
+			for(int i = 0; i < profPasses.size(); i++)
+			{
+				if(inProfPass.equals(profPasses.get(i)))
+				{
+					key = true;
+					// Skip to end, we got what we needed, no point in iterating further
+					i = profPasses.size();
+				}
+			}
+			
+			return key;
+			
 		}
 }
 

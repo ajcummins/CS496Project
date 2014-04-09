@@ -7,14 +7,16 @@ import edu.ycp.cs496.eduapp.model.User;
 
 public interface IDatabase {
 
-	boolean authenticateUser(String user, String pass);
+	User authenticateUser(String user, String pass);
 
-	boolean createAccount(User inUser,boolean isProf);
+	void createAccount(User inUser,boolean isProf);
 
 	List<Course> getMyCourseList(List<String> courseIds);
 
 	List<Course> getMainCourseList();
 
 	Course getCourseByID(String courseID);
+
+	boolean checkIfProf(String inProfPass);
 
 }
