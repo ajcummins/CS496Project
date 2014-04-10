@@ -15,6 +15,11 @@
 		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.CreateAccount</servlet-class>
 	</servlet>
 	
+	<servlet>
+	    <servlet-name>MyCourseList</servlet-name>
+	    <servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.MyCourseList</servlet-class>
+	</servlet>
+	
 	<!-- Servlet mappings (mapping of paths to servlets). -->
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
@@ -24,6 +29,11 @@
 	<servlet-mapping>
 		<servlet-name>CreateAccount</servlet-name>
 		<url-pattern>/CreateAccount/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	    <servlet-name>MyCourseList</servlet-name>
+	    <url-pattern>/MyCourseList/*</url-pattern>
 	</servlet-mapping>
 	
 	

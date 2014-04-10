@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.User;
@@ -24,8 +25,10 @@ public class MyCourseList extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		//FIXME : Session.User != null
-		if(true)
+		//Retrieve the User object from the session and make sure it isn't empty...
+		HttpSession session = req.getSession();
+		User thisUser = (User) session.getAttribute("User");
+		if(thisUser != null)
 		{
 			String action = req.getParameter("action");
 			//String permission = req.getParameter("permission");
@@ -38,14 +41,19 @@ public class MyCourseList extends HttpServlet {
 		else
 		{
 			// No User data in session, redirect to Login...
+			req.getRequestDispatcher("/_view/Login.jsp").forward(req, resp);
+			req.setAttribute("result", "You are not logged in, Please log in");
 		}
 		
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		//FIXME : Session.User != null
-		if(true)
+
+		//Retrieve the User object from the session and make sure it isn't empty...
+		HttpSession session = req.getSession();
+		User thisUser = (User) session.getAttribute("User");
+		if(thisUser != null)
 		{
 			// Post response
 			String courseID = getCourseID(req);
@@ -82,7 +90,9 @@ public class MyCourseList extends HttpServlet {
 		}
 		else
 		{
-			// No User data in session : Redirect to Login
+			// No User data in session, redirect to Login...
+			req.getRequestDispatcher("/_view/Login.jsp").forward(req, resp);
+			req.setAttribute("result", "You are not logged in, Please log in");
 		}
 	}
 	

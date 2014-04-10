@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.CreateAcctController;
@@ -65,7 +66,12 @@ public class CreateAccount extends HttpServlet {
 					{
 						// Prof Pass was correct, create new account as Prof!
 						controller.createAccount(newUser, success);
-						// FIXME: Add User to Session
+						// Add User to Session
+						HttpSession session = req.getSession();
+						session.setAttribute("User", newUser);
+						
+						//  Redirect to My Course List... 
+						req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 						
 					}
 					else
@@ -80,7 +86,12 @@ public class CreateAccount extends HttpServlet {
 				{
 					// There is nothing in this field, so it must be a student
 					controller.createAccount(newUser, false);
-					// FIXME: Add User to session
+					// Add User to session
+					HttpSession session = req.getSession();
+					session.setAttribute("User", newUser);
+					
+					//  Redirect to My Course List... 
+					req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 					
 				}
 				

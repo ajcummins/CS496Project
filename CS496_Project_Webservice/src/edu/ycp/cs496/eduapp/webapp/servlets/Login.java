@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
@@ -41,11 +42,12 @@ public class Login extends HttpServlet {
 			if(thisUser != null)
 			{
 				// Login Successful
-				// FIXME: Store User in Session
+				// Store User in Session
+				HttpSession session = req.getSession();
+				session.setAttribute("User", thisUser);
 				
 				//  Redirect to My Course List... 
-				req.setAttribute("result", "Login Successful, Implement the rest");
-				this.doGet(req, resp);
+				req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 				
 			}
 			else
