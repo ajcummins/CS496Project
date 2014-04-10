@@ -34,12 +34,8 @@ public class FakeDatabase implements IDatabase {
 			User thon = new User("thon","test","Thomas","Hon");
 			User ao = new User("ao","test","Anthony","O");
 			// Create Courses
-			Course CS496 = new Course("CS496",dhove,"Web and Mobile App Development","KEC124");
-			CS496.setClassTime(Day.TUESDAY, new CourseTime(11.00f,12.15f));
-			CS496.setClassTime(Day.THURSDAY, new CourseTime(11.00f,12.15f));
-			Course CS456 = new Course("CS456",dbab,"Social and Prfessional Issues in Computing","KEC117");
-			CS456.setClassTime(Day.TUESDAY, new CourseTime(9.30f, 10.45f));
-			CS456.setClassTime(Day.THURSDAY, new CourseTime(9.30f, 10.45f));			
+			Course CS496 = new Course("CS496",dhove,"Web and Mobile App Development");
+			Course CS456 = new Course("CS456",dbab,"Social and Prfessional Issues in Computing");			
 			
 			// Add to respective lists
 			userCourses.add("CS496");

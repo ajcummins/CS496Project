@@ -9,37 +9,35 @@ public class Course {
 	private String courseID;
 	private User professor;
 	private String title;
-	private String location;
 	private String description;
-	private CourseTime[] coursetimes;//Sunday - Saturday
+	private List<MeetingTime> meetingTimes;
 	private List<Notification> noteList;	
 	private List<Resource> resourceList; 
 	
 	public Course(){
-		coursetimes = new CourseTime[7];
+		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
-		iniTimes();
+		
 	}
 	
 	public Course(User Professor, String CourseTitle){
 		this.professor = Professor;
 		this.title = CourseTitle;
-		coursetimes = new CourseTime[7];
+		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
-		iniTimes();
+		
 	}
 	
-	public Course(String inCourseID, User Professor, String CourseTitle, String CourseLocation){
+	public Course(String inCourseID, User Professor, String CourseTitle){
 		setCourseID(inCourseID);
 		this.professor = Professor;
 		this.title = CourseTitle;
-		coursetimes = new CourseTime[7];
+		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
-		iniTimes();
-		this.location = CourseLocation;
+		
 	}
 	
 	public User getProfessor() {
@@ -111,15 +109,8 @@ public class Course {
 	public void setCourseTitle(String inTitle) {
 		this.title = inTitle;
 	}
-
-	public String getCourseLocation() {
-		return location;
-	}
-
-	public void setCourseLocation(String courseLocation) {
-		this.location = courseLocation;
-	}
 	
+	/*	Old CourseTime Methods... Replaced with MeetingTime
 	private void iniTimes(){
 		for(int i=0; i<7;i++){
 			coursetimes[i] = new CourseTime();
@@ -127,6 +118,7 @@ public class Course {
 			coursetimes[i].setEndTime(new Time(0));
 		}
 	}
+
 	
 	public CourseTime getClassTime(Day inDay)
 	{
@@ -136,6 +128,21 @@ public class Course {
 	public void setClassTime(Day inDay, CourseTime inCourseTime)
 	{
 		coursetimes[inDay.getNumVal()] = inCourseTime;
+	}
+	*/
+	
+	public void addMeetingTime(MeetingTime inTime)
+	{
+		meetingTimes.add(inTime);
+	}
+	
+	public List<MeetingTime> getMeetingTimes() {
+		return meetingTimes;
+	}
+	
+	public void clearMeetingTimes()
+	{
+		meetingTimes.clear();
 	}
 
 	public String getCourseID() {

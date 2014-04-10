@@ -3,6 +3,7 @@ package edu.ycp.cs496.eduapp.model;
 import java.sql.Time;
 
 public class CourseTime {
+	
 	private Time startTime, endTime;
 	
 	public CourseTime(){
