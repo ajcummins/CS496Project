@@ -11,7 +11,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
 import edu.ycp.cs496.eduapp.model.User;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetUserAccount;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +39,24 @@ public class LoginActivity extends Activity {
 		GetMyCourseList controller = new GetMyCourseList();
 		if (controller.getMyCourseList(CourseIds) != null){
 			//display my course list
+		}
+	}
+	
+	//handlers for get main course list
+	public void getMainCourse() throws URISyntaxException, ClientProtocolException,
+	IOException, ParserConfigurationException, SAXException{
+		GetMainCourseList controller = new GetMainCourseList();
+		if (controller.getMainCourseList() != null){
+			//display main course list
+		}
+	}
+	
+	//handlers for get User
+	public void getUserAccount() throws URISyntaxException, ClientProtocolException,
+	IOException, ParserConfigurationException, SAXException{
+		GetUserAccount controller = new GetUserAccount();
+		if (controller.getUserAccount() != null){
+			//display user info
 		}
 	}
 	
