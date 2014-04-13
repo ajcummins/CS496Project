@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
-import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetUserAccount;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +29,6 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login);
 		setDefaultView();
 	}
 
@@ -51,13 +50,12 @@ public class LoginActivity extends Activity {
 		}
 	}
 	
-	//handlers for get User
-	public void getUserAccount() throws URISyntaxException, ClientProtocolException,
+	//authenticate and get user
+	public User getUserAccount(String user, String pass) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
-		GetUserAccount controller = new GetUserAccount();
-		if (controller.getUserAccount() != null){
-			//display user info
-		}
+		LoginController controller = new LoginController();
+		User mainUser = controller.authenticateUser(user, pass);
+		return mainUser;
 	}
 	
 	@Override
@@ -67,7 +65,7 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 	
-	public void authenticate()
+	public void authenticate() throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
 		//On Click Login Button
 		
@@ -100,8 +98,19 @@ public class LoginActivity extends Activity {
 			}
 			*/
 			User user = new User();
-			Toast.makeText(LoginActivity.this, "Made a User object", Toast.LENGTH_LONG).show();
+			//Toast.makeText(LoginActivity.this, "Made a User object", Toast.LENGTH_LONG).show();
 			
+			//chThoneck for user auth
+			user = getUserAccount(userText, passText);
+			//Toast.makeText(LoginActivity.this, "checking the user", Toast.LENGTH_LONG).show();
+			if (user != null){
+				//do user stuff
+				Toast.makeText(LoginActivity.this,"this is a user:"+ userText+" "+ passText , Toast.LENGTH_LONG).show();
+			}
+			else {
+				//show error of fail auth
+				Toast.makeText(LoginActivity.this,"this is not user:"+ userText+" "+ passText , Toast.LENGTH_LONG).show();
+			}
 		} 
 		else
 		{
@@ -119,7 +128,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//go to the users home
-				setContentView(R.layout.login); //back button
+				setDefaultView(); //back button
 			}
 		});
         //Set activity to home activity
@@ -131,6 +140,10 @@ public class LoginActivity extends Activity {
 	
 	//default view 
 	 public void setDefaultView() {
+		 
+		 //login page
+		 setContentView(R.layout.login);
+		 
 		 //buttons on main page
 		 Button createAccount = (Button) findViewById(R.id.createAcctBut);
 		 Button login = (Button) findViewById(R.id.loginButton);
@@ -142,7 +155,7 @@ public class LoginActivity extends Activity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					try {
-						//go to login account
+						//go to home user account
 						authenticate();
 					}
 					catch (Exception e) {

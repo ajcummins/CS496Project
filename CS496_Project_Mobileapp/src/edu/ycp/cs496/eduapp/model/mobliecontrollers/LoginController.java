@@ -16,18 +16,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import edu.ycp.cs496.edu.model.json.JSON;
 import edu.ycp.cs496.eduapp.model.User;
 
-public class GetUserAccount {
-	public User getUserAccount() throws ClientProtocolException, URISyntaxException, IOException{
-		return makeGetRequest(); 
+public class LoginController {
+	public User authenticateUser(String user, String pass) throws ClientProtocolException, URISyntaxException, IOException{
+		return makeAuthenticateUser(user,pass); 
 	}
-	private User makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
+	private User makeAuthenticateUser(String user, String pass) throws URISyntaxException, ClientProtocolException, IOException
 	{
 		//Create HTTP client
 		HttpClient client = new DefaultHttpClient();
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/user", 
+		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Login"+user+pass, 
 						    null, null);
 
 		// Construct request
