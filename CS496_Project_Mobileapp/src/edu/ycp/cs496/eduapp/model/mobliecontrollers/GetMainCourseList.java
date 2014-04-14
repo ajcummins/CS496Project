@@ -14,8 +14,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import edu.ycp.cs496.edu.model.json.JSON;
 import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.JSON;
+
 public class GetMainCourseList {
 	public Course[] getMainCourseList() throws ClientProtocolException, URISyntaxException, IOException{
 		return makeGetRequest(); 

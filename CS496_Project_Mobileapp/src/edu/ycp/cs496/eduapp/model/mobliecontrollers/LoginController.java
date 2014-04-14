@@ -13,7 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import edu.ycp.cs496.edu.model.json.JSON;
+import edu.ycp.cs496.eduapp.model.JSON;
 import edu.ycp.cs496.eduapp.model.User;
 
 public class LoginController {
@@ -27,7 +27,7 @@ public class LoginController {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Login"+user+pass, 
+		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Login/"+user+"/"+pass, 
 						    null, null);
 
 		// Construct request

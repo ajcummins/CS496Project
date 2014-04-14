@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.ycp.cs496.eduapp.model.JSON;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
-
+import edu.ycp.cs496.eduapp.model.persist.DatabaseProvider;
 public class Login extends HttpServlet {
 	/**
 	 * 
@@ -23,6 +24,23 @@ public class Login extends HttpServlet {
 		//resp.setContentType("application/json");
 		resp.setStatus(HttpServletResponse.SC_OK);
 		req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
+		
+		//
+		String pathInfo = req.getPathInfo();
+		String user = null;//make it equal to login/user
+		String pass = null;//make it equal to login/user/pass
+		if (pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")) {
+			//get users
+			resp.setStatus(HttpServletResponse.SC_OK);
+			resp.setContentType("application/json");
+			JSON.getObjectMapper().writeValue(resp.getWriter(), DatabaseProvider.getInstance().authenticateUser(user, pass));
+			return;
+		}
+		
+		// Get the item name
+		if (pathInfo.startsWith("/")) {
+			pathInfo = pathInfo.substring(1);
+		}
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)

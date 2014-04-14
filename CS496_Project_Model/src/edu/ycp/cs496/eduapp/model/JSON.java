@@ -1,4 +1,4 @@
-package edu.ycp.cs496.edu.model.json;
+package edu.ycp.cs496.eduapp.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
