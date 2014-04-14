@@ -25,22 +25,24 @@ public class Login extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
 		
-		//
+		//get the user and pass from path
 		String pathInfo = req.getPathInfo();
-		String user = null;//make it equal to login/user
-		String pass = null;//make it equal to login/user/pass
-		if (pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")) {
-			//get users
-			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.setContentType("application/json");
-			JSON.getObjectMapper().writeValue(resp.getWriter(), DatabaseProvider.getInstance().authenticateUser(user, pass));
-			return;
-		}
 		
-		// Get the item name
+		//pathinfo should contain "user/pass"
 		if (pathInfo.startsWith("/")) {
 			pathInfo = pathInfo.substring(1);
 		}
+		
+		//get String of user and pass
+		int locationOfSlash = pathInfo.indexOf("/");
+		String user = pathInfo.substring(0, locationOfSlash-1);
+		String pass = pathInfo.substring(locationOfSlash+1);
+		
+		//get User and write if exist
+		resp.setStatus(HttpServletResponse.SC_OK);
+		resp.setContentType("application/json");
+		JSON.getObjectMapper().writeValue(resp.getWriter(), DatabaseProvider.getInstance().authenticateUser(user, pass));
+		return;
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
