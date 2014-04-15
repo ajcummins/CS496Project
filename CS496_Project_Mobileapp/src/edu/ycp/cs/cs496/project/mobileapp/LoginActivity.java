@@ -99,13 +99,12 @@ public class LoginActivity extends Activity {
 			*/
 			User user = new User();
 			//Toast.makeText(LoginActivity.this, "Made a User object", Toast.LENGTH_LONG).show();
-			
-			//chThoneck for user auth
+			//check for user auth
 			user = getUserAccount(userText, passText);
-			//Toast.makeText(LoginActivity.this, "checking the user", Toast.LENGTH_LONG).show();
+			
 			if (user != null){
 				//do user stuff
-				Toast.makeText(LoginActivity.this,"this is a user:"+ userText+" "+ passText , Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this,"this is a user:"+ user.getUsername()+" "+ user.getPassword() , Toast.LENGTH_LONG).show();
 			}
 			else {
 				//show error of fail auth
@@ -140,7 +139,6 @@ public class LoginActivity extends Activity {
 	
 	//default view 
 	 public void setDefaultView() {
-		 
 		 //login page
 		 setContentView(R.layout.login);
 		 

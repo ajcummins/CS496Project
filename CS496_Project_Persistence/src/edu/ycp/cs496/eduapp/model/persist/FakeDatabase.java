@@ -70,7 +70,22 @@ public class FakeDatabase implements IDatabase {
 			return temp;
 			// returns the User or returns null
 		}
-
+		
+		//get User
+		@Override
+		public User getUser(String user){
+			User temp = null;
+			for(int i = 0; i < allUsers.size(); i++)
+			{
+				if(allUsers.get(i).getUsername().equals(user))
+				{
+					temp =  allUsers.get(i);	
+				}
+			}
+			return temp;
+			// returns the User or returns null
+		}
+		
 		@Override
 		public void createAccount(User inUser,boolean isProf) {
 			

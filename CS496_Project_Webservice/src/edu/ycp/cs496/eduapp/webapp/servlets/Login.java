@@ -23,7 +23,7 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		//resp.setContentType("application/json");
 		resp.setStatus(HttpServletResponse.SC_OK);
-		req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
+		//req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
 		
 		//get the user and pass from path
 		String pathInfo = req.getPathInfo();
@@ -34,14 +34,23 @@ public class Login extends HttpServlet {
 		}
 		
 		//get String of user and pass
+		pathInfo = "thon/test";
 		int locationOfSlash = pathInfo.indexOf("/");
-		String user = pathInfo.substring(0, locationOfSlash-1);
+		String user = pathInfo.substring(0, locationOfSlash);
 		String pass = pathInfo.substring(locationOfSlash+1);
+		
+		//testing
+		//String user = "thon";
+		//String pass = "test";
+		
+		//get user
+		User authUser = DatabaseProvider.getInstance().authenticateUser(user, pass);
+		System.out.println("Attempt to log in, user=" + authUser.getUsername() + ", pass=" + authUser.getPassword());
 		
 		//get User and write if exist
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.setContentType("application/json");
-		JSON.getObjectMapper().writeValue(resp.getWriter(), DatabaseProvider.getInstance().authenticateUser(user, pass));
+		JSON.getObjectMapper().writeValue(resp.getWriter(), authUser);
 		return;
 	}
 	
