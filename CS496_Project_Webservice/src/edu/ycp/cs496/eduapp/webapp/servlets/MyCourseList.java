@@ -126,7 +126,7 @@ public class MyCourseList extends HttpServlet {
 			 GetMyCourseList controller = new GetMyCourseList();
 			 List<Course> myCourseList = controller.getMyCourseList(thisUser.getUsername());
 			 req.setAttribute("MyCourseList",myCourseList);
-			 req.getRequestDispatcher("/_view/webApp/MyCourseList.jsp").forward(req, resp);
+			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			 
 			
 		}
@@ -142,7 +142,7 @@ public class MyCourseList extends HttpServlet {
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			req.getRequestDispatcher("/_view/course.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		
 	}
