@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -40,7 +41,7 @@ public class LoginActivity extends Activity {
 			//display my course list
 		}
 	}
-	
+
 	//handlers for get main course list
 	public void getMainCourse() throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
@@ -49,7 +50,7 @@ public class LoginActivity extends Activity {
 			//display main course list
 		}
 	}
-	
+
 	//authenticate and get user
 	public User getUserAccount(String user, String pass) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
@@ -57,18 +58,16 @@ public class LoginActivity extends Activity {
 		User mainUser = controller.authenticateUser(user, pass);
 		return mainUser;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	public void authenticate() throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
-		//On Click Login Button
-		
 		//Get Username/Password
 		EditText userTextInput = (EditText) findViewById(R.id.loginUsernameTxtBox);
 		EditText passTextInput = (EditText) findViewById(R.id.loginPassTxtBox);
@@ -89,34 +88,29 @@ public class LoginActivity extends Activity {
 				//Set activity to home activity
 				// Intent intent = new Intent(Gra.this??, HomeActivty.class);
 		        // startActivity(intent);   
-				
+
 			}
 			//Else Error
 			else
 			{
 				Toast.makeText(LoginActivity.this, "Username or Password did not match", Toast.LENGTH_LONG).show();
 			}
-			*/
+			 */
 			User user = new User();
-			//Toast.makeText(LoginActivity.this, "Made a User object", Toast.LENGTH_LONG).show();
-			//check for user auth
+			//get the user if exist else it is a null
 			user = getUserAccount(userText, passText);
-			
 			if (user != null){
-				//do user stuff
-				Toast.makeText(LoginActivity.this,"this is a user:"+ user.getUsername()+" "+ user.getPassword() , Toast.LENGTH_LONG).show();
+				//Toast.makeText(LoginActivity.this,"this is a user:"+ user.getUsername()+" "+ user.getPassword() , Toast.LENGTH_LONG).show();
+				//go to Home
+				setHomeView(user);
 			}
 			else {
 				//show error of fail auth
-				Toast.makeText(LoginActivity.this,"this is not user:"+ userText+" "+ passText , Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this,"not a valid user/password"+ passText , Toast.LENGTH_LONG).show();
 			}
-		} 
-		else
-		{
-			Toast.makeText(LoginActivity.this, "Please Fill Username and Password Fields", Toast.LENGTH_LONG).show();
-		}	
+		} 	
 	}
-	
+
 	public void createAcct()
 	{
 		//On Click submit Button
@@ -130,54 +124,61 @@ public class LoginActivity extends Activity {
 				setDefaultView(); //back button
 			}
 		});
-        //Set activity to home activity
+		//Set activity to home activity
 		// Intent intent = new Intent(Gra.this??, HomeActivty.class);
-        // startActivity(intent);
-		
-		
+		// startActivity(intent);
+
+
 	}
 	
+	//Home view of user
+	public void setHomeView(User user){
+		setContentView(R.layout.home);
+		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
+		welcomeMsg.setText("Welcome "+user.getFName()+" "+user.getLName());
+	}
+
 	//default view 
-	 public void setDefaultView() {
-		 //login page
-		 setContentView(R.layout.login);
-		 
-		 //buttons on main page
-		 Button createAccount = (Button) findViewById(R.id.createAcctBut);
-		 Button login = (Button) findViewById(R.id.loginButton);
-		
-		 //when login button press
-		 login.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					try {
-						//go to home user account
-						authenticate();
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-					}
-					
+	public void setDefaultView() {
+		//login page
+		setContentView(R.layout.login);
+
+		//buttons on main page
+		Button createAccount = (Button) findViewById(R.id.createAcctBut);
+		Button login = (Button) findViewById(R.id.loginButton);
+
+		//when login button press
+		login.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go to home user account
+					authenticate();
 				}
-			});
-		 
-		 //when createAccount button press
-		 createAccount.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					try {
-						//go to create account
-						createAcct();
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-					}
-					
+				catch (Exception e) {
+					e.printStackTrace();
 				}
-			});
-	 }
+
+			}
+		});
+
+		//when createAccount button press
+		createAccount.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go to create account
+					createAcct();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+	}
 }
