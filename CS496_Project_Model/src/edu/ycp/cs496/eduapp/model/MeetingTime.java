@@ -1,39 +1,21 @@
 package edu.ycp.cs496.eduapp.model;
 
 public class MeetingTime {
-	private boolean[] days;
+	private Day day;
 	private TimeOfDay startTime;
 	private TimeOfDay endTime;
 	private String location;
 	private MeetingType type;
 	
-	public MeetingTime(String inLoc, MeetingType inType)
+	public MeetingTime(TimeOfDay inStartTime, TimeOfDay inEndTime, Day inDay, String inLoc, MeetingType inType)
 	{
+		setStartTime(inStartTime);
+		setEndTime(inEndTime);
 		setLocation(inLoc);
 		setType(inType);
-		days = new boolean[7];
+		setDay(inDay);
 	}
 	
-	public void setDaysOfMeeting(boolean sun, boolean mon, boolean tues, boolean wed, boolean thur, boolean fri, boolean sat)
-	{
-		days[Day.SUNDAY.getNumVal()] = sun;
-		days[Day.MONDAY.getNumVal()] = mon;
-		days[Day.TUESDAY.getNumVal()] = tues;
-		days[Day.WEDNESDAY.getNumVal()] = wed;
-		days[Day.THURSDAY.getNumVal()] = thur;
-		days[Day.FRIDAY.getNumVal()] = fri;
-		days[Day.SATURDAY.getNumVal()] = sat;
-	}
-	
-	public void setDays(boolean[] inDays)
-	{
-		days = inDays;
-	}
-	
-	public boolean[] getDays()
-	{
-		return days;
-	}
 
 	public TimeOfDay getStartTime() {
 		return startTime;
@@ -65,6 +47,16 @@ public class MeetingTime {
 
 	public void setType(MeetingType type) {
 		this.type = type;
+	}
+
+
+	public Day getDay() {
+		return day;
+	}
+
+
+	public void setDay(Day day) {
+		this.day = day;
 	}
 	
 	

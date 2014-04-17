@@ -51,5 +51,4 @@
 	<listener>
 	    <listener-class>edu.ycp.cs496.eduapp.webapp.servlets.DatabaseInitListener</listener-class>
 	</listener>
-
 </web-app>

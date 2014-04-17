@@ -5,8 +5,8 @@ import edu.ycp.cs496.eduapp.model.persist.DatabaseProvider;
 import edu.ycp.cs496.eduapp.model.persist.IDatabase;
 
 public class GetCourseByID {
-	public Course getCourseByID(String courseID) {
+	public Course getCourseByCode(String courseCode) {
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getCourseByID(courseID);
+		return db.getCourseByCode(courseCode);
 	}
 }

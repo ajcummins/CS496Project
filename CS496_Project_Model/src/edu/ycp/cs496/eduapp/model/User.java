@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+	//private int userID;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private UserType userType;
-	private List<String> courseIDList;
+	// Get courseID's using course registry...
+	//private List<String> courseIDList;
 
 	public User()
 	{
-		courseIDList = new ArrayList<String>();
+		//courseIDList = new ArrayList<String>();
 	}
 	
 	public User(final String inUser, final String inPass, final String inFName, final String inLName)
@@ -23,7 +25,7 @@ public class User {
 		firstName = inFName;
 		lastName = inLName;
 		userType = UserType.STUDENT;
-		courseIDList = new ArrayList<String>();
+		//courseIDList = new ArrayList<String>();
 	}	
 	
 	// Setters
@@ -73,6 +75,7 @@ public class User {
 	{
 		return userType;
 	}
+	/*
 	public List<String> getCourseIdList()
 	{
 		return courseIDList;
@@ -101,6 +104,17 @@ public class User {
 		}
 		return false;
 	}
+	*/
+
+	/*
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	*/
 
 }
 

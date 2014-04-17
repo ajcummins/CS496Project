@@ -13,14 +13,12 @@
 			<tr>
 				<th>Course ID</th>
 				<th>Course Title</th>
-				<th>Professor</th>
 				<th>Operations</th>
 			</tr>
-			<c:forEach var="Course" courses="${MyCourseList}">
+			<c:forEach var="Course" items="${MyCourseList}">
 				<tr>
-					<td>${Course.courseID}</td>
+					<td>${Course.courseCode}</td>
 					<td>${Course.courseTitle}</td>
-					<td>${Course.professor}</td>
 					<td>
 						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}">View</a>
 						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}?action=edit">Edit</a>

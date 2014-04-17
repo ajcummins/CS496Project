@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Course {
-	private String courseID;
-	private User professor;
+	private String courseCode;
+	//private User professor;
 	private String title;
 	private String description;
 	private List<MeetingTime> meetingTimes;
@@ -21,8 +21,8 @@ public class Course {
 		
 	}
 	
-	public Course(User Professor, String CourseTitle){
-		this.professor = Professor;
+	public Course(String CourseTitle){
+		//this.professor = Professor;
 		this.title = CourseTitle;
 		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
@@ -30,16 +30,16 @@ public class Course {
 		
 	}
 	
-	public Course(String inCourseID, User Professor, String CourseTitle){
-		setCourseID(inCourseID);
-		this.professor = Professor;
+	public Course(String courseCode, String CourseTitle){
+		setCourseID(courseCode);
+		//this.professor = Professor;
 		this.title = CourseTitle;
 		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
 		
 	}
-	
+	/*
 	public User getProfessor() {
 		return professor;
 	}
@@ -47,6 +47,7 @@ public class Course {
 	public void setProfessor(User professor) {
 		this.professor = professor;
 	}
+	*/
 
 	public List<Resource> getResources() {
 		return resourceList;
@@ -145,11 +146,19 @@ public class Course {
 		meetingTimes.clear();
 	}
 
-	public String getCourseID() {
-		return courseID;
+	public String getCourseCode() {
+		return courseCode;
 	}
 
-	public void setCourseID(String courseID) {
-		this.courseID = courseID;
+	public void setCourseID(String courseCode) {
+		this.courseCode = courseCode;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

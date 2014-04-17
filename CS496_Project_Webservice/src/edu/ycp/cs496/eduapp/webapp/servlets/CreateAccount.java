@@ -71,7 +71,7 @@ public class CreateAccount extends HttpServlet {
 						session.setAttribute("User", newUser);
 						
 						//  Redirect to My Course List... 
-						req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
+						resp.sendRedirect(req.getContextPath()+"/MyCourseList");
 						
 					}
 					else
@@ -91,7 +91,7 @@ public class CreateAccount extends HttpServlet {
 					session.setAttribute("User", newUser);
 					
 					//  Redirect to My Course List... 
-					req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
+					resp.sendRedirect(req.getContextPath()+"/MyCourseList");
 					
 				}
 				
