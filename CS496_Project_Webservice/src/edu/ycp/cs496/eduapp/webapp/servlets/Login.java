@@ -82,7 +82,7 @@ public class Login extends HttpServlet {
 				session.setAttribute("User", thisUser);
 				
 				//  Redirect to My Course List... 
-				req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
+				resp.sendRedirect(req.getContextPath()+"/MyCourseList");
 				
 			}
 			else

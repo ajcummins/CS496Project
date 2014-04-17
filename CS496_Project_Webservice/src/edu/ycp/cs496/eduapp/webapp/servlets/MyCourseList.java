@@ -36,14 +36,15 @@ public class MyCourseList extends HttpServlet {
 			if(action != null) {
 				req.setAttribute("action", action);
 			}
-			String courseID = getCourseID(req);
-			showUI(req, resp, courseID);
+			String courseCode = getCourseCode(req);
+			showUI(req, resp, courseCode);
 		}
 		else
 		{
 			// No User data in session, redirect to Login...
 			req.getRequestDispatcher("/_view/Login.jsp").forward(req, resp);
 			req.setAttribute("result", "You are not logged in, Please log in");
+			resp.sendRedirect(req.getContextPath() + "/Login");
 		}
 		
 	}
@@ -57,7 +58,7 @@ public class MyCourseList extends HttpServlet {
 		if(thisUser != null)
 		{
 			// Post response
-			String courseID = getCourseID(req);
+			String courseCode = getCourseCode(req);
 			String action = req.getParameter("action");
 			//String permission = req.getParameter("permission");
 			if (action != null && !action.trim().equals(""))
@@ -85,7 +86,7 @@ public class MyCourseList extends HttpServlet {
 			else
 			{
 				//action is empty
-				showUI(req,resp,courseID);
+				showUI(req,resp,courseCode);
 				return;
 			}
 		}
@@ -97,16 +98,16 @@ public class MyCourseList extends HttpServlet {
 		}
 	}
 	
-	private String getCourseID(HttpServletRequest req) {
-		String courseID = null;
+	private String getCourseCode(HttpServletRequest req) {
+		String courseCode = null;
 		String pathInfo = req.getPathInfo();
 		if(pathInfo != null && !pathInfo.equals("") && !pathInfo.equals("/")){
-			courseID = pathInfo;
-			if(courseID.startsWith("/")) {
-				courseID = courseID.substring(1);
+			courseCode = pathInfo;
+			if(courseCode.startsWith("/")) {
+				courseCode = courseCode.substring(1);
 			}
 		}
-		return courseID;
+		return courseCode;
 	}
 	
 	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode) throws ServletException, IOException {
@@ -126,7 +127,7 @@ public class MyCourseList extends HttpServlet {
 			 GetMyCourseList controller = new GetMyCourseList();
 			 List<Course> myCourseList = controller.getMyCourseList(thisUser.getUsername());
 			 req.setAttribute("MyCourseList",myCourseList);
-			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
+			 resp.sendRedirect(req.getContextPath()+"/MyCourseList");
 			 
 			
 		}
@@ -142,7 +143,7 @@ public class MyCourseList extends HttpServlet {
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath()+"/Course");
 		}
 		
 	}
