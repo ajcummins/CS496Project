@@ -21,6 +21,11 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		resp.setStatus(HttpServletResponse.SC_OK);
+		req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
+		
+		/* Not sure what all this is but I'm pretty sure that all the JSON stuff should be with the mobile controllers
+		 * Email me if you need this tom				- Josh C.
 		//resp.setContentType("application/json");
 		resp.setStatus(HttpServletResponse.SC_OK);
 		//req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
@@ -52,6 +57,7 @@ public class Login extends HttpServlet {
 		resp.setContentType("application/json");
 		JSON.getObjectMapper().writeValue(resp.getWriter(), authUser);
 		return;
+		*/
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)

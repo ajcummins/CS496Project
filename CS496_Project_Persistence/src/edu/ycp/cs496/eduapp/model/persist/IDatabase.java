@@ -13,11 +13,11 @@ public interface IDatabase {
 	
 	void createAccount(User inUser,boolean isProf);
 
-	List<Course> getMyCourseList(List<String> courseIds);
+	List<Course> getMyCourseList(String inUsername);
 
 	List<Course> getMainCourseList();
 
-	Course getCourseByID(String courseID);
+	Course getCourseByCode(String courseCode);
 
 	boolean checkIfProf(String inProfPass);
 

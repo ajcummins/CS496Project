@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.GetCourseByID;
+import edu.ycp.cs496.eduapp.model.controllers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
 
 public class MyCourseList extends HttpServlet {
@@ -108,8 +109,8 @@ public class MyCourseList extends HttpServlet {
 		return courseID;
 	}
 	
-	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseID) throws ServletException, IOException {
-		if(courseID == null)
+	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode) throws ServletException, IOException {
+		if(courseCode == null)
 		{
 			// Adapt this code to use a controller to get the SPECIFIC Courses from the main course list using User.courseListIDs
 			/*
@@ -119,14 +120,14 @@ public class MyCourseList extends HttpServlet {
 				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 			 */
 			
-			/*
-			 * Have to assume that User has already been obtained from the session... 
-			 * There is a check at the beginning of the GET and POST
-			 * GetMyCourseList controller = new GetMyCourseList();
-			 * List<Course> myCourseList = controller.getMyCourseList(thisUser.getCourseIdList());
-			 * req.setAttribute("MyCourseList",myCourseList);
-			 * req.setRequestDispatcher("/_view/webApp/MyCourseList.jsp").forward(req, resp);
-			 */
+			
+			 //Have to assume that User has already been obtained from the session... 
+			 //There is a check at the beginning of the GET and POST
+			 GetMyCourseList controller = new GetMyCourseList();
+			 List<Course> myCourseList = controller.getMyCourseList(thisUser.getUsername());
+			 req.setAttribute("MyCourseList",myCourseList);
+			 req.getRequestDispatcher("/_view/webApp/MyCourseList.jsp").forward(req, resp);
+			 
 			
 		}
 		else
@@ -139,7 +140,7 @@ public class MyCourseList extends HttpServlet {
 				req.getRequestDispatcher("/_view/item.jsp").forward(req, resp);
 			*/
 			GetCourseByID controller = new GetCourseByID();
-			Course course = controller.getCourseByID(courseID);
+			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
 			req.getRequestDispatcher("/_view/course.jsp").forward(req, resp);
 		}

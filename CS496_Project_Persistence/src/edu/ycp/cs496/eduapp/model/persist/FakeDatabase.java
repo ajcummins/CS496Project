@@ -1,54 +1,88 @@
 package edu.ycp.cs496.eduapp.model.persist;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.CourseRegEntry;
 import edu.ycp.cs496.eduapp.model.CourseTime;
 import edu.ycp.cs496.eduapp.model.Day;
+import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.MeetingType;
+import edu.ycp.cs496.eduapp.model.Notification;
+import edu.ycp.cs496.eduapp.model.Resource;
+import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 
 public class FakeDatabase implements IDatabase {
-		private List<String> userCourses;
 		private List<Course> allCourses;
 		private List<User> allUsers;
+		private List<CourseRegEntry> courseReg;
 		private List<String> profPasses;
 		
 		public FakeDatabase() {
 			// Initialize Lists
-			// Mobile / User Lists
-			userCourses = new ArrayList<String>();
 			// Main Database Lists
 			allCourses = new ArrayList<Course>();
 			allUsers = new ArrayList<User>();
 			profPasses = new ArrayList<String>();
+			courseReg = new ArrayList<CourseRegEntry>();
+			
 			// Populate Lists
 			
-			// Create Users
-			User dhove = new User("dhove","test","David","Hovemeyer");
-			User dbab = new User("dbab","test","David","Babcock");
-			dbab.setToProfessor();
-			dhove.setToProfessor();
+			// Create Users and set USER IDS They're user id is their number in the list
 			User ajcummins = new User("ajcummins","test","A. Joshua","Cummins");
 			User thon = new User("thon","test","Thomas","Hon");
 			User ao = new User("ao","test","Anthony","O");
-			// Create Courses
-			Course CS496 = new Course("CS496",dhove,"Web and Mobile App Development");
-			Course CS456 = new Course("CS456",dbab,"Social and Prfessional Issues in Computing");			
+			User dhove = new User("dhove","test","David","Hovemeyer");
+			User dbab = new User("dbab","test","David","Babcock");
 			
-			// Add to respective lists
-			userCourses.add("CS496");
-			
-			allCourses.add(CS496);
-			allCourses.add(CS456);
-			
-			allUsers.add(dhove);
+			// Set Professors
+			dbab.setToProfessor();
+			dhove.setToProfessor();
+			// Add them to allUsers list
 			allUsers.add(dbab);
+			allUsers.add(dhove);
 			allUsers.add(ajcummins);
-			allUsers.add(thon);
 			allUsers.add(ao);
+			allUsers.add(thon);
 			
+			
+			// Create Courses add to allCourses List
+			Course cs496 = new Course("CS496","Web and Mobile App Development");
+			cs496.setDescription("Learn about how to utilize the android programming language in conjunction with with web services");
+			cs496.addNote(new Notification(new Date(98547), "web and mobile test notification"));
+			cs496.addResource(new Resource("CS496 Course Home Page","http://ycpcs.github.io/cs496-spring2014/"));
+			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.TUESDAY,"KEC119 and KEC127", MeetingType.LECTURE));
+			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.THURSDAY,"KEC119 and KEC127", MeetingType.LECTURE));
+			
+			Course cs456 = new Course("CS456","Social and Professional Issues in Computing");	
+			cs456.setDescription("Discuss and learn about how technology impacts society, not every issue has an easy answer");
+			cs456.addNote(new Notification(new Date(857823), "social and professional issues test notification"));
+			cs456.addResource(new Resource("CS456 Course Home Page","http://faculty.ycp.edu/~dbabcock/cs456/index.html"));
+			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.TUESDAY,"KEC117", MeetingType.LECTURE));
+			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.THURSDAY,"KEC117", MeetingType.LECTURE));
+			
+			allCourses.add(cs496);
+			allCourses.add(cs456);
+			
+			
+			
+			// Create Course registry entries and add to course registry
+			// add babcock to prof of cs456
+			courseReg.add(new CourseRegEntry(0,1,true));	
+			// add hove to prof of cs496
+			courseReg.add(new CourseRegEntry(1,0,true));	
+			// add all of us to cs496
+			courseReg.add(new CourseRegEntry(0,2));			
+			courseReg.add(new CourseRegEntry(0,3));
+			courseReg.add(new CourseRegEntry(0,4));
+			// add ao to cs456
+			courseReg.add(new CourseRegEntry(1,3));
+			
+		
 			// Populate prof Passes
 			profPasses.add("ihatemondays");
 			
@@ -105,27 +139,33 @@ public class FakeDatabase implements IDatabase {
 		}
 
 		@Override
-		public List<Course> getMyCourseList(List<String> courseIds) {
+		public List<Course> getMyCourseList(String inUsername) {
+			// Using the Course registry
+			// 1st using the username get the user's ID
+			int userID = -1;
 			List<Course> temp = new ArrayList<Course>();
-			for(int i = 0; i < courseIds.size(); i ++)
+			for(int i = 0; i < allUsers.size(); i++)
 			{
-				// Remove a string from the id list to compare to
-				String currentId = courseIds.remove(i);
-				// Iterate through main list looking for the courseID
-				for(int j = 0; j < allCourses.size(); j++)
+				if(inUsername.equals((allUsers.get(i).getUsername())))
 				{
-					// If the course id is found
-					if(currentId.equals(allCourses.get(j).getCourseID()))
-					{
-						// Add the course to the temp list to be returned
-						temp.add(allCourses.get(j));
-						// There SHOULDN'T / WILL NOT BE another element with that id
-						// so don't iterate through the rest of the loop for no reason : break out of loop
-						j = allCourses.size();
-					}
+					userID = i;
 				}
 			}
-			return temp;
+			// Obtain all the courses that correspond with the user's ID
+			if(userID != -1)
+			{
+				for(int j = 0; j < courseReg.size(); j++)
+				{
+					if(courseReg.get(j).getUserID() == userID)
+					{
+						// We have a match add the respective course to the temp course list
+						temp.add(allCourses.get(courseReg.get(j).getCourseID()));
+					}
+				}
+				return temp;
+			}
+			return null;
+			
 		}
 
 		@Override
@@ -134,14 +174,16 @@ public class FakeDatabase implements IDatabase {
 		}
 
 		@Override
-		public Course getCourseByID(String courseID) {
+		public Course getCourseByCode(String courseCode) {
 			
 			Course temp = null;
 			for(int i = 0; i < allCourses.size(); i ++)
 			{
-				if(courseID.equals(allCourses.get(i).getCourseID()))
+				if(courseCode.equals(allCourses.get(i).getCourseCode()))
 				{
 					temp = allCourses.get(i);
+					// Don't want to keep iterating, course codes should be unique...
+					i = allCourses.size();
 				}
 			}
 			return temp;
