@@ -11,6 +11,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>LoginMobile</servlet-name>
+		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.LoginMobile</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>CreateAccount</servlet-name>
 		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.CreateAccount</servlet-class>
 	</servlet>
@@ -26,6 +31,11 @@
 		<url-pattern>/Login/*</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>LoginMobile</servlet-name>
+		<url-pattern>/LoginMobile/*</url-pattern>
+	</servlet-mapping>
+		
 	<servlet-mapping>
 		<servlet-name>CreateAccount</servlet-name>
 		<url-pattern>/CreateAccount/*</url-pattern>

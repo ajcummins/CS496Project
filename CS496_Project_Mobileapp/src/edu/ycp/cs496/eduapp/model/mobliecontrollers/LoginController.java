@@ -29,7 +29,7 @@ public class LoginController {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/Login/"+user+"/"+pass, 
+		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/LoginMobile/"+user+"/"+pass, 
 						    null, null);
 
 		// Construct request
