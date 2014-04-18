@@ -179,7 +179,7 @@ public class FakeDatabase implements IDatabase {
 			Course temp = null;
 			for(int i = 0; i < allCourses.size(); i ++)
 			{
-				if(courseCode.equals(allCourses.get(i).getCourseCode()))
+				if(courseCode.equals(allCourses.get(i).getCode()))
 				{
 					temp = allCourses.get(i);
 					// Don't want to keep iterating, course codes should be unique...

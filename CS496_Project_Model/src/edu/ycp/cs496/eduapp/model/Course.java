@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Course {
-	private String courseCode;
+	private String code;
 	//private User professor;
 	private String title;
 	private String description;
@@ -30,8 +30,8 @@ public class Course {
 		
 	}
 	
-	public Course(String courseCode, String CourseTitle){
-		setCourseID(courseCode);
+	public Course(String code, String CourseTitle){
+		setCode(code);
 		//this.professor = Professor;
 		this.title = CourseTitle;
 		meetingTimes = new ArrayList<MeetingTime>();
@@ -146,12 +146,12 @@ public class Course {
 		meetingTimes.clear();
 	}
 
-	public String getCourseCode() {
-		return courseCode;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCourseID(String courseCode) {
-		this.courseCode = courseCode;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getDescription() {

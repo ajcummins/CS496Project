@@ -107,6 +107,7 @@ public class MyCourseList extends HttpServlet {
 				courseCode = courseCode.substring(1);
 			}
 		}
+		System.out.println("Course Code = " + courseCode);
 		return courseCode;
 	}
 	
@@ -127,8 +128,7 @@ public class MyCourseList extends HttpServlet {
 			 GetMyCourseList controller = new GetMyCourseList();
 			 List<Course> myCourseList = controller.getMyCourseList(thisUser.getUsername());
 			 req.setAttribute("MyCourseList",myCourseList);
-			 resp.sendRedirect(req.getContextPath()+"/MyCourseList");
-			 
+			 req.getRequestDispatcher("/_view/eduapp/MyCourseList.jsp");
 			
 		}
 		else
@@ -143,7 +143,7 @@ public class MyCourseList extends HttpServlet {
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			resp.sendRedirect(req.getContextPath()+"/Course");
+			req.getRequestDispatcher("/_view/eduapp/Course.jsp");
 		}
 		
 	}

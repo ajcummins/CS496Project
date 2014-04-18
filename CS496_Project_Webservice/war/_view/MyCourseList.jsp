@@ -17,8 +17,8 @@
 			</tr>
 			<c:forEach var="Course" items="${MyCourseList}">
 				<tr>
-					<td>${Course.courseCode}</td>
-					<td>${Course.courseTitle}</td>
+					<td>${Course.code}</td>
+					<td>${Course.title}</td>
 					<td>
 						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}">View</a>
 						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}?action=edit">Edit</a>
