@@ -20,9 +20,9 @@ import edu.ycp.cs496.eduapp.model.User;
 
 public class LoginController {
 	public User authenticateUser(String user, String pass) throws ClientProtocolException, URISyntaxException, IOException{
-		return makeAuthenticateUser(user,pass); 
+		return makeGetRequest(user,pass); 
 	}
-	private User makeAuthenticateUser(String user, String pass) throws URISyntaxException, ClientProtocolException, IOException
+	private User makeGetRequest(String user, String pass) throws URISyntaxException, ClientProtocolException, IOException
 	{
 		//Create HTTP client
 		HttpClient client = new DefaultHttpClient();

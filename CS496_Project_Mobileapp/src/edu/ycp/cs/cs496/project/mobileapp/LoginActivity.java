@@ -11,6 +11,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
 import edu.ycp.cs496.eduapp.model.User;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
@@ -57,6 +58,14 @@ public class LoginActivity extends Activity {
 		LoginController controller = new LoginController();
 		User mainUser = controller.authenticateUser(user, pass);
 		return mainUser;
+	}
+	
+	//creating user
+	public boolean createUserAccount(User user,boolean isProf)throws URISyntaxException, ClientProtocolException,
+	IOException, ParserConfigurationException, SAXException{
+		CreateAcctController controller = new CreateAcctController();
+		//create User in Database
+		return controller.createAccount(user, isProf);
 	}
 
 	@Override
@@ -111,17 +120,24 @@ public class LoginActivity extends Activity {
 		} 	
 	}
 
-	public void createAcct()
+	public void createAcct()throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
 		//On Click submit Button
 		setContentView(R.layout.createuser);
 		Button submitCreateAcc = (Button) findViewById(R.id.submitCreateUser);
+		
+		//set up user
+		final User newUser = new User();
+		
 		submitCreateAcc.setOnClickListener(new View.OnClickListener() {
 			//on click
 			@Override
 			public void onClick(View v) {
-				//go to the users home
-				setDefaultView(); //back button
+				//create user
+				//go to home page if can create
+				//if (createUserAccount(newUser, false) == true){
+				//	setHomeView(newUser);
+				//}
 			}
 		});
 		//Set activity to home activity
@@ -130,12 +146,33 @@ public class LoginActivity extends Activity {
 
 
 	}
-	
+
 	//Home view of user
 	public void setHomeView(User user){
 		setContentView(R.layout.home);
+		//welcome message to user shows first and last name
 		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
 		welcomeMsg.setText("Welcome "+user.getFName()+" "+user.getLName());
+
+		//buttons on home page
+		Button logout = (Button) findViewById(R.id.logout);
+		//when logout button press
+		logout.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go to login page
+					setDefaultView();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+
 	}
 
 	//default view 
