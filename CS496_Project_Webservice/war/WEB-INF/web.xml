@@ -21,6 +21,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>CreateAccountMobile</servlet-name>
+		<servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.CreateAccountMobile</servlet-class>
+	</servlet>
+	
+	<servlet>
 	    <servlet-name>MyCourseList</servlet-name>
 	    <servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.MyCourseList</servlet-class>
 	</servlet>
@@ -39,6 +44,11 @@
 	<servlet-mapping>
 		<servlet-name>CreateAccount</servlet-name>
 		<url-pattern>/CreateAccount/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateAccountMobile</servlet-name>
+		<url-pattern>/CreateAccountMobile/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

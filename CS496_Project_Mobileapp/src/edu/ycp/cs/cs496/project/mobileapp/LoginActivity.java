@@ -65,7 +65,7 @@ public class LoginActivity extends Activity {
 	IOException, ParserConfigurationException, SAXException{
 		CreateAcctController controller = new CreateAcctController();
 		//create User in Database
-		return controller.createAccount(user, isProf);
+		return controller.createAccount(user, isProf);	
 	}
 
 	@Override
@@ -115,39 +115,83 @@ public class LoginActivity extends Activity {
 			}
 			else {
 				//show error of fail auth
-				Toast.makeText(LoginActivity.this,"not a valid user/password"+ passText , Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this,"not a valid user/password" , Toast.LENGTH_LONG).show();
 			}
 		} 	
 	}
 
+	//create account page
 	public void createAcct()throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
 		//On Click submit Button
 		setContentView(R.layout.createuser);
 		Button submitCreateAcc = (Button) findViewById(R.id.submitCreateUser);
-		
-		//set up user
-		final User newUser = new User();
+		Button backToLogin = (Button) findViewById(R.id.backButton); 
 		
 		submitCreateAcc.setOnClickListener(new View.OnClickListener() {
 			//on click
 			@Override
 			public void onClick(View v) {
-				//create user
-				//go to home page if can create
-				//if (createUserAccount(newUser, false) == true){
-				//	setHomeView(newUser);
-				//}
+				try {
+					//get user parameters
+					EditText userName = (EditText) findViewById(R.id.createUserNameTxtBox);
+					EditText password = (EditText) findViewById(R.id.createPasswordTxtBox);
+					EditText checkPassword = (EditText) findViewById(R.id.confirmPassTxtBox);
+					EditText fName = (EditText) findViewById(R.id.createFirstNameTxtBox);
+					EditText lName = (EditText) findViewById(R.id.createLastNameTxtBox);
+					
+					String userNameStr = userName.getText().toString();
+					String passwordStr = password.getText().toString();
+					String checkPasswordStr = checkPassword.getText().toString();
+					String fNameStr = fName.getText().toString();
+					String lNameStr = lName.getText().toString();
+
+					User newUser = new User(userNameStr,passwordStr,fNameStr,lNameStr);
+					//if fields are empty
+					if (userNameStr.isEmpty() || passwordStr.isEmpty() || checkPasswordStr.isEmpty() || fNameStr.isEmpty() || lNameStr.isEmpty()){
+						Toast.makeText(LoginActivity.this, "Please fill all the text boxes",Toast.LENGTH_LONG).show();
+					}
+					//if password does not match check password
+					else if (!passwordStr.equals(checkPasswordStr)){
+						Toast.makeText(LoginActivity.this, "Your Password does not equal the Confirm Password",Toast.LENGTH_LONG).show();
+					}
+					//go to newUser home page if created user is successful
+					else if (createUserAccount(newUser,false) == true){
+						//go to login page
+						setDefaultView();
+						Toast.makeText(LoginActivity.this, "Account has been created, Please login",Toast.LENGTH_LONG).show();
+					}
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SAXException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		//Set activity to home activity
-		// Intent intent = new Intent(Gra.this??, HomeActivty.class);
-		// startActivity(intent);
-
+		//button to login page
+		backToLogin.setOnClickListener(new View.OnClickListener() {
+			//on click
+			@Override
+			public void onClick(View v) {
+				//login page
+				setDefaultView();
+			}
+		});
 
 	}
 
-	//Home view of user
+	//Home page of user
 	public void setHomeView(User user){
 		setContentView(R.layout.home);
 		//welcome message to user shows first and last name
