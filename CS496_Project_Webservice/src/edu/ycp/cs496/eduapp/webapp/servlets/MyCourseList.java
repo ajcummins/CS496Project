@@ -30,14 +30,14 @@ public class MyCourseList extends HttpServlet {
 		HttpSession session = req.getSession();
 		User thisUser = (User) session.getAttribute("User");
 		if(thisUser != null)
-		{
+		{			
 			String action = req.getParameter("action");
 			//String permission = req.getParameter("permission");
 			if(action != null) {
 				req.setAttribute("action", action);
 			}
 			String courseCode = getCourseCode(req);
-			showUI(req, resp, courseCode);
+			showUI(req, resp, courseCode, thisUser);
 		}
 		else
 		{
@@ -86,7 +86,7 @@ public class MyCourseList extends HttpServlet {
 			else
 			{
 				//action is empty
-				showUI(req,resp,courseCode);
+				showUI(req,resp,courseCode, thisUser);
 				return;
 			}
 		}
@@ -107,11 +107,10 @@ public class MyCourseList extends HttpServlet {
 				courseCode = courseCode.substring(1);
 			}
 		}
-		System.out.println("Course Code = " + courseCode);
 		return courseCode;
 	}
 	
-	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode) throws ServletException, IOException {
+	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode, User inUser) throws ServletException, IOException {
 		if(courseCode == null)
 		{
 			// Adapt this code to use a controller to get the SPECIFIC Courses from the main course list using User.courseListIDs
@@ -125,8 +124,13 @@ public class MyCourseList extends HttpServlet {
 			
 			 //Have to assume that User has already been obtained from the session... 
 			 //There is a check at the beginning of the GET and POST
-			 GetMyCourseList controller = new GetMyCourseList();
-			 List<Course> myCourseList = controller.getMyCourseList(thisUser.getUsername());
+			 GetMyCourseList myCourseListController = new GetMyCourseList();
+			 List<Course> myCourseList = myCourseListController.getMyCourseList(inUser.getUsername());
+			 System.out.println("OUTPUT COURSE LIST");
+			 for(int i = 0; i < myCourseList.size(); i++)
+			 {
+				 System.out.println("Course : "  + myCourseList.get(i).getCourseTitle());
+			 }
 			 req.setAttribute("MyCourseList",myCourseList);
 			 req.getRequestDispatcher("/_view/eduapp/MyCourseList.jsp");
 			
@@ -140,6 +144,7 @@ public class MyCourseList extends HttpServlet {
 				req.setAttribute("Item", item);
 				req.getRequestDispatcher("/_view/item.jsp").forward(req, resp);
 			*/
+			System.out.println("PRINT OUT COURSE");
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);

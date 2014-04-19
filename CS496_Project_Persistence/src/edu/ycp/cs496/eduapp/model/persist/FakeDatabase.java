@@ -7,7 +7,6 @@ import java.util.List;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.CourseRegEntry;
-import edu.ycp.cs496.eduapp.model.CourseTime;
 import edu.ycp.cs496.eduapp.model.Day;
 import edu.ycp.cs496.eduapp.model.MeetingTime;
 import edu.ycp.cs496.eduapp.model.MeetingType;
@@ -71,17 +70,17 @@ public class FakeDatabase implements IDatabase {
 			
 			
 			// Create Course registry entries and add to course registry
+			// ENTRY IS (UserID,CourseID,boolean isProf) or (UserID,CourseID) -> isProf = false
 			// add babcock to prof of cs456
-			courseReg.add(new CourseRegEntry(0,1,true));	
+			courseReg.add(new CourseRegEntry(findUserIndex(dbab),findCourseIndex(cs456),true));	
 			// add hove to prof of cs496
-			courseReg.add(new CourseRegEntry(1,0,true));	
+			courseReg.add(new CourseRegEntry(findUserIndex(dhove),findCourseIndex(cs496),true));	
 			// add all of us to cs496
-			courseReg.add(new CourseRegEntry(0,2));			
-			courseReg.add(new CourseRegEntry(0,3));
-			courseReg.add(new CourseRegEntry(0,4));
+			courseReg.add(new CourseRegEntry(findUserIndex(ao),findCourseIndex(cs496)));			
+			courseReg.add(new CourseRegEntry(findUserIndex(ajcummins),findCourseIndex(cs496)));		
+			courseReg.add(new CourseRegEntry(findUserIndex(thon),findCourseIndex(cs496)));		
 			// add ao to cs456
-			courseReg.add(new CourseRegEntry(1,3));
-			
+			courseReg.add(new CourseRegEntry(findUserIndex(ao),findCourseIndex(cs456)));	
 		
 			// Populate prof Passes
 			profPasses.add("ihatemondays");
@@ -205,6 +204,30 @@ public class FakeDatabase implements IDatabase {
 			
 			return key;
 			
+		}
+		
+		public int findCourseIndex(Course inCourse)
+		{
+			for(int i = 0; i < allCourses.size(); i++)
+			{
+				if(inCourse.getCode().equals(allCourses.get(i).getCode()))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		public int findUserIndex(User inUser)
+		{
+			for(int i = 0; i < allUsers.size(); i++)
+			{
+				if(inUser.getUsername().equals(allUsers.get(i).getUsername()))
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 }
 
