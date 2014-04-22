@@ -15,5 +15,6 @@
     <string name="Submit">Submit</string>
     <string name="Logout">Logout</string>
     <string name="Back">Back to Login</string>
+    <string name="MyCourseList">My Courses</string>
 
 </resources>

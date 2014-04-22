@@ -1,19 +1,14 @@
 package edu.ycp.cs496.eduapp.webapp.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.CreateAcctController;
-import edu.ycp.cs496.eduapp.model.controllers.LoginController;
 import edu.ycp.cs496.eduapp.model.JSON;
 
 public class CreateAccountMobile extends HttpServlet {

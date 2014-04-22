@@ -5,18 +5,15 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.util.Log;
 import edu.ycp.cs496.eduapp.model.JSON;
 import edu.ycp.cs496.eduapp.model.User;
 

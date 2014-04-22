@@ -6,12 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.JSON;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
-import edu.ycp.cs496.eduapp.model.persist.DatabaseProvider;
 public class LoginMobile extends HttpServlet {
 	/**
 	 * 
@@ -40,7 +38,11 @@ public class LoginMobile extends HttpServlet {
 		String pass = pathInfo.substring(locationOfSlash+1);
 		
 		//get user
-		User authUser = DatabaseProvider.getInstance().authenticateUser(user, pass);
+		//User authUser = DatabaseProvider.getInstance().authenticateUser(user, pass);
+		// Use Login Controller to check their credentials
+		LoginController controller = new LoginController();
+		User authUser = controller.authenticateUser(user, pass);
+		
 		if (authUser != null){
 			System.out.println("Attempt to log in, user=" + authUser.getUsername() + ", pass=" + authUser.getPassword());
 		}

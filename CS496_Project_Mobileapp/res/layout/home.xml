@@ -18,11 +18,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/MyCourseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/WelcomeMsg"
         android:layout_below="@+id/WelcomeMsg"
+        android:text="@string/MyCourseList" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/MyCourseButton"
+        android:layout_below="@+id/MyCourseButton"
         android:text="@string/Logout" />
 
 </RelativeLayout>

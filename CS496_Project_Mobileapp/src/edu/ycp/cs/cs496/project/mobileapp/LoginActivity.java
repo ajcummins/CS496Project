@@ -3,13 +3,13 @@ package edu.ycp.cs.cs496.project.mobileapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
+import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
@@ -17,7 +17,6 @@ import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -35,11 +34,21 @@ public class LoginActivity extends Activity {
 	}
 
 	//handlers for get my course list
-	public void getMyCourse(List<String> CourseIds) throws URISyntaxException, ClientProtocolException,
+	public void getMyCourse(String username) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
 		GetMyCourseList controller = new GetMyCourseList();
-		if (controller.getMyCourseList(CourseIds) != null){
+		if (controller.getMyCourseList(username) != null){
 			//display my course list
+			Course[] userCourse = controller.getMyCourseList(username);
+			if (userCourse.length <= 0){
+				Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();
+			}
+			if (userCourse.length > 0){
+				Toast.makeText(LoginActivity.this, "Courses exist", Toast.LENGTH_LONG).show();
+			}
+		}
+		else {
+			Toast.makeText(LoginActivity.this, "Failed to Course", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -192,17 +201,18 @@ public class LoginActivity extends Activity {
 	}
 
 	//Home page of user
-	public void setHomeView(User user){
+	public void setHomeView(final User user){
 		setContentView(R.layout.home);
 		//welcome message to user shows first and last name
 		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
 		welcomeMsg.setText("Welcome "+user.getFName()+" "+user.getLName());
-
+		
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
+		Button myCourse = (Button) findViewById(R.id.MyCourseButton);
+		
 		//when logout button press
 		logout.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -213,10 +223,23 @@ public class LoginActivity extends Activity {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-
 			}
 		});
-
+		
+		//when my course button press
+		myCourse.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go list of course
+					getMyCourse(user.getUsername());
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	//default view 

@@ -30,6 +30,11 @@
 	    <servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.MyCourseList</servlet-class>
 	</servlet>
 	
+	<servlet>
+	    <servlet-name>MyCourseListMobile</servlet-name>
+	    <servlet-class>edu.ycp.cs496.eduapp.webapp.servlets.MyCourseListMobile</servlet-class>
+	</servlet>
+	
 	<!-- Servlet mappings (mapping of paths to servlets). -->
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
@@ -54,6 +59,11 @@
 	<servlet-mapping>
 	    <servlet-name>MyCourseList</servlet-name>
 	    <url-pattern>/MyCourseList/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	    <servlet-name>MyCourseListMobile</servlet-name>
+	    <url-pattern>/MyCourseListMobile/*</url-pattern>
 	</servlet-mapping>
 	
 	
