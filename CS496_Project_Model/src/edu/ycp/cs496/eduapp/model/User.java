@@ -43,7 +43,7 @@ public class User {
 	}
 	public void setLName(String inLName)
 	{
-		username = inLName;
+		lastName = inLName;
 	}
 	public void setToProfessor()
 	{

@@ -28,7 +28,7 @@ public class MyCourseList extends HttpServlet {
 		
 		//Retrieve the User object from the session and make sure it isn't empty...
 		HttpSession session = req.getSession();
-		User thisUser = (User) session.getAttribute("User");
+		thisUser = (User) session.getAttribute("User");
 		if(thisUser != null)
 		{			
 			String action = req.getParameter("action");
@@ -37,12 +37,11 @@ public class MyCourseList extends HttpServlet {
 				req.setAttribute("action", action);
 			}
 			String courseCode = getCourseCode(req);
-			showUI(req, resp, courseCode, thisUser);
+			showUI(req, resp, courseCode);
 		}
 		else
 		{
 			// No User data in session, redirect to Login...
-			req.getRequestDispatcher("/_view/Login.jsp").forward(req, resp);
 			req.setAttribute("result", "You are not logged in, Please log in");
 			resp.sendRedirect(req.getContextPath() + "/Login");
 		}
@@ -54,7 +53,7 @@ public class MyCourseList extends HttpServlet {
 
 		//Retrieve the User object from the session and make sure it isn't empty...
 		HttpSession session = req.getSession();
-		User thisUser = (User) session.getAttribute("User");
+		thisUser = (User) session.getAttribute("User");
 		if(thisUser != null)
 		{
 			// Post response
@@ -86,15 +85,15 @@ public class MyCourseList extends HttpServlet {
 			else
 			{
 				//action is empty
-				showUI(req,resp,courseCode, thisUser);
+				showUI(req,resp,courseCode);
 				return;
 			}
 		}
 		else
 		{
 			// No User data in session, redirect to Login...
-			req.getRequestDispatcher("/_view/Login.jsp").forward(req, resp);
 			req.setAttribute("result", "You are not logged in, Please log in");
+			resp.sendRedirect(req.getContextPath() + "/Login");
 		}
 	}
 	
@@ -110,29 +109,20 @@ public class MyCourseList extends HttpServlet {
 		return courseCode;
 	}
 	
-	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode, User inUser) throws ServletException, IOException {
+	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode) throws ServletException, IOException {
 		if(courseCode == null)
 		{
-			// Adapt this code to use a controller to get the SPECIFIC Courses from the main course list using User.courseListIDs
-			/*
-			 	GetInventory controller = new GetInventory();
-				List<Item> inventory = controller.getInventory();
-				req.setAttribute("Inventory", inventory);
-				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
-			 */
-			
-			
 			 //Have to assume that User has already been obtained from the session... 
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
-			 List<Course> myCourseList = myCourseListController.getMyCourseList(inUser.getUsername());
+			 List<Course> myCourseList = myCourseListController.getMyCourseList(thisUser.getUsername());
 			 System.out.println("OUTPUT COURSE LIST");
 			 for(int i = 0; i < myCourseList.size(); i++)
 			 {
 				 System.out.println("Course : "  + myCourseList.get(i).getCourseTitle());
 			 }
-			 req.setAttribute("MyCourseList",myCourseList);
-			 req.getRequestDispatcher("/_view/eduapp/MyCourseList.jsp");
+			 req.setAttribute("mycourselist",myCourseList);
+			 req.getRequestDispatcher("/_view/MyCourseList.jsp");
 			
 		}
 		else

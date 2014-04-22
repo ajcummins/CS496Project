@@ -9,24 +9,24 @@
 	
 	<body>
 		<h1>My Course List</h1>
-		<table class="myCourseList">
+		<table class="mycourselist">
 			<tr>
 				<th>Course ID</th>
 				<th>Course Title</th>
 				<th>Operations</th>
 			</tr>
-			<c:forEach var="Course" items="${MyCourseList}">
+			<c:forEach var="item" items="${Course}">
 				<tr>
 					<td>${Course.code}</td>
 					<td>${Course.title}</td>
 					<td>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}">View</a>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}?action=edit">Edit</a>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.courseTitle}?action=delete">Delete</a>
+						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}">View</a>
+						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit</a>
+						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=delete">Delete</a>
 					</td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList/NewCourse?action=add">Add Course</a></div>
-	</body>				
+	</body>			
 </html>
