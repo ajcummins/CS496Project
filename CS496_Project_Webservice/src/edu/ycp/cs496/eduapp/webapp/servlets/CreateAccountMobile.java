@@ -35,7 +35,7 @@ public class CreateAccountMobile extends HttpServlet {
 		CreateAcctController controller = new CreateAcctController();
 		//create student account
 		controller.createAccount(newUser, false);
-		System.out.println("create account user:"+newUser.getUsername()+" pass:"+newUser.getPassword());
+		System.out.println("create account user:"+newUser.getUsername()+" pass:"+newUser.getPassword()+" name:"+newUser.getFName()+" "+newUser.getLName());
 
 	}
 }

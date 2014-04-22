@@ -205,7 +205,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.home);
 		//welcome message to user shows first and last name
 		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
-		welcomeMsg.setText("Welcome "+user.getFName()+" "+user.getLName());
+		welcomeMsg.setText("Welcome "+user.getLName()+", "+user.getFName());
 		
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
