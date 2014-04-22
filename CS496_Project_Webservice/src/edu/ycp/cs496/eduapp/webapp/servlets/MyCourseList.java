@@ -115,13 +115,13 @@ public class MyCourseList extends HttpServlet {
 			 //Have to assume that User has already been obtained from the session... 
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
-			 List<Course> myCourseList = myCourseListController.getMyCourseList(thisUser.getUsername());
+			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
 			 System.out.println("OUTPUT COURSE LIST");
-			 for(int i = 0; i < myCourseList.size(); i++)
+			 for(int i = 0; i < mycourselist.size(); i++)
 			 {
-				 System.out.println("Course : "  + myCourseList.get(i).getCourseTitle());
+				 System.out.println("Course : "  + mycourselist.get(i).getCourseTitle());
 			 }
-			 req.setAttribute("mycourselist",myCourseList);
+			 req.setAttribute("MyCourseList",mycourselist);
 			 req.getRequestDispatcher("/_view/MyCourseList.jsp");
 			
 		}

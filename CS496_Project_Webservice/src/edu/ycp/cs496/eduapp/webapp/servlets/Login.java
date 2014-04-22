@@ -23,41 +23,6 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
-		
-		/* Not sure what all this is but I'm pretty sure that all the JSON stuff should be with the mobile controllers
-		 * Email me if you need this tom				- Josh C.
-		//resp.setContentType("application/json");
-		resp.setStatus(HttpServletResponse.SC_OK);
-		//req.getRequestDispatcher("/_view/Login.jsp").forward(req,resp);
-		
-		//get the user and pass from path
-		String pathInfo = req.getPathInfo();
-		
-		//pathinfo should contain "user/pass"
-		if (pathInfo.startsWith("/")) {
-			pathInfo = pathInfo.substring(1);
-		}
-		
-		//get String of user and pass
-		pathInfo = "thon/test";
-		int locationOfSlash = pathInfo.indexOf("/");
-		String user = pathInfo.substring(0, locationOfSlash);
-		String pass = pathInfo.substring(locationOfSlash+1);
-		
-		//testing
-		//String user = "thon";
-		//String pass = "test";
-		
-		//get user
-		User authUser = DatabaseProvider.getInstance().authenticateUser(user, pass);
-		System.out.println("Attempt to log in, user=" + authUser.getUsername() + ", pass=" + authUser.getPassword());
-		
-		//get User and write if exist
-		resp.setStatus(HttpServletResponse.SC_OK);
-		resp.setContentType("application/json");
-		JSON.getObjectMapper().writeValue(resp.getWriter(), authUser);
-		return;
-		*/
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
