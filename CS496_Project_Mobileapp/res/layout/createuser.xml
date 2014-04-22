@@ -22,7 +22,7 @@
         android:layout_alignLeft="@+id/createUserNameTxtBox"
         android:layout_below="@+id/passwordTxt"
         android:ems="10"
-        android:inputType="textVisiblePassword" />
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/confirmPassTxt"

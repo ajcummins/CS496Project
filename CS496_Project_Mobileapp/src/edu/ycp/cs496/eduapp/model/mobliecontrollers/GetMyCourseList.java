@@ -44,9 +44,11 @@ public class GetMyCourseList {
 			HttpEntity entity = response.getEntity();
 			
 			// Parse JSON
+			Log.i("GetMyCourseList", "Valid response");
 			return JSON.getObjectMapper().readValue(entity.getContent(), Course[].class);
 		}
 		// Return null if invalid response
+		Log.i("GetMyCourseList", "invalid response");
 		return null;
 	}
 }
