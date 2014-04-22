@@ -44,7 +44,7 @@ public class LoginMobile extends HttpServlet {
 		User authUser = controller.authenticateUser(user, pass);
 		
 		if (authUser != null){
-			System.out.println("Attempt to log in, user=" + authUser.getUsername() + ", pass=" + authUser.getPassword());
+			System.out.println("Attempt to log in, user=" + authUser.getUsername() + ", pass=" + authUser.getPassword() + ", lastname = "+ authUser.getLName());
 		}
 		//if not an user
 		else {
