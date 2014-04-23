@@ -3,6 +3,8 @@ package edu.ycp.cs496.eduapp.model.mobliecontrollers;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -12,23 +14,25 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import android.util.Log;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.JSON;
 
 public class GetMyCourseList {
-	public Course[] getMyCourseList(String inUsername) throws ClientProtocolException, URISyntaxException, IOException{
+	public List <Course> getMyCourseList(String inUsername) throws ClientProtocolException, URISyntaxException, IOException{
 		return makeGetRequest(inUsername); 
 	}
-	private Course[] makeGetRequest(String inUsername) throws URISyntaxException, ClientProtocolException, IOException
+	private List <Course> makeGetRequest(String inUsername) throws URISyntaxException, ClientProtocolException, IOException
 	{
 		//Create HTTP client
 		HttpClient client = new DefaultHttpClient();
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/MyCourseListMobile/"+inUsername, 
+		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/MyCourseListMobile/"+inUsername, 
 						    null, null);
 
 		// Construct request
@@ -45,7 +49,7 @@ public class GetMyCourseList {
 			
 			// Parse JSON
 			Log.i("GetMyCourseList", "Valid response");
-			return JSON.getObjectMapper().readValue(entity.getContent(), Course[].class);
+			return JSON.getObjectMapper().readValue(entity.getContent(), new TypeReference<List<Course>>(){});
 		}
 		// Return null if invalid response
 		Log.i("GetMyCourseList", "invalid response");

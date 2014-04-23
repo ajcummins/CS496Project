@@ -3,6 +3,7 @@ package edu.ycp.cs.cs496.project.mobileapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -19,8 +20,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +40,24 @@ public class LoginActivity extends Activity {
 	}
 
 	//handlers for get my course list
-	public void getMyCourse(String username) throws URISyntaxException, ClientProtocolException,
+	public void getMyCourse(User user) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
 		GetMyCourseList controller = new GetMyCourseList();
-		if (controller.getMyCourseList(username) != null){
+		if (controller.getMyCourseList(user.getUsername()) != null){
 			//display my course list
-			Course[] userCourse = controller.getMyCourseList(username);
-			if (userCourse.length <= 0){
+			List <Course> userCourses = controller.getMyCourseList(user.getUsername());
+			//if no courses
+			if (userCourses.size() <= 0){
 				Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();
 			}
-			if (userCourse.length > 0){
-				Toast.makeText(LoginActivity.this, "Courses exist", Toast.LENGTH_LONG).show();
-			}
+			//show list of courses 
+			//if (userCourses.size() > 0){
+			Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getCourseTitle(), Toast.LENGTH_LONG).show();
+			displayInventoryView(user, userCourses);
+			//}
 		}
 		else {
-			Toast.makeText(LoginActivity.this, "Failed to Course", Toast.LENGTH_LONG).show();
+			Toast.makeText(LoginActivity.this, "Failed to Recieve Course", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -94,26 +103,6 @@ public class LoginActivity extends Activity {
 		String passText = passTextInput.getText().toString();
 		if(userText.equals("") || passText.equals("") || userText != null || passText != null)
 		{
-			/*
-			//Call controller and authenticate
-			LoginController controller = new LoginController();
-			boolean success = controller.authenticateUser(userText, passText);
-			//If Successful goto home
-			if(success)
-			{
-				Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-				setContentView(R.layout.home);
-				//Set activity to home activity
-				// Intent intent = new Intent(Gra.this??, HomeActivty.class);
-		        // startActivity(intent);   
-
-			}
-			//Else Error
-			else
-			{
-				Toast.makeText(LoginActivity.this, "Username or Password did not match", Toast.LENGTH_LONG).show();
-			}
-			 */
 			User user = new User();
 			//get the user if exist else it is a null
 			user = getUserAccount(userText, passText);
@@ -233,7 +222,7 @@ public class LoginActivity extends Activity {
 				// TODO Auto-generated method stub
 				try {
 					//go list of course
-					getMyCourse(user.getUsername());
+					getMyCourse(user);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -285,4 +274,52 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
+	
+	// Method for displaying My Course list
+    public void displayInventoryView(final User user,List <Course> myCourses) {
+		// Create Linear layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.FILL_PARENT);
+
+		// Add back button
+		Button backButton = new Button(this);
+		backButton.setText("Back");
+		backButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		
+		//back button onClickListener
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					setHomeView(user);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		// Add button to layout
+		layout.addView(backButton);
+
+		//Add ListView with course
+		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
+		String[] listArray = new String[myCourseAsArray.length];
+		for (int i = 0; i < myCourseAsArray.length;i++){
+			listArray[i] = myCourseAsArray[i].getCourseTitle().toString() + " - " + myCourseAsArray[i].getDescription();
+		}
+		ListAdapter la = new ArrayAdapter<String>(this, R.layout.courselist, listArray);
+		ListView lv = new ListView(this);
+		lv.setAdapter(la);
+		layout.addView(lv);
+		
+		// Make inventory view visible
+		setContentView(layout,llp);    	
+    }
+
 }
