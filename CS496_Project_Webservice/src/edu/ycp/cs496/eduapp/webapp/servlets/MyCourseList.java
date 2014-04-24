@@ -119,13 +119,8 @@ public class MyCourseList extends HttpServlet {
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
-			 System.out.println("OUTPUT COURSE LIST");
-			 for(int i = 0; i < mycourselist.size(); i++)
-			 {
-				 System.out.println("Course : "  + mycourselist.get(i).getCourseTitle());
-			 }
 			 req.setAttribute("MyCourseList",mycourselist);
-			 req.getRequestDispatcher("/_view/MyCourseList.jsp");
+			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			
 		}
 		else
@@ -137,11 +132,13 @@ public class MyCourseList extends HttpServlet {
 				req.setAttribute("Item", item);
 				req.getRequestDispatcher("/_view/item.jsp").forward(req, resp);
 			*/
-			System.out.println("PRINT OUT COURSE");
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			req.getRequestDispatcher("/_view/Course.jsp");
+			req.setAttribute("resourcelist", course.getResources());
+			req.setAttribute("meetingtimes", course.getMeetingTimes());
+			req.setAttribute("notelist", course.getNotifications());
+			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		
 	}

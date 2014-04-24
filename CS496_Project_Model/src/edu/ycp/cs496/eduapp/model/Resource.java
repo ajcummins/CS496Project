@@ -6,18 +6,18 @@ public class Resource {
 	
 	public Resource(String inID, String inLink)
 	{
-		id = inID;
-		link = inLink;
+		this.id = inID;
+		this.link = inLink;
 	}
 	
 	public void setLink(String inLink)
 	{
-		link = inLink;
+		this.link = inLink;
 	}
 	
-	public void setID(String inID)
+	public void setId(String inID)
 	{
-		id = inID;
+		this.id = inID;
 	}
 	
 	public String getLink()
@@ -25,7 +25,7 @@ public class Resource {
 		return link;
 	}
 	
-	public String getID()
+	public String getId()
 	{
 		return id;
 	}

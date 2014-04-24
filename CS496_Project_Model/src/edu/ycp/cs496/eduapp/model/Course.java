@@ -62,7 +62,7 @@ public class Course {
 		Resource temp = null;
 		for(int i = 0; i < resourceList.size(); i++)
 		{
-			if(resourceID.equals(resourceList.get(i).getID()))
+			if(resourceID.equals(resourceList.get(i).getId()))
 			{
 				temp = resourceList.remove(i);
 			}
@@ -103,11 +103,11 @@ public class Course {
 		return false;
 	}
 
-	public String getCourseTitle() {
+	public String getTitle() {
 		return title;
 	}
 
-	public void setCourseTitle(String inTitle) {
+	public void setTitle(String inTitle) {
 		this.title = inTitle;
 	}
 	

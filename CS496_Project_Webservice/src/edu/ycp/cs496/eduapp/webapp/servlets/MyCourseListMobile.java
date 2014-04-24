@@ -37,7 +37,7 @@ public class MyCourseListMobile extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.setContentType("application/json");
 		JSON.getObjectMapper().writeValue(resp.getWriter(), userCourses);
-		System.out.println("MyCourseList: 1st course: "+userCourses.get(0).getCourseTitle());
+		System.out.println("MyCourseList: 1st course: "+userCourses.get(0).getTitle());
 		return;
 	}
 

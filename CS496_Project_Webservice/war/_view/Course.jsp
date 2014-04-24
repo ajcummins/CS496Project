@@ -4,35 +4,33 @@
 
 <html>
 	<head>
-		<title>${Course.courseID} : ${Course.courseTitle} </title>
-		<!--
-		<strong>Taught by : ${Course.professor.lastName}, ${Course.professor.firstName}</strong>
-		-->
+		<title>${Course.code} : ${Course.title} </title>
+		<strong>${Course.code} : ${Course.title} </strong>
 	</head>
 	
 	<body>
-		<c:if test="{empty action or action == 'view'}">
-			<h1>Course Description</h1>
+		<c:if test="${empty action or action == 'view'}">
+			<h2>Course Description</h2>
 				<p>${Course.description}</p>
 			<h2>Resources</h2>
-				<c:forEach var="Resource" Resources="${Course.resourceList}">
+				<table>
+					<c:forEach var="resource" items="${resourcelist}">
+						<tr>
+							<td><a href="${resource.link}">${resource.id}</a></td>
+						</tr>
+					</c:forEach>
+				</table>
+			<h2>Course Location & Time</h2>
+				<c:forEach var="MeetingTime" items="${meetingtimes}">
 					<table>
 						<tr>
-							<td><a href="${Resource.link}">${Resource.id}</a></td>
+							<td>Implement MeetingTimes...</td>
+							<td>${MeetingTime.location}</td>
 						</tr>
 					</table>
 				</c:forEach>
-			<h3>Course Location & Time</h3>
-				<c:forEach var="CourseTime" CourseTimes="${Course.coursetimes}">
-					<table>
-						<tr>
-							<td>Implement CourseTime...</td>
-							<td>${Course.location}</td>
-						</tr>
-					</table>
-				</c:forEach>
-			<h4>Notifications</h4>
-				<c:forEach var="Notification" Notifications="${Course.noteList}">
+			<h2>Notifications</h2>
+				<c:forEach var="Notification" items="${notelist}">
 					<table>
 						<tr>
 							<td>Implement Note Date...</td>
@@ -60,6 +58,6 @@
 			<div class="result">${result}</div>
 		</c:if>
 		
-		<div class="link"><a href="$pageContext.servletContext.contextPath}/MyCourseList">Back to My Course List</a></div>
+		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList">Back to My Course List</a></div>
 	</body>		
 </html>
