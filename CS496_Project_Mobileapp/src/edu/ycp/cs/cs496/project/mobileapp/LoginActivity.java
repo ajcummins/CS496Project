@@ -42,23 +42,24 @@ public class LoginActivity extends Activity {
 	//handlers for get my course list
 	public void getMyCourse(User user) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
+		
 		GetMyCourseList controller = new GetMyCourseList();
-		if (controller.getMyCourseList(user.getUsername()) != null){
-			//display my course list
-			List <Course> userCourses = controller.getMyCourseList(user.getUsername());
-			//if no courses
-			if (userCourses.size() <= 0){
-				Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();
-			}
-			//show list of courses 
-			//if (userCourses.size() > 0){
-			Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getCourseTitle(), Toast.LENGTH_LONG).show();
+		Toast.makeText(LoginActivity.this, "Test 1", Toast.LENGTH_LONG).show();
+		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
+		//Course userCourses = controller.getMyCourseList(user.getUsername()).get(1);
+		Toast.makeText(LoginActivity.this, "Test 2", Toast.LENGTH_LONG).show();
+		
+		//Toast.makeText(LoginActivity.this, "Courses:" + controller.toString(), Toast.LENGTH_LONG).show();
+		//if no courses
+		if (userCourses.size() <= 0){
+			Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();
+		}
+		//show list of courses 
+		if (userCourses.size() > 0){
+			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getCourseTitle(), Toast.LENGTH_LONG).show();
 			displayInventoryView(user, userCourses);
-			//}
 		}
-		else {
-			Toast.makeText(LoginActivity.this, "Failed to Recieve Course", Toast.LENGTH_LONG).show();
-		}
+	
 	}
 
 	//handlers for get main course list
