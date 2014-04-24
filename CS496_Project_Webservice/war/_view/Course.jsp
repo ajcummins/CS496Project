@@ -5,7 +5,9 @@
 <html>
 	<head>
 		<title>${Course.courseID} : ${Course.courseTitle} </title>
+		<!--
 		<strong>Taught by : ${Course.professor.lastName}, ${Course.professor.firstName}</strong>
+		-->
 	</head>
 	
 	<body>
@@ -43,15 +45,15 @@
 		<!-- TODO: UIs for other actions (edit, add, delete) -->
 		
 		<c:if test="${action == 'edit'}">
-		
+			<h1>Edit</h1>
 		</c:if>
 		
 		<c:if test="${action == 'delete'}">
-		
+			<h1>Delete</h1>
 		</c:if>
 		
 		<c:if test="${action == 'add'}">
-		
+			<h1>Add</h1>
 		</c:if>
 		
 		<c:if test="${! empty result}">

@@ -66,10 +66,13 @@ public class MyCourseList extends HttpServlet {
 				if(action.trim().equals("edit"))
 				{
 					// EDIT
+					
+					
 				}
 				else if(action.trim().equals("delete"))
 				{
 					// DELETE
+					
 				}
 				else if(action.trim().equals("add"))
 				{
@@ -138,7 +141,7 @@ public class MyCourseList extends HttpServlet {
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			req.getRequestDispatcher("/_view/eduapp/Course.jsp");
+			req.getRequestDispatcher("/_view/Course.jsp");
 		}
 		
 	}
