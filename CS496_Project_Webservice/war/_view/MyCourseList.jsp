@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 	<head>
 		<title>My Course List</title>
 	</head>
 	
-	<body>
+	<!--body>
 		<h1>My Course List</h1>
 		<table class="mycourselist">
 			<tr>
@@ -30,5 +28,5 @@
 			</c:forEach>
 		</table>
 		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList/NewCourse?action=add">Add Course</a></div>
-	</body>
+	</body-->
 </html>
