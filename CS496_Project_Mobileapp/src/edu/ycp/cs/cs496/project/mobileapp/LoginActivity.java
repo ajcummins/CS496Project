@@ -312,7 +312,7 @@ public class LoginActivity extends Activity {
 		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
 		String[] listArray = new String[myCourseAsArray.length];
 		for (int i = 0; i < myCourseAsArray.length;i++){
-			listArray[i] = myCourseAsArray[i].getCourseTitle().toString() + " - " + myCourseAsArray[i].getDescription();
+			listArray[i] = myCourseAsArray[i].getTitle().toString() + " - " + myCourseAsArray[i].getDescription();
 		}
 		ListAdapter la = new ArrayAdapter<String>(this, R.layout.courselist, listArray);
 		ListView lv = new ListView(this);
