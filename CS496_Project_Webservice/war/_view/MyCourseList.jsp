@@ -11,19 +11,11 @@
 			<tr>
 				<th>Course ID</th>
 				<th>Course Title</th>
-				<th>Professor</th>
-				<th>Operations</th>
 			</tr>
-			<c:forEach var="item" items="${Course}">
+			<c:forEach var="course" items="${MyCourseList}">
 				<tr>
-					<td>${Course.courseID}</td>
-					<td>${Course.courseTitle}</td>
-					<td>${Course.professor}</td>
-					<td>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}">View</a>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit</a>
-						<a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=delete">Delete</a>
-					</td>
+					<td>${course.code}</td>
+					<td><a href="${pageContext.servletContext.contextPath}/MyCourseList/${course.code}?action=view">${course.title}</a></td>
 				</tr>
 			</c:forEach>
 		</table>
