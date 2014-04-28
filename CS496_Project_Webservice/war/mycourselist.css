@@ -1,0 +1,18 @@
+table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+tr, th, td {
+	border: 1px solid black;
+	padding: 2px 6px;
+}
+
+.result {
+	color: #006400;
+}
+
+.submitButton, .result, .link {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
