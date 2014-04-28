@@ -37,7 +37,7 @@ public class CreateAccount extends HttpServlet {
 			throws ServletException, IOException {
 		
 		// Obtain Account entries from the view
-		profPass = (String) req.getAttribute("ProPass");
+		//profPass = (String) req.getAttribute("ProPass");
 		username = (String) req.getAttribute("Username");
 		pass = (String) req.getAttribute("Password");
 		confirmPass = (String) req.getAttribute("ConfirmPassword");
