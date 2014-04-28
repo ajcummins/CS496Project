@@ -3,12 +3,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
+	<style>
+		h1
+		{
+			text-align:center;
+			color:white;
+			background-color:#00CC00
+		}
+	</style>	
 	<head>
 		<title>My Course List</title>
+		<h1>Edu App!</h1>
 	</head>
 	
 	<body>
-		<h1>My Course List</h1>
+		
+		<h2>My Course List</h2>
 		<table class="mycourselist">
 			<tr>
 				<th>Course ID</th>
