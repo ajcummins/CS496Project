@@ -21,6 +21,16 @@ public class Course {
 		
 	}
 	
+	public Course(String code, String CourseTitle, String description, 
+			List<MeetingTime> meetingTimes,List<Notification> noteList,	List<Resource> resourceList){
+		this.code = code;
+		this.title = CourseTitle;
+		this.description = description;
+		this.meetingTimes = meetingTimes;
+		this.noteList = noteList;
+		this.resourceList = resourceList;
+	}
+	
 	public Course(String CourseTitle){
 		//this.professor = Professor;
 		this.title = CourseTitle;

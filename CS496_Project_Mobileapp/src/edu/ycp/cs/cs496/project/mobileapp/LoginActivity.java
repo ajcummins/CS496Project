@@ -44,10 +44,11 @@ public class LoginActivity extends Activity {
 	IOException, ParserConfigurationException, SAXException{
 		
 		GetMyCourseList controller = new GetMyCourseList();
-		Toast.makeText(LoginActivity.this, "Test 1", Toast.LENGTH_LONG).show();
+		Toast.makeText(LoginActivity.this, "Test 1: before controller", Toast.LENGTH_LONG).show();
 		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
+		//Course[] userCourses = controller.getMyCourseList(user.getUsername());
 		//Course userCourses = controller.getMyCourseList(user.getUsername()).get(1);
-		Toast.makeText(LoginActivity.this, "Test 2", Toast.LENGTH_LONG).show();
+		Toast.makeText(LoginActivity.this, "Test 2: after controller", Toast.LENGTH_LONG).show();
 		
 		//Toast.makeText(LoginActivity.this, "Courses:" + controller.toString(), Toast.LENGTH_LONG).show();
 		//if no courses
@@ -94,6 +95,7 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	//login
 	public void authenticate() throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
 		//Get Username/Password
