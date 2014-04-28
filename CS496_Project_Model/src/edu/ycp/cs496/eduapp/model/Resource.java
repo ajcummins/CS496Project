@@ -4,6 +4,10 @@ public class Resource {
 	private String id;
 	private String link;
 	
+	public Resource(){
+		
+	}
+	
 	public Resource(String inID, String inLink)
 	{
 		this.id = inID;

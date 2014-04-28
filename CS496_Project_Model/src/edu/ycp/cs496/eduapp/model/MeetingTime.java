@@ -7,6 +7,10 @@ public class MeetingTime {
 	private String location;
 	private MeetingType type;
 	
+	public MeetingTime() {
+		
+	}
+	
 	public MeetingTime(TimeOfDay inStartTime, TimeOfDay inEndTime, Day inDay, String inLoc, MeetingType inType)
 	{
 		setStartTime(inStartTime);

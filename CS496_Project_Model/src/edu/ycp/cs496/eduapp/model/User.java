@@ -1,7 +1,5 @@
 package edu.ycp.cs496.eduapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class User {
 	//private int userID;

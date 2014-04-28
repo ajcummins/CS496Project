@@ -1,6 +1,5 @@
 package edu.ycp.cs496.eduapp.model;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

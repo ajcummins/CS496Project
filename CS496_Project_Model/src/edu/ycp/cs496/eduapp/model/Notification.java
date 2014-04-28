@@ -7,6 +7,10 @@ public class Notification {
 		private Date noteDate;
 		private String noteText;
 		
+		public Notification(){
+			
+		}
+		
 		public Notification(Date inDate, String inNoteText)
 		{
 			noteDate = inDate;

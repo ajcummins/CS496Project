@@ -5,6 +5,10 @@ public class CourseRegEntry {
 	private int courseID;
 	private boolean isInstructor;
 	
+	public CourseRegEntry(){
+		
+	}
+	
 	public CourseRegEntry(int inUserID, int inCourseID, boolean inIsInstructor)
 	{
 		userID = inUserID;

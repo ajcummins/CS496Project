@@ -4,6 +4,10 @@ public class TimeOfDay {
 	private int hour;
 	private int min;
 	
+	public TimeOfDay() {
+		
+	}
+	
 	public TimeOfDay(int inHour, int inMin)
 	{
 		setHour(inHour);
