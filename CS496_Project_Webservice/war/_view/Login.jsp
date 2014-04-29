@@ -21,7 +21,7 @@
 				</tr>
 			</table>
 			<input type="submit" value="Submit"></input>
-			<button type="button">Create Account</button>
+			<a href="${pageContext.servletContext.contextPath}/CreateAccount">Create Account</a>
 			<c:if test="${!empty result}">
 				<p><c:out value="${result}"/><p>
 			</c:if>

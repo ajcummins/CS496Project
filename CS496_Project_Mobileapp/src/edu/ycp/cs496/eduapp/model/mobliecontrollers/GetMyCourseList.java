@@ -46,10 +46,11 @@ public class GetMyCourseList {
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			// Copy the response body to a string
 			HttpEntity entity = response.getEntity();
-			
+			//Log.i("GetMyCourseList",entity.toString());
 			// Parse JSON
 			Log.i("GetMyCourseList", "Valid response");
 			return JSON.getObjectMapper().readValue(entity.getContent(), new TypeReference<List<Course>>(){});
+			
 		}
 		// Return null if invalid response
 		Log.i("GetMyCourseList", "invalid response");

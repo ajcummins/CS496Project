@@ -1,6 +1,5 @@
 package edu.ycp.cs496.eduapp.model;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,16 @@ public class Course {
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
 		
+	}
+	
+	public Course(String code, String CourseTitle, String description, 
+			List<MeetingTime> meetingTimes,List<Notification> noteList,	List<Resource> resourceList){
+		this.code = code;
+		this.title = CourseTitle;
+		this.description = description;
+		this.meetingTimes = meetingTimes;
+		this.noteList = noteList;
+		this.resourceList = resourceList;
 	}
 	
 	public Course(String CourseTitle){

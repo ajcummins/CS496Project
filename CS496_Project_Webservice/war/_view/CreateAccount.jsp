@@ -13,10 +13,6 @@
 		<form action="${pageContext.servletContext.contextPath}/CreateAccount" method="post">
 			<table class="CreateAccount">
 				<tr>
-					<th>Password (Professor only):</th>
-					<td><input type = "text" name="ProPass" size="10" ></td>
-				</tr>
-				<tr>
 					<th>Enter Username:</th>
 					<td><input type = "text" name="Username" size="10" ></td>
 				</tr>

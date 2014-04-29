@@ -44,10 +44,9 @@ public class LoginActivity extends Activity {
 	IOException, ParserConfigurationException, SAXException{
 		
 		GetMyCourseList controller = new GetMyCourseList();
-		Toast.makeText(LoginActivity.this, "Test 1", Toast.LENGTH_LONG).show();
+		//Toast.makeText(LoginActivity.this, "Test 1: before controller", Toast.LENGTH_LONG).show();
 		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
-		//Course userCourses = controller.getMyCourseList(user.getUsername()).get(1);
-		Toast.makeText(LoginActivity.this, "Test 2", Toast.LENGTH_LONG).show();
+		//Toast.makeText(LoginActivity.this, "Test 2: after controller", Toast.LENGTH_LONG).show();
 		
 		//Toast.makeText(LoginActivity.this, "Courses:" + controller.toString(), Toast.LENGTH_LONG).show();
 		//if no courses
@@ -56,7 +55,7 @@ public class LoginActivity extends Activity {
 		}
 		//show list of courses 
 		if (userCourses.size() > 0){
-			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getCourseTitle(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getTitle(), Toast.LENGTH_LONG).show();
 			displayInventoryView(user, userCourses);
 		}
 	
@@ -94,6 +93,7 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	//login
 	public void authenticate() throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
 		//Get Username/Password
@@ -312,7 +312,8 @@ public class LoginActivity extends Activity {
 		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
 		String[] listArray = new String[myCourseAsArray.length];
 		for (int i = 0; i < myCourseAsArray.length;i++){
-			listArray[i] = myCourseAsArray[i].getTitle().toString() + " - " + myCourseAsArray[i].getDescription();
+			//display course title
+			listArray[i] = myCourseAsArray[i].getTitle().toString();
 		}
 		ListAdapter la = new ArrayAdapter<String>(this, R.layout.courselist, listArray);
 		ListView lv = new ListView(this);

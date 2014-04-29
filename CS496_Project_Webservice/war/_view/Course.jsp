@@ -3,8 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
+	<style>
+		h1
+		{
+			text-align:center;
+			color:white;
+			background-color:#00CC00
+		}
+	</style>	
+
 	<head>
 		<title>${Course.code} : ${Course.title} </title>
+		<h1>Edu App!</h1>
 		<strong>${Course.code} : ${Course.title} </strong>
 	</head>
 	
@@ -43,15 +53,16 @@
 		<!-- TODO: UIs for other actions (edit, add, delete) -->
 		
 		<c:if test="${action == 'edit'}">
-			<h1>Edit</h1>
+			<h2>Edit</h2>
 		</c:if>
 		
 		<c:if test="${action == 'delete'}">
-			<h1>Delete</h1>
+			<h2>Delete</h2>
 		</c:if>
 		
 		<c:if test="${action == 'add'}">
-			<h1>Add</h1>
+			<h2>Create a new course</h2>
+			
 		</c:if>
 		
 		<c:if test="${! empty result}">
