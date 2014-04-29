@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +58,7 @@ public class LoginActivity extends Activity {
 		//show list of courses 
 		if (userCourses.size() > 0){
 			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getTitle(), Toast.LENGTH_LONG).show();
-			displayInventoryView(user, userCourses);
+			displayCoursesView(user, userCourses);
 		}
 	
 	}
@@ -277,7 +279,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	// Method for displaying My Course list
-    public void displayInventoryView(final User user,List <Course> myCourses) {
+    public void displayCoursesView(final User user,final List <Course> myCourses) {
 		// Create Linear layout
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
@@ -309,7 +311,7 @@ public class LoginActivity extends Activity {
 		layout.addView(backButton);
 
 		//Add ListView with course
-		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
+		final Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
 		String[] listArray = new String[myCourseAsArray.length];
 		for (int i = 0; i < myCourseAsArray.length;i++){
 			//display course title
@@ -320,8 +322,69 @@ public class LoginActivity extends Activity {
 		lv.setAdapter(la);
 		layout.addView(lv);
 		
+		lv.setTextFilterEnabled(true);
+		// Register click callback for the course
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				//Toast.makeText(LoginActivity.this, myCourseAsArray[arg2].getTitle().toString(), Toast.LENGTH_LONG).show();
+				//go to the single course view
+				displaySingleCourseView(user,myCourses,arg2);
+			}
+	    });
+		
 		// Make inventory view visible
 		setContentView(layout,llp);    	
     }
+    
+    //show only the single course
+    public void displaySingleCourseView(final User user,final List <Course> myCourses,int number) {
+		// Create Linear layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.FILL_PARENT);
+
+		// Add back button
+		Button backButton = new Button(this);
+		backButton.setText("Back");
+		backButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		
+		//back button onClickListener
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go back to list of courses
+					displayCoursesView(user, myCourses);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		// Add button to layout
+		layout.addView(backButton);
+
+		//Add ListView with course
+		final Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
+		String[] listArray = new String[myCourseAsArray.length];
+		listArray[number] = myCourseAsArray[number].getTitle() + "\n" + myCourseAsArray[number].getDescription();
+		
+		ListAdapter la = new ArrayAdapter<String>(this, R.layout.singlecourselist, listArray);
+		ListView lv = new ListView(this);
+		lv.setAdapter(la);
+		layout.addView(lv);
+		
+		// Make inventory view visible
+		setContentView(layout,llp);    	
+    }
+
 
 }
