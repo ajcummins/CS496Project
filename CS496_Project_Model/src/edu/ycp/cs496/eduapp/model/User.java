@@ -51,7 +51,10 @@ public class User {
 	{
 		userType = UserType.STUDENT;
 	}
-	
+	public void setToAdmin()
+	{
+		userType = UserType.ADMIN;
+	}
 	// Getters
 	public String getUsername()
 	{
