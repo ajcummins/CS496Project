@@ -105,6 +105,7 @@ public class MyCourseList extends HttpServlet {
 				courseCode = courseCode.substring(1);
 			}
 		}
+		System.out.println("courseCode = " + courseCode);
 		return courseCode;
 	}
 	
@@ -115,6 +116,10 @@ public class MyCourseList extends HttpServlet {
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
+			 for(int i = 0; i < mycourselist.size(); i++)
+			 {
+				 System.out.println("Course : " + mycourselist.get(i).getCode());
+			 }
 			 req.setAttribute("MyCourseList",mycourselist);
 			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			

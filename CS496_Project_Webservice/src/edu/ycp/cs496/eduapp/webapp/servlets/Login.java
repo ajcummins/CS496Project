@@ -45,10 +45,12 @@ public class Login extends HttpServlet {
 				// Store User in Session
 				HttpSession session = req.getSession();
 				session.setAttribute("User", thisUser);
+				/*
 				String action = req.getParameter("action");
 				if(action != null) {
 					req.setAttribute("action", action);
 				}
+				*/
 				//  Redirect to My Course List... 
 				resp.sendRedirect(req.getContextPath()+"/MyCourseList");
 				

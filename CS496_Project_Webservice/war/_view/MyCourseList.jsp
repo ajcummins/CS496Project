@@ -14,7 +14,6 @@
 		<h1>Edu App!</h1>
 	</head>
 	<body>
-	
 		<h2>My Course List</h2>
 		<table class="mycourselist">
 			<tr>
@@ -29,15 +28,5 @@
 			</c:forEach>
 		</table>
 		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList/NewCourse?action=add">Add Course</a></div>
-		
-		<!--c:if action ="add">
-			<h2>Add Course</h2>
-			<table class="mycourselist">
-				<tr>
-					<th>Enter Course ID: </th>
-					<th><input type="text"></input></th>
-				</tr>
-			</table>
-		</c:if-->
 	</body>
 </html>
