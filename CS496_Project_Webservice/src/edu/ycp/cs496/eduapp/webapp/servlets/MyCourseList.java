@@ -31,11 +31,7 @@ public class MyCourseList extends HttpServlet {
 		thisUser = (User) session.getAttribute("User");
 		if(thisUser != null)
 		{			
-			String action = req.getParameter("action");
 			//String permission = req.getParameter("permission");
-			if(action != null) {
-				req.setAttribute("action", action);
-			}
 			String courseCode = getCourseCode(req);
 			showUI(req, resp, courseCode);
 		}
@@ -134,11 +130,16 @@ public class MyCourseList extends HttpServlet {
 			*/
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
-			req.setAttribute("Course", course);
-			req.setAttribute("resourcelist", course.getResources());
-			req.setAttribute("meetingtimes", course.getMeetingTimes());
-			req.setAttribute("notelist", course.getNotifications());
-			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
+			if(course != null){
+				req.setAttribute("Course", course);
+				req.setAttribute("resourcelist", course.getResources());
+				req.setAttribute("meetingtimes", course.getMeetingTimes());
+				req.setAttribute("notelist", course.getNotifications());
+				req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
+			}else{
+				System.out.println("An error has occured");
+				req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
+			}
 		}
 		
 	}
