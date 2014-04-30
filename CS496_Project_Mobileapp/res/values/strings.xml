@@ -16,5 +16,11 @@
     <string name="Logout">Logout</string>
     <string name="Back">Back to Login</string>
     <string name="MyCourseList">My Courses</string>
+    <string name="BackV2">Back</string>
+    <string name="CourseTitle">Course Title</string>
+    <string name="CourseInfo">Course Info</string>
+    <string name="CourseCode">Course Code</string>
+    <string name="CourseMeetingTimes">Course Meeting Times</string>
+    <string name="CourseNotes">CourseNotes</string>
 
 </resources>

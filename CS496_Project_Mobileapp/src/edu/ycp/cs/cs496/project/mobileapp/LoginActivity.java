@@ -201,7 +201,7 @@ public class LoginActivity extends Activity {
 		
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
-		Button myCourse = (Button) findViewById(R.id.MyCourseButton);
+		Button myCourse = (Button) findViewById(R.id.courseBackButton);
 		
 		//when logout button press
 		logout.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +315,7 @@ public class LoginActivity extends Activity {
 		String[] listArray = new String[myCourseAsArray.length];
 		for (int i = 0; i < myCourseAsArray.length;i++){
 			//display course title
-			listArray[i] = myCourseAsArray[i].getTitle().toString();
+			listArray[i] = myCourseAsArray[i].getCode()+" - "+myCourseAsArray[i].getTitle();
 		}
 		ListAdapter la = new ArrayAdapter<String>(this, R.layout.courselist, listArray);
 		ListView lv = new ListView(this);
@@ -341,19 +341,26 @@ public class LoginActivity extends Activity {
     
     //show only the single course
     public void displaySingleCourseView(final User user,final List <Course> myCourses,int number) {
-		// Create Linear layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.FILL_PARENT,
-				LinearLayout.LayoutParams.FILL_PARENT);
+		
+    	// Create Linear layout
+    	setContentView(R.layout.singlecourselist);
 
-		// Add back button
-		Button backButton = new Button(this);
-		backButton.setText("Back");
-		backButton.setLayoutParams(new LayoutParams(
-				LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT));
+		//back button
+		Button backButton = (Button) findViewById(R.id.courseBackButton);
+		
+		//Add ListView with course
+		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
+		final Course myCourse = myCourseAsArray[number];
+
+		//TextViews
+		TextView courseTitle = (TextView) findViewById(R.id.courseTitle);
+		//TextView courseTimes = (TextView) findViewById(R.id.courseTimes);
+		TextView courseInfo = (TextView) findViewById(R.id.courseInfo);
+		
+		//set textviews on courses
+		courseTitle.setText(myCourse.getTitle());
+		//courseTimes.setText(myCourse.getMeetingTimes().toString());
+		courseInfo.setText(myCourse.getDescription());
 		
 		//back button onClickListener
 		backButton.setOnClickListener(new View.OnClickListener() {
@@ -369,22 +376,7 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-		// Add button to layout
-		layout.addView(backButton);
 
-		//Add ListView with course
-		final Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
-		String[] listArray = new String[myCourseAsArray.length];
-		listArray[number] = myCourseAsArray[number].getTitle() + "\n" + myCourseAsArray[number].getDescription();
-		
-		ListAdapter la = new ArrayAdapter<String>(this, R.layout.singlecourselist, listArray);
-		ListView lv = new ListView(this);
-		lv.setAdapter(la);
-		layout.addView(lv);
-		
-		// Make inventory view visible
-		setContentView(layout,llp);    	
     }
-
 
 }
