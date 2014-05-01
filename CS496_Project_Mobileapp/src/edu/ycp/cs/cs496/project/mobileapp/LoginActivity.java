@@ -42,25 +42,18 @@ public class LoginActivity extends Activity {
 	}
 
 	//handlers for get my course list
-	public void getMyCourse(User user) throws URISyntaxException, ClientProtocolException,
+	public List <Course> getMyCourse(User user) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
 		
 		GetMyCourseList controller = new GetMyCourseList();
-		//Toast.makeText(LoginActivity.this, "Test 1: before controller", Toast.LENGTH_LONG).show();
 		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
-		//Toast.makeText(LoginActivity.this, "Test 2: after controller", Toast.LENGTH_LONG).show();
-		
-		//Toast.makeText(LoginActivity.this, "Courses:" + controller.toString(), Toast.LENGTH_LONG).show();
-		//if no courses
-		if (userCourses.size() <= 0){
-			Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();
-		}
 		//show list of courses 
 		if (userCourses.size() > 0){
 			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getTitle(), Toast.LENGTH_LONG).show();
-			displayCoursesView(user, userCourses);
+			//displayCoursesView(user, userCourses);
+			return userCourses;
 		}
-	
+		return null;
 	}
 
 	//handlers for get main course list
@@ -193,7 +186,8 @@ public class LoginActivity extends Activity {
 	}
 
 	//Home page of user
-	public void setHomeView(final User user){
+	public void setHomeView(final User user) throws URISyntaxException, ClientProtocolException,
+	IOException, ParserConfigurationException, SAXException{
 		setContentView(R.layout.home);
 		//welcome message to user shows first and last name
 		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
@@ -202,6 +196,10 @@ public class LoginActivity extends Activity {
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
 		Button myCourse = (Button) findViewById(R.id.courseBackButton);
+		Button myCalender = (Button) findViewById(R.id.myCalenderButton);
+		
+		//courses
+		final List <Course> userCourses = getMyCourse(user);
 		
 		//when logout button press
 		logout.setOnClickListener(new View.OnClickListener() {
@@ -225,13 +223,34 @@ public class LoginActivity extends Activity {
 				// TODO Auto-generated method stub
 				try {
 					//go list of course
-					getMyCourse(user);
+					if (userCourses != null){
+						displayCoursesView(user, userCourses);
+					} 
+					else {
+						Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();	
+					}
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		//when my calender button press
+		myCalender.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go list of course
+					displayCalender(user, userCourses);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+				
 	}
 
 	//default view 
@@ -377,6 +396,11 @@ public class LoginActivity extends Activity {
 			}
 		});
 
+    }
+    
+    public void displayCalender(User user, List <Course> myCourse){
+    	// Create Linear layout
+    	setContentView(R.layout.calendar);
     }
 
 }

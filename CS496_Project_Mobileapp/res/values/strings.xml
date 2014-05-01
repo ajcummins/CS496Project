@@ -22,5 +22,6 @@
     <string name="CourseCode">Course Code</string>
     <string name="CourseMeetingTimes">Course Meeting Times</string>
     <string name="CourseNotes">CourseNotes</string>
+    <string name="MyCalender">MyCalender</string>
 
 </resources>
