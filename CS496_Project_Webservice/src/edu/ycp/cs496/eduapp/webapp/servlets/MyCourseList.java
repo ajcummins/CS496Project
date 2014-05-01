@@ -62,18 +62,20 @@ public class MyCourseList extends HttpServlet {
 				if(action.trim().equals("edit"))
 				{
 					// EDIT
-					
+					System.out.println("Edit yo");
+					showUI(req,resp,courseCode);
 					
 				}
 				else if(action.trim().equals("delete"))
 				{
 					// DELETE
-					
+					System.out.println("delete yo");
+					showUI(req,resp,courseCode);
 				}
 				else if(action.trim().equals("add"))
 				{
 					// ADD
-					
+					System.out.println("add yo");
 					// use GetMainCourseList controller to fill an object to use in the view like inventory / myCourseList
 				}
 				else
@@ -83,6 +85,7 @@ public class MyCourseList extends HttpServlet {
 			}
 			else
 			{
+				System.out.println("nothing yo");
 				//action is empty
 				showUI(req,resp,courseCode);
 				return;

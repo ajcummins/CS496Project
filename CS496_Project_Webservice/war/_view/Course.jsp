@@ -8,18 +8,24 @@
 		{
 			text-align:center;
 			color:white;
-			background-color:#00CC00
+			background-color:#00CC00;
 		}
 	</style>	
 
 	<head>
-		<title>${Course.code} : ${Course.title} </title>
 		<h1>Edu App!</h1>
-		<strong>${Course.code} : ${Course.title} </strong>
 	</head>
 	
 	<body>
+		
 		<c:if test="${empty action or action == 'view'}">
+			<table width="100%">
+				<td><center><a  method="post" href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit Course</a></center></td>
+				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=delete">Delete Course</a></center></td>
+			</table>
+			<title>${Course.code} : ${Course.title} </title>
+			<strong>${Course.code} : ${Course.title} </strong>
+			
 			<h2>Course Description</h2>
 				<p>${Course.description}</p>
 			<h2>Resources</h2>
@@ -53,8 +59,11 @@
 		<!-- TODO: UIs for other actions (edit, add, delete) -->
 		
 		<c:if test="${action == 'edit'}">
+			<title>${Course.code} : ${Course.title} </title>		
+			<strong>${Course.code} : ${Course.title} </strong>
+
 			<h2>Edit an existing Course</h2>
-			<!--form action="${pageContext.servletContext.contextPath}/MyCourseList" method="post" action="edit">
+			<!--form action="${pageContext.servletContext.contextPath}/MyCourseList" method="post">
 				<table class="Course">
 					<tr>
 						<th>Course Code: </th>
