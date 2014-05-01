@@ -17,6 +17,7 @@ import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
@@ -38,6 +39,11 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = 
+				new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
 		setDefaultView();
 	}
 
