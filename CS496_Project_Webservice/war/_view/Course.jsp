@@ -53,7 +53,51 @@
 		<!-- TODO: UIs for other actions (edit, add, delete) -->
 		
 		<c:if test="${action == 'edit'}">
-			<h2>Edit</h2>
+			<h2>Edit an existing Course</h2>
+			<!--form action="${pageContext.servletContext.contextPath}/MyCourseList" method="post" action="edit">
+				<table class="Course">
+					<tr>
+						<th>Course Code: </th>
+						<td><input type = "text" name="${Course.courseCode}" size="10" value="${Course.courseCode}"></input></td>
+					</tr>
+					<tr>
+						<th>Course Title: </th>
+						<td><input type = "text" name="${Course.title}" size="10" value="${Course.title}"></input></td>
+					</tr>
+					<tr>
+						<h2>Course Description</h2>
+						<p><input type = "text" name="${Course.description}" value="${Course.description}"></input></p>
+					</tr>
+				</table>
+			<h2>Resources</h2>
+				<table>
+					<c:forEach var="resource" items="${resourcelist}">
+						<tr>
+							<td><a href="${resource.link}">${resource.id}</a></td>
+						</tr>
+					</c:forEach>
+				</table>
+			<h2>Course Location & Time</h2>
+				<c:forEach var="MeetingTime" items="${meetingtimes}">
+					<table>
+						<tr>
+							<td>Implement MeetingTimes...</td>
+							<td>${MeetingTime.location}</td>
+						</tr>
+					</table>
+				</c:forEach>
+			<h2>Notifications</h2>
+				<c:forEach var="Notification" items="${notelist}">
+					<table>
+						<tr>
+							<td>Implement Note Date...</td>
+							<td>${Notification.noteText}</td>
+						</tr>
+					</table>
+				</c:forEach>
+				</table>
+				<input type="submit" name="submit" value="Submit">
+			</form-->
 		</c:if>
 		
 		<c:if test="${action == 'delete'}">
@@ -62,7 +106,20 @@
 		
 		<c:if test="${action == 'add'}">
 			<h2>Create a new course</h2>
-			
+			<h3>Enter Course Information: </h3>
+			<form action="${pageContext.servletContext.contextPath}/MyCourseList" method="post" action="add">
+				<table class="Course">
+					<tr>
+						<th>Enter Course Code: </th>
+						<td><input type = "text" name="${Course.courseCode}" size="10" ></input></td>
+					</tr>
+					<tr>
+						<th>Enter Course Title: </th>
+						<td><input type = "text" name="${Course.title}" size="10" ></input></td>
+					</tr>
+				</table>
+				<input type="submit" name="submit" value="Submit">
+			</form>
 		</c:if>
 		
 		<c:if test="${! empty result}">

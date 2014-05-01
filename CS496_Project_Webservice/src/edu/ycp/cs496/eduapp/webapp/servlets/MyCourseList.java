@@ -121,8 +121,14 @@ public class MyCourseList extends HttpServlet {
 				 System.out.println("Course : " + mycourselist.get(i).getCode());
 			 }
 			 req.setAttribute("MyCourseList",mycourselist);
+			 //req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			
+		}
+		else if(courseCode.equals("NewCourse")){
+			String action = "add";
+			req.setAttribute("action", action);
+			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		else
 		{
@@ -135,16 +141,11 @@ public class MyCourseList extends HttpServlet {
 			*/
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
-			if(course != null){
-				req.setAttribute("Course", course);
-				req.setAttribute("resourcelist", course.getResources());
-				req.setAttribute("meetingtimes", course.getMeetingTimes());
-				req.setAttribute("notelist", course.getNotifications());
-				req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
-			}else{
-				System.out.println("An error has occured");
-				req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
-			}
+			req.setAttribute("Course", course);
+			req.setAttribute("resourcelist", course.getResources());
+			req.setAttribute("meetingtimes", course.getMeetingTimes());
+			req.setAttribute("notelist", course.getNotifications());
+			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		
 	}
