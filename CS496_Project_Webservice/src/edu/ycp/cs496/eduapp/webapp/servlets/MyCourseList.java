@@ -28,6 +28,10 @@ public class MyCourseList extends HttpServlet {
 		
 		//Retrieve the User object from the session and make sure it isn't empty...
 		HttpSession session = req.getSession();
+		String action = req.getParameter("action");
+		if (action != null) {
+			req.setAttribute("action", action);
+		}
 		thisUser = (User) session.getAttribute("User");
 		if(thisUser != null)
 		{			
@@ -63,14 +67,20 @@ public class MyCourseList extends HttpServlet {
 				{
 					// EDIT
 					System.out.println("Edit yo");
-					showUI(req,resp,courseCode);
+					
+					GetCourseByID controller = new GetCourseByID();
+					Course course = controller.getCourseByCode(courseCode);
+					
+					
+					
+					
+					
 					
 				}
 				else if(action.trim().equals("delete"))
 				{
 					// DELETE
 					System.out.println("delete yo");
-					showUI(req,resp,courseCode);
 				}
 				else if(action.trim().equals("add"))
 				{
@@ -82,6 +92,9 @@ public class MyCourseList extends HttpServlet {
 				{
 					throw new ServletException("Unknown action: " + action);
 				}
+
+				showUI(req,resp,courseCode);
+				
 			}
 			else
 			{
@@ -108,7 +121,6 @@ public class MyCourseList extends HttpServlet {
 				courseCode = courseCode.substring(1);
 			}
 		}
-		System.out.println("courseCode = " + courseCode);
 		return courseCode;
 	}
 	

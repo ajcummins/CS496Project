@@ -18,6 +18,8 @@ public interface IDatabase {
 	List<Course> getMainCourseList();
 
 	Course getCourseByCode(String courseCode);
+	
+	Course editCourseByCode(Course courseToEdit);
 
 	boolean checkIfProf(String inProfPass);
 
