@@ -231,8 +231,8 @@ public class FakeDatabase implements IDatabase {
 		}
 
 		@Override
-		public Course editCourseByCode(Course courseToEdit) {
-			int index = findCourseIndex(courseToEdit);
+		public Course editCourse(Course courseToEdit) {
+			/*int index = findCourseIndex(courseToEdit);
 			
 			allCourses.get(index).setCode(courseToEdit.getCode());
 			allCourses.get(index).setDescription(courseToEdit.getDescription());
@@ -241,9 +241,21 @@ public class FakeDatabase implements IDatabase {
 			
 			//notifications add
 			//recorse add/remove
-			//location & 
+			//location & */
 			return null;
 			
+		}
+
+		@Override
+		public Course addCourse(Course course) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Course deleteCourse(Course course) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }
 

@@ -127,12 +127,17 @@
 		
 		<c:if test="${action == 'delete'}">
 			<h2>Delete</h2>
+			<form action="${pageContext.servletContext.contextPath}/MyCourseList?action=delete" method="post">
+				<p>Are you sure you want to delete?</p>
+				<p>${Course.code} : ${Course.title} </p>
+				<input type="submit" name="submit" value="Confirm">
+			</form>
 		</c:if>
 		
 		<c:if test="${action == 'add'}">
 			<h2>Create a new course</h2>
 			<h3>Enter Course Information: </h3>
-			<form action="${pageContext.servletContext.contextPath}/MyCourseList" method="post" action="add">
+			<form action="${pageContext.servletContext.contextPath}/MyCourseList?action=add" method="post">
 				<table class="Course">
 					<tr>
 						<th>Enter Course Code: </th>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.User;
+import edu.ycp.cs496.eduapp.model.controllers.AddCourse;
+import edu.ycp.cs496.eduapp.model.controllers.DeleteCourse;
 import edu.ycp.cs496.eduapp.model.controllers.GetCourseByID;
 import edu.ycp.cs496.eduapp.model.controllers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
@@ -59,6 +61,7 @@ public class MyCourseList extends HttpServlet {
 			// Post response
 			String courseCode = getCourseCode(req);
 			String action = req.getParameter("action");
+			
 			//String permission = req.getParameter("permission");
 			if (action != null && !action.trim().equals(""))
 			{
@@ -68,24 +71,33 @@ public class MyCourseList extends HttpServlet {
 					// EDIT
 					System.out.println("Edit yo");
 					
-					GetCourseByID controller = new GetCourseByID();
-					Course course = controller.getCourseByCode(courseCode);
-					
-					
-					
-					
-					
-					
+					//GetCourseByID controller = new GetCourseByID();
+					//Course course = controller.getCourseByCode(courseCode);
 				}
 				else if(action.trim().equals("delete"))
 				{
 					// DELETE
 					System.out.println("delete yo");
+					DeleteCourse controller = new DeleteCourse();
+					
+					String code = req.getParameter("Course.code");
+					
+					GetCourseByID tmp = new GetCourseByID();
+					
+					controller.deleteCourse(tmp.getCourseByCode(code));
+					
 				}
 				else if(action.trim().equals("add"))
 				{
 					// ADD
 					System.out.println("add yo");
+					AddCourse controller = new AddCourse();
+					
+					String code = req.getParameter("Course.code");
+					String title = req.getParameter("Course.courseTitle");
+					
+					Course c = new Course(code, title);
+					controller.addCourse(c);
 					// use GetMainCourseList controller to fill an object to use in the view like inventory / myCourseList
 				}
 				else
@@ -131,10 +143,6 @@ public class MyCourseList extends HttpServlet {
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
-			 for(int i = 0; i < mycourselist.size(); i++)
-			 {
-				 System.out.println("Course : " + mycourselist.get(i).getCode());
-			 }
 			 req.setAttribute("MyCourseList",mycourselist);
 			 //req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 			 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);

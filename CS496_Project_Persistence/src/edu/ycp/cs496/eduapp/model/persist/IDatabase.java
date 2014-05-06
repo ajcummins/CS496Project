@@ -19,7 +19,9 @@ public interface IDatabase {
 
 	Course getCourseByCode(String courseCode);
 	
-	Course editCourseByCode(Course courseToEdit);
+	Course editCourse(Course course);
+	Course addCourse(Course course);
+	Course deleteCourse(Course course);
 
 	boolean checkIfProf(String inProfPass);
 
