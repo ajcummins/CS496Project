@@ -9,10 +9,6 @@ public interface IDatabase {
 
 	User authenticateUser(String user, String pass);
 
-	User getUser(String user);
-	
-	void createAccount(User inUser,boolean isProf);
-
 	List<Course> getMyCourseList(String inUsername);
 
 	List<Course> getMainCourseList();
@@ -20,5 +16,7 @@ public interface IDatabase {
 	Course getCourseByCode(String courseCode);
 
 	boolean checkIfProf(String inProfPass);
+
+	void createAccount(User inUser);
 
 }

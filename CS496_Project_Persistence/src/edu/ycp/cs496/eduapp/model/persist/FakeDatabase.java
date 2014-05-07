@@ -15,7 +15,8 @@ import edu.ycp.cs496.eduapp.model.Resource;
 import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 
-public class FakeDatabase implements IDatabase {
+// Keeping this here just in case
+public class FakeDatabase /*FIXME: implements IDatabase */{
 		private List<Course> allCourses;
 		private List<User> allUsers;
 		private List<CourseRegEntry> courseReg;
@@ -87,7 +88,7 @@ public class FakeDatabase implements IDatabase {
 			
 		}
 
-		@Override
+//		@Override
 		public User authenticateUser(String user, String pass) {
 			User temp = null;
 			for(int i = 0; i < allUsers.size(); i++)
@@ -104,22 +105,7 @@ public class FakeDatabase implements IDatabase {
 			// returns the User or returns null
 		}
 		
-		//get User
-		@Override
-		public User getUser(String user){
-			User temp = null;
-			for(int i = 0; i < allUsers.size(); i++)
-			{
-				if(allUsers.get(i).getUsername().equals(user))
-				{
-					temp =  allUsers.get(i);	
-				}
-			}
-			return temp;
-			// returns the User or returns null
-		}
-		
-		@Override
+//		@Override
 		public void createAccount(User inUser,boolean isProf) {
 			
 			if(inUser != null)
@@ -137,7 +123,7 @@ public class FakeDatabase implements IDatabase {
 			}
 		}
 
-		@Override
+//		@Override
 		public List<Course> getMyCourseList(String inUsername) {
 			// Using the Course registry
 			// 1st using the username get the user's ID
@@ -167,12 +153,12 @@ public class FakeDatabase implements IDatabase {
 			
 		}
 
-		@Override
+//		@Override
 		public List<Course> getMainCourseList() {
 			return allCourses;
 		}
 
-		@Override
+//		@Override
 		public Course getCourseByCode(String courseCode) {
 			
 			Course temp = null;
@@ -189,7 +175,7 @@ public class FakeDatabase implements IDatabase {
 			// if temp != null then we know the course was found
 		}
 
-		@Override
+//		@Override
 		public boolean checkIfProf(String inProfPass) {
 			boolean key = false;
 			for(int i = 0; i < profPasses.size(); i++)

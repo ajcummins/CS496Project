@@ -34,7 +34,7 @@ public class CreateAccountMobile extends HttpServlet {
 		// Use CreateAcctController to check their credentials
 		CreateAcctController controller = new CreateAcctController();
 		//create student account
-		controller.createAccount(newUser, false);
+		controller.createAccount(newUser);
 		System.out.println("create account user:"+newUser.getUsername()+" pass:"+newUser.getPassword()+" name:"+newUser.getFName()+" "+newUser.getLName());
 
 	}

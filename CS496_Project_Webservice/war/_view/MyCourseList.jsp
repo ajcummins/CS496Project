@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 	<style>
@@ -15,18 +17,23 @@
 	</head>
 	<body>
 		<h2>My Course List</h2>
-		<table class="mycourselist">
-			<tr>
-				<th>Course ID</th>
-				<th>Course Title</th>
-			</tr>
-			<c:forEach var="course" items="${MyCourseList}">
+		<c:if test ="${validcourse == true}">
+			<table class="mycourselist">
 				<tr>
-					<td>${course.code}</td>
-					<td><a href="${pageContext.servletContext.contextPath}/MyCourseList/${course.code}?action=view">${course.title}</a></td>
+					<th>Course ID</th>
+					<th>Course Title</th>
 				</tr>
-			</c:forEach>
-		</table>
+				<c:forEach var="course" items="${MyCourseList}">
+					<tr>
+						<td>${course.code}</td>
+						<td><a href="${pageContext.servletContext.contextPath}/MyCourseList/${course.code}?action=view">${course.title}</a></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
+		<c:if test="${empty validcourse or validcourse == false}">
+			<p> You have no courses in your course list </p>
+		</c:if>
 		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList/NewCourse?action=add">Add Course</a></div>
 	</body>
 </html>

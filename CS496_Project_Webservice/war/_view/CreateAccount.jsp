@@ -5,13 +5,12 @@
 <html>
 	<head>
 		<title>Create Account</title>
-		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath}/inventory.css" />
 	</head>
 
 	<body>
 		<h1>Create Account</h1>
 		<form action="${pageContext.servletContext.contextPath}/CreateAccount" method="post">
-			<table class="CreateAccount">
+			<table>
 				<tr>
 					<th>Enter Username:</th>
 					<td><input type = "text" name="Username" size="10" ></td>
@@ -33,10 +32,12 @@
 					<td><input type = "text" name="LastName" size="10" ></td>
 				</tr>
 			</table>
+			<input type="submit" value="Submit"></input>
+			<a href="${pageContext.servletContext.contextPath}/Login">Cancel</a>
 			<c:if test="${!empty result}">
 				<p><c:out value="${result}"/><p>
 			</c:if>
 		</form>
-		<div class = "submitButton"><input type="submit" name="submit" value="Submit"></div>
+		
 	</body>
 </html>

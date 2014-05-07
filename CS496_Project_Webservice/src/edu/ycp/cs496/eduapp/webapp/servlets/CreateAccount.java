@@ -35,14 +35,21 @@ public class CreateAccount extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		System.out.println("Create Account Post go..");
 		
 		// Obtain Account entries from the view
 		//profPass = (String) req.getAttribute("ProPass");
-		username = (String) req.getAttribute("Username");
-		pass = (String) req.getAttribute("Password");
-		confirmPass = (String) req.getAttribute("ConfirmPassword");
-		firstName = (String) req.getAttribute("FirstName");
-		lastName = (String) req.getAttribute("LastName");
+		username = (String) req.getParameter("Username");
+		pass = (String) req.getParameter("Password");
+		confirmPass = (String) req.getParameter("ConfirmPassword");
+		firstName = (String) req.getParameter("FirstName");
+		lastName = (String) req.getParameter("LastName");
+		
+		System.out.println("username = " + username);
+		System.out.println("pass = " + pass);
+		System.out.println("confirmPass = " + confirmPass);
+		System.out.println("firstName = " + firstName);
+		System.out.println("lastName = " + lastName);
 		
 		// Check for empty fields EXCEPT FOR PROF PASSWORD
 		if(noEmptyFields())
@@ -50,55 +57,22 @@ public class CreateAccount extends HttpServlet {
 			// Check if Passwords match
 			if(pass.equals(confirmPass))
 			{
+				System.out.println("Calling Controller");
 				// Use CreateAcctController to check their credentials
 				CreateAcctController controller = new CreateAcctController();
 				
 				// Fill User class with fields
 				User newUser = new User(username,pass,firstName,lastName);
-				// Set whether user is prof or student
 				
-				if(!profPass.equals("") && profPass != null)
-				{
-					// There is something in the field we must check it
-					// Check to see if the password was correct
-					boolean success = controller.checkIfProf(profPass);
-					if(success)
-					{
-						// Prof Pass was correct, create new account as Prof!
-						controller.createAccount(newUser, success);
-						// Add User to Session
-						HttpSession session = req.getSession();
-						session.setAttribute("User", newUser);
-						
-						//  Redirect to My Course List... 
-						resp.sendRedirect(req.getContextPath()+"/MyCourseList");
-						
-					}
-					else
-					{
-						// Prof Pass was incorrect, but there was a value in the field meaning they could have mis-typed
-						req.setAttribute("result", "Professor Password was incorrect, Please try agian or delete Professor Password field");
-						this.doGet(req, resp);
-					}
-					
-				}
-				else
-				{
-					// There is nothing in this field, so it must be a student
-					controller.createAccount(newUser, false);
-					// Add User to session
-					HttpSession session = req.getSession();
-					session.setAttribute("User", newUser);
-					
-					//  Redirect to My Course List... 
-					resp.sendRedirect(req.getContextPath()+"/MyCourseList");
-					
-				}
+				// There is nothing in this field, so it must be a student
+				controller.createAccount(newUser);
+				// Add User to session
+				HttpSession session = req.getSession();
+				session.setAttribute("User", newUser);
 				
-				/* FIXME: The check after the controller runs to see if it worked will be replaced when an actual database is implemented
-				 * It will be replaced with try/catch blocks in which we can output an error in the catch block...
-				 */
-				
+				//  Redirect to My Course List... 
+				resp.sendRedirect(req.getContextPath()+"/MyCourseList");
+					
 			}
 			else
 			{
@@ -122,7 +96,7 @@ public class CreateAccount extends HttpServlet {
 		if(username != "" && pass != "" && confirmPass != "" && firstName != "" && lastName != "")
 		{
 			if(username != null && pass != null && confirmPass != null && firstName != null && lastName != null)
-			{
+			{				
 				// no empty fields
 				return true;
 			}
