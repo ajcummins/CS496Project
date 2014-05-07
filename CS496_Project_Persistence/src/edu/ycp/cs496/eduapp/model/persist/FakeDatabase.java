@@ -215,5 +215,33 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 			}
 			return -1;
 		}
+
+//		@Override
+		public Course editCourse(Course courseToEdit) {
+			/*int index = findCourseIndex(courseToEdit);
+			
+			allCourses.get(index).setCode(courseToEdit.getCode());
+			allCourses.get(index).setDescription(courseToEdit.getDescription());
+			allCourses.get(index).setTitle(courseToEdit.getTitle());
+			//allCourses.get(index).addNote(courseToEdit.get);
+			
+			//notifications add
+			//recorse add/remove
+			//location & */
+			return null;
+			
+		}
+
+//		@Override
+		public Course addCourse(Course course) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+//		@Override
+		public Course deleteCourse(Course course) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 }
 

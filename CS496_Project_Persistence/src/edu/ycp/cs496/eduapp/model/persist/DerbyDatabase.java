@@ -386,6 +386,24 @@ public class DerbyDatabase implements IDatabase {
 		/* Do we need this/ and if we do. for what?*/
 		return false;
 	}
+
+	@Override
+	public Course editCourse(Course course) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Course addCourse(Course course) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Course deleteCourse(Course course) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	// Utility methods
 	

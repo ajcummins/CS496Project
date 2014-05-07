@@ -3,6 +3,7 @@ package edu.ycp.cs.cs496.project.mobileapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,13 +12,21 @@ import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
 import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -32,12 +41,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class LoginActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = 
+				new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
 		setDefaultView();
 	}
 
@@ -49,8 +62,6 @@ public class LoginActivity extends Activity {
 		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
 		//show list of courses 
 		if (userCourses.size() > 0){
-			//Toast.makeText(LoginActivity.this, "Courses:" + userCourses.get(0).getTitle(), Toast.LENGTH_LONG).show();
-			//displayCoursesView(user, userCourses);
 			return userCourses;
 		}
 		return null;
@@ -361,7 +372,7 @@ public class LoginActivity extends Activity {
     //show only the single course
     public void displaySingleCourseView(final User user,final List <Course> myCourses,int number) {
 		
-    	// Create Linear layout
+    	// Create layout
     	setContentView(R.layout.singlecourselist);
 
 		//back button
@@ -373,14 +384,34 @@ public class LoginActivity extends Activity {
 
 		//TextViews
 		TextView courseTitle = (TextView) findViewById(R.id.courseTitle);
-		//TextView courseTimes = (TextView) findViewById(R.id.courseTimes);
+		TextView courseTimes = (TextView) findViewById(R.id.meetingTime);
 		TextView courseInfo = (TextView) findViewById(R.id.courseInfo);
 		
-		//set textviews on courses
+		//set the description of the course
 		courseTitle.setText(myCourse.getTitle());
-		//courseTimes.setText(myCourse.getMeetingTimes().toString());
 		courseInfo.setText(myCourse.getDescription());
 		
+		//covert list of meeting times to an array
+		List<MeetingTime> meetingTimes = myCourse.getMeetingTimes();
+		MeetingTime[] meetingTimesAsArray = meetingTimes.toArray(new MeetingTime[meetingTimes.size()]);
+		
+		String location,days,starttimes,endtimes;
+		String courseMeetingInfo[] = new String[meetingTimesAsArray.length];
+		
+		//get courses times and location
+		for (int i = 0; i < meetingTimesAsArray.length;i++){
+			location = meetingTimesAsArray[i].getLocation();
+			days = meetingTimesAsArray[i].getDay().toString();
+			starttimes = meetingTimesAsArray[i].getStartTime().getHour() 
+					+":"+meetingTimesAsArray[i].getStartTime().getMin();
+			endtimes = meetingTimesAsArray[i].getEndTime().getHour() 
+					+":"+meetingTimesAsArray[i].getEndTime().getMin();
+			
+			//set textviews on courses
+			courseMeetingInfo[i] = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
+		}
+		
+		courseTimes.setText(courseMeetingInfo[0]);
 		//back button onClickListener
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -398,9 +429,53 @@ public class LoginActivity extends Activity {
 
     }
     
-    public void displayCalender(User user, List <Course> myCourse){
-    	// Create Linear layout
+    public void displayCalender(final User user, List <Course> myCourse){
+    	// Create layout
     	setContentView(R.layout.calendar);
+    	
+    	//back button to home view
+    	Button backButton = (Button) findViewById(R.id.calenderBackButton);
+    	
+    	//calender
+    	//Calendar courseCalendar = (Calendar) findViewById(R.id.calendarForCourse);
+		//back button onClickListener
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go back to list of courses
+					setHomeView(user);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		Intent intent = new Intent(Intent.ACTION_INSERT);
+		intent.setType("vnd.android.cursor.item/event");
+		intent.putExtra(Events.TITLE, "Title");
+		intent.putExtra(Events.EVENT_LOCATION, "event location");
+		intent.putExtra(Events.DESCRIPTION, "description of event");
+
+		// Setting dates
+		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 07);
+		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+		  calDate.getTimeInMillis());
+		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+		  calDate.getTimeInMillis());
+
+		// make it a full day event
+		intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+
+		// make it a recurring Event
+		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
+		
+		startActivity(intent);
+		Toast.makeText(LoginActivity.this, "Event created", Toast.LENGTH_LONG).show();
+
     }
+    
 
 }
