@@ -26,9 +26,10 @@ public class GetMainCourseList {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/maincourse", 
-						    null, null);
-
+		//uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/maincourse", 
+		//				    null, null);
+		uri = URIUtils.createURI("http", "10.0.3.2", 8081, "/maincourse", 
+			    null, null);
 		// Construct request
 		HttpGet request = new HttpGet(uri);
 				

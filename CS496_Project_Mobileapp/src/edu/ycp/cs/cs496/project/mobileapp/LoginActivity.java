@@ -460,7 +460,7 @@ public class LoginActivity extends Activity {
 		intent.putExtra(Events.DESCRIPTION, "description of event");
 
 		// Setting dates
-		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 07);
+		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 9);
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
 		  calDate.getTimeInMillis());
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,

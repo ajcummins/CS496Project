@@ -29,8 +29,10 @@ public class LoginController {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/LoginMobile/"+user+"/"+pass, 
-						    null, null);
+		//uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/LoginMobile/"+user+"/"+pass, 
+		//				    null, null);
+		uri = URIUtils.createURI("http", "10.0.3.2", 8081, "/eduapp/LoginMobile/"+user+"/"+pass, 
+			    null, null);
 
 		// Construct request
 		Log.i("LoginController", "sending login HTTP request");

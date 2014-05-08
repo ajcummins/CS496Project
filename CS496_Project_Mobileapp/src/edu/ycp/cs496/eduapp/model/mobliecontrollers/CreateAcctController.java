@@ -38,7 +38,8 @@ public class CreateAcctController {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/eduapp/CreateAccountMobile/", 
+		//was 10.0.2.2
+		uri = URIUtils.createURI("http", "10.0.3.2", 8081, "/eduapp/CreateAccountMobile/", 
 						    null, null);
 
 		// Construct request
