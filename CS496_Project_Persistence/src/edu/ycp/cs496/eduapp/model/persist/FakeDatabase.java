@@ -55,15 +55,15 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 			cs496.setDescription("Learn about how to utilize the android programming language in conjunction with with web services");
 			cs496.addNote(new Notification(new Date(98547), "web and mobile test notification"));
 			cs496.addResource(new Resource("CS496 Course Home Page","http://ycpcs.github.io/cs496-spring2014/"));
-			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.TUESDAY,"KEC119 and KEC127", MeetingType.LECTURE));
-			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.THURSDAY,"KEC119 and KEC127", MeetingType.LECTURE));
+//			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.TUESDAY,"KEC119 and KEC127", MeetingType.LECTURE));
+//			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.THURSDAY,"KEC119 and KEC127", MeetingType.LECTURE));
 			
 			Course cs456 = new Course("CS456","Social and Professional Issues in Computing");	
 			cs456.setDescription("Discuss and learn about how technology impacts society, not every issue has an easy answer");
 			cs456.addNote(new Notification(new Date(857823), "social and professional issues test notification"));
 			cs456.addResource(new Resource("CS456 Course Home Page","http://faculty.ycp.edu/~dbabcock/cs456/index.html"));
-			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.TUESDAY,"KEC117", MeetingType.LECTURE));
-			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.THURSDAY,"KEC117", MeetingType.LECTURE));
+//			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.TUESDAY,"KEC117", MeetingType.LECTURE));
+//			cs456.addMeetingTime(new MeetingTime(new TimeOfDay(9,30),new TimeOfDay(10,45), Day.THURSDAY,"KEC117", MeetingType.LECTURE));
 			
 			allCourses.add(cs496);
 			allCourses.add(cs456);

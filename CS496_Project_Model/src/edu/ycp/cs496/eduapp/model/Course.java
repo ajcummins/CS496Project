@@ -9,23 +9,21 @@ public class Course {
 	//private User professor;
 	private String title;
 	private String description;
-	private List<MeetingTime> meetingTimes;
+	private MeetingTime meetingTime;
 	private List<Notification> noteList;	
 	private List<Resource> resourceList; 
 	
 	public Course(){
-		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
 		
 	}
 	
-	public Course(String code, String CourseTitle, String description, 
-			List<MeetingTime> meetingTimes,List<Notification> noteList,	List<Resource> resourceList){
+	public Course(String code, String CourseTitle, String description, MeetingTime meetingTime,List<Notification> noteList, List<Resource> resourceList){
 		this.code = code;
 		this.title = CourseTitle;
 		this.description = description;
-		this.meetingTimes = meetingTimes;
+		this.setMeetingTime(meetingTime);
 		this.noteList = noteList;
 		this.resourceList = resourceList;
 	}
@@ -33,7 +31,6 @@ public class Course {
 	public Course(String CourseTitle){
 		//this.professor = Professor;
 		this.title = CourseTitle;
-		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
 		
@@ -43,20 +40,10 @@ public class Course {
 		setCode(code);
 		//this.professor = Professor;
 		this.title = CourseTitle;
-		meetingTimes = new ArrayList<MeetingTime>();
 		noteList = new ArrayList<Notification>();
 		resourceList = new ArrayList<Resource>();
 		
 	}
-	/*
-	public User getProfessor() {
-		return professor;
-	}
-
-	public void setProfessor(User professor) {
-		this.professor = professor;
-	}
-	*/
 
 	public List<Resource> getResources() {
 		return resourceList;
@@ -120,41 +107,6 @@ public class Course {
 		this.title = inTitle;
 	}
 	
-	/*	Old CourseTime Methods... Replaced with MeetingTime
-	private void iniTimes(){
-		for(int i=0; i<7;i++){
-			coursetimes[i] = new CourseTime();
-			coursetimes[i].setStartTime(new Time(0));
-			coursetimes[i].setEndTime(new Time(0));
-		}
-	}
-
-	
-	public CourseTime getClassTime(Day inDay)
-	{
-		return coursetimes[inDay.getNumVal()];
-	}
-	
-	public void setClassTime(Day inDay, CourseTime inCourseTime)
-	{
-		coursetimes[inDay.getNumVal()] = inCourseTime;
-	}
-	*/
-	
-	public void addMeetingTime(MeetingTime inTime)
-	{
-		meetingTimes.add(inTime);
-	}
-	
-	public List<MeetingTime> getMeetingTimes() {
-		return meetingTimes;
-	}
-	
-	public void clearMeetingTimes()
-	{
-		meetingTimes.clear();
-	}
-
 	public String getCode() {
 		return code;
 	}
@@ -169,5 +121,13 @@ public class Course {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public MeetingTime getMeetingTime() {
+		return meetingTime;
+	}
+
+	public void setMeetingTime(MeetingTime meetingTime) {
+		this.meetingTime = meetingTime;
 	}
 }

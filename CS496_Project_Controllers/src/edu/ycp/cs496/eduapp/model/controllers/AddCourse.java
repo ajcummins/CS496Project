@@ -5,7 +5,7 @@ import edu.ycp.cs496.eduapp.model.persist.DatabaseProvider;
 import edu.ycp.cs496.eduapp.model.persist.IDatabase;
 
 public class AddCourse {
-	public Course addCourse(Course courseCode) {
+	public boolean addCourse(Course courseCode) {
 		IDatabase db = DatabaseProvider.getInstance();
 		return db.addCourse(courseCode);
 	}

@@ -192,6 +192,13 @@ public class DerbyDatabase implements IDatabase {
 		stmt.setInt(index++, inUser.getUserType().typeID);
 	}
 	
+	protected void storeCourseNoId(Course inCourse, PreparedStatement stmt, int index) throws SQLException{
+		// unique id should be auto generated...
+		stmt.setString(index++, inCourse.getCode());
+		stmt.setString(index++, inCourse.getTitle());
+		stmt.setString(index++, inCourse.getDescription());
+	}
+	
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
 		//FIXME: Do something with the user id from the table
 		resultSet.getInt(index++);	
@@ -311,53 +318,167 @@ public class DerbyDatabase implements IDatabase {
 				
 				try{
 					// get user id w/ username
-					stmt = conn.prepareStatement("select users.* from users where users.username = ?");
+					stmt = conn.prepareStatement("select users.id from users where users.username = ?");
 					stmt.setString(1, inUsername);
 					
 					resultSet = stmt.executeQuery();
 					if(!resultSet.next()){
 						return null;
 					}
-					else
+					
+					// use user id w/ course reg to get course id's
+					int userID = resultSet.getInt(1);//normally index++ not sure if it needs to be 1 or 2??
+					stmt = conn.prepareStatement("select courseReg.* from courseReg where courseReg.userID = ?");
+					stmt.setInt(1, userID);
+					
+					resultSet = stmt.executeQuery();
+					if(!resultSet.next())
 					{
-						// use user id w/ course reg to get course id's
-						int userID = resultSet.getInt(1);//normally index++ not sure if it needs to be 1 or 2??
-						stmt = conn.prepareStatement("select courseReg.* from courseReg where courseReg.courseID = ?");
-						stmt.setInt(1, userID);
+						return null;
+					}
+							
+					// get a list of course registry entries
+					List<CourseRegEntry> courseRegEntries = new ArrayList<CourseRegEntry>();
+					int index = 1;
+					while(!resultSet.next())
+					{
+						courseRegEntries.add(new CourseRegEntry(resultSet.getInt(index++),resultSet.getInt(index++)));
+					}
+					// get all the courses w/ the id's
+					List<Course> courses = new ArrayList<Course>();
+					for(int i = 0; i < courseRegEntries.size(); i++)
+					{
+						stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
+						stmt.setInt(1, courseRegEntries.get(i).getCourseID());
 						
 						resultSet = stmt.executeQuery();
-						if(!resultSet.next())
-						{
-							return null;
-						}
-						else
-						{
-							
-							// get a list of course registry entries
-							List<CourseRegEntry> courseRegEntries = new ArrayList<CourseRegEntry>();
-							int index = 1;
-							while(!resultSet.next())
-							{
-								courseRegEntries.add(new CourseRegEntry(resultSet.getInt(index++),resultSet.getInt(index++)));
-							}
-							// get all the courses w/ the id's
-							List<Course> courses = new ArrayList<Course>();
-							for(int i = 0; i < courseRegEntries.size(); i++)
-							{
-								stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
-								stmt.setInt(1, courseRegEntries.get(i).getCourseID());
-								
-								resultSet = stmt.executeQuery();
-								
-								// fill the list object with the newly found courses
-								Course course = new Course();
-								loadCourse(course,resultSet,1);
-								courses.add(course);
-							}
-							return courses;
-						}
+						
+						// fill the list object with the newly found courses
+						Course course = new Course();
+						loadCourse(course,resultSet,1);
+						courses.add(course);
 					}
+					return courses;
+						
+				} catch(Exception e){
+					return null;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+
+		});		
+		
+	}
+
+	@Override
+	public Course getCourseByCode(final String inCourseCode) {
+		return executeTransaction(new Transaction<Course>() {
+		@Override
+		public Course execute(Connection conn) throws SQLException {
+			PreparedStatement stmt = null;
+			ResultSet resultSet = null;
+			
+			try{
+				// get user id w/ username
+				stmt = conn.prepareStatement("select courses.* from courses where courses.code = ?");
+				stmt.setString(1, inCourseCode);
+				
+				resultSet = stmt.executeQuery();
+				if(!resultSet.next()){
+					return null;
+				}
+				else
+				{
+					Course tempCourse = new Course();
+					loadCourse(tempCourse,resultSet,1);
+					return tempCourse;
+				}
+				
+				
+			} finally {
+				DBUtil.closeQuietly(resultSet);
+				DBUtil.closeQuietly(stmt);
+			}
+		}
+
+		});		
+	}
+
+	@Override
+	public boolean checkIfProf(String inProfPass) {
+		/* Do we need this/ and if we do. for what?*/
+		return false;
+	}
+
+	@Override
+	public boolean editCourse(Course course) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean addCourse(final Course inCourse) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				try{
+					stmt = conn.prepareStatement(
+							"insert into courses (code,title,description) values (?,?,?)",
+							PreparedStatement.RETURN_GENERATED_KEYS);
 					
+					storeCourseNoId(inCourse,stmt,1);
+					
+					stmt.executeUpdate();
+
+					return true;
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					return false;
+				}
+				finally{
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		
+		});
+	}
+
+	@Override
+	public boolean deleteCourse(Course course) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		// Return the entire Users table 
+		return executeTransaction(new Transaction<List<User>>() {
+			@Override
+			public List<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try{
+					// Note: no 'where' so all items will be returned
+					stmt = conn.prepareStatement("select users.* from users");
+					
+					resultSet = stmt.executeQuery();
+					
+					List<User> result = new ArrayList<User>();
+					while(resultSet.next()){
+						User anotherUser = new User();
+						loadUser(anotherUser, resultSet, 1);
+						result.add(anotherUser);
+					}
+					return result;
 					
 				} finally {
 					DBUtil.closeQuietly(resultSet);
@@ -370,39 +491,74 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public List<Course> getMainCourseList() {
-		/* Do we need this? and if we do. for what? */
-		return null;
-	}
-
-	@Override
-	public Course getCourseByCode(String courseCode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean checkIfProf(String inProfPass) {
-		/* Do we need this/ and if we do. for what?*/
-		return false;
-	}
-
-	@Override
-	public Course editCourse(Course course) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Course addCourse(Course course) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Course deleteCourse(Course course) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean addEntry(final String courseCode,final List<String> usernameList) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					// First get the course id
+					stmt = conn.prepareStatement("select courses.id from courses where courses.code = ?");
+					stmt.setString(1, courseCode);
+					
+					resultSet = stmt.executeQuery();
+					if(!resultSet.next()){
+						return false;
+					}
+					int courseID = resultSet.getInt(1);
+					
+					// Second get the user id's
+					List<Integer> userIDs = new ArrayList<Integer>();
+					for(int i = 0; i < usernameList.size(); i++)
+					{
+						// Ask database for each user id
+						stmt = conn.prepareStatement("select users.id from users where users.username = ?");
+						stmt.setString(1, usernameList.get(i));
+						
+						resultSet = stmt.executeQuery();
+						if(!resultSet.next())
+						{
+							return false;
+						}
+						
+						// add the found userID to the list
+						userIDs.add(resultSet.getInt(1));
+					}
+					
+					// Using the course id and user id's make course entries
+					for(int i = 0; i < userIDs.size(); i++)
+					{
+						stmt = conn.prepareStatement(
+								"insert into courseReg (userID,courseID) values (?,?)",
+								PreparedStatement.RETURN_GENERATED_KEYS
+						);
+						
+						int index = 1;
+						stmt.setInt(index++,userIDs.get(i));
+						stmt.setInt(index++,courseID);
+						
+						stmt.executeUpdate();
+					}
+					
+					// Report true if successful
+					return true;
+					
+				} 
+				// Report false if unsuccessful
+				catch(Exception e){
+					return false;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+		
+		
+		
 	}
 	
 	// Utility methods

@@ -11,16 +11,18 @@ public interface IDatabase {
 
 	List<Course> getMyCourseList(String inUsername);
 
-	List<Course> getMainCourseList();
-
 	Course getCourseByCode(String courseCode);
 	
-	Course editCourse(Course course);
-	Course addCourse(Course course);
-	Course deleteCourse(Course course);
+	boolean editCourse(Course course);
+	boolean addCourse(Course course);
+	boolean deleteCourse(Course course);
 
 	boolean checkIfProf(String inProfPass);
 
 	void createAccount(User inUser);
+
+	List<User> getAllUsers();
+
+	boolean addEntry(String courseCode, List<String> usernameList);
 
 }

@@ -22,6 +22,7 @@
 			<table width="100%">
 				<td><center><a  method="post" href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit Course</a></center></td>
 				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=delete">Delete Course</a></center></td>
+				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=register">Register Users</a></center></td>
 			</table>
 			<title>${Course.code} : ${Course.title} </title>
 			<strong>${Course.code} : ${Course.title} </strong>
@@ -136,20 +137,141 @@
 		
 		<c:if test="${action == 'add'}">
 			<h2>Create a new course</h2>
-			<h3>Enter Course Information: </h3>
-			<form action="${pageContext.servletContext.contextPath}/MyCourseList?action=add" method="post">
-				<table class="Course">
+			<fieldset>
+			<legend>Enter Course Information: </legend>
+				<form action="${pageContext.servletContext.contextPath}/MyCourseList?action=add" method="post">
+					<table class="Course">
+						<tr>
+							<th>Course Code: </th>
+							<td><input type = "text" name="courseCode" size="10" ></input></td>
+							<th>Course Title: </th>
+							<td><input type = "text" name="courseTitle" size="10" ></input></td>
+						</tr>
+					</table>
+					<h4>Course Description: </h4>
+					<table>
+						<tr>
+							<td><textarea rows="4" cols="50" name="courseDesc">Enter your course description here</textarea></td>
+						</tr>
+					</table>
+					<h4>Course Meeting Times</h4>
+					<table>
+						<tr>
+							<td>Start Time</td>
+							<td></td>
+							<td>End Time</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>HH</td>
+							<td>MM</td>
+							<td>HH</td>
+							<td>MM</td>
+							<td>Sun</td>
+							<td>Mon</td>
+							<td>Tue</td>
+							<td>Wed</td>
+							<td>Thu</td>
+							<td>Fri</td>
+							<td>Sat</td>
+						</tr>
+						<tr>
+							<td><input type = "text" name="startHr" size="10" ></input></td>
+							<td><input type = "text" name="startMin" size="10" ></input></td>
+							<td><input type = "text" name="endHr" size="10" ></input></td>
+							<td><input type = "text" name="endMin" size="10" ></input></td>
+							<td>
+								<input type = "checkbox" name="sunChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="monChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="tueChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="wedChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="thuChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="friChk" value="true"></input>
+							</td>
+							<td>
+								<input type = "checkbox" name="satChk" value="true"></input>
+							</td>
+						</tr>
+						<tr>
+						</tr>
+						<tr>
+							<td>Type of Meeting :</td>
+							<td>Lecture : <input type="radio" name="lecRad" value="checked"></input></td>
+							<td>Lab : <input type="radio" name="labRad" value="checked"></input></td>
+						</tr>
+						<tr>
+							<td>Location : </td>
+							<td><input type = "text" name="loc" size="10" ></input></td>
+						</tr>
+					</table>
+				<input type="submit" name="submit" value="Submit">
+			</fieldset>
+		</c:if>
+		
+		<!-- REGISTER USERS 																														-->
+		<c:if test="${empty action or action == 'register'}">
+			<h4>Register Users</h4>
+			<form action="${pageContext.servletContext.contextPath}/Login" method="post">
+				<table>
 					<tr>
-						<th>Enter Course Code: </th>
-						<td><input type = "text" name="${Course.code}" size="10" ></input></td>
-					</tr>
+						<td>
+							<select id="userList" size="10">
+								<c:forEach var="user" items="${userlist}">
+									<option>"${user.username}"</option>
+								</c:forEach>
+							</select>
+						</td>
+						<td>
+							<button onclick="addFunc()">Add User</button>
+						</td>
+						<td>
+							<button onclick="removeFunc()">Remove User</button>
+						</td>
+						<td>
+							<select id="regList" size="10">
+								
+							</select>
+						</td>
 					<tr>
-						<th>Enter Course Title: </th>
-						<td><input type = "text" name="${Course.title}" size="10" ></input></td>
-					</tr>
 				</table>
 				<input type="submit" name="submit" value="Submit">
 			</form>
+			
+			<script>
+				function addFunc()
+				{
+					var userList = document.getElementById("userList");
+					var regList = document.getElementById("regList");
+					regList.add(userList.selectedIndex);
+					userList.remove(userList.selectedIndex);
+				}
+			</script>
+			<script>
+				function removeFunc()
+				{
+					var userList = document.getElementById("userList");
+					var regList = document.getElementById("regList");
+					userList.add(regList.selectedIndex);
+					regList.remove(regList.selectedIndex);
+				}
+			</script>
 		</c:if>
 		
 		<c:if test="${! empty result}">

@@ -1,6 +1,9 @@
 package edu.ycp.cs496.eduapp.webapp.servlets;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,9 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.MeetingType;
+import edu.ycp.cs496.eduapp.model.Notification;
+import edu.ycp.cs496.eduapp.model.Resource;
+import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.controllers.AddCourse;
+import edu.ycp.cs496.eduapp.model.controllers.AddCourseRegEntry;
 import edu.ycp.cs496.eduapp.model.controllers.DeleteCourse;
+import edu.ycp.cs496.eduapp.model.controllers.GetAllUsers;
 import edu.ycp.cs496.eduapp.model.controllers.GetCourseByID;
 import edu.ycp.cs496.eduapp.model.controllers.GetMyCourseList;
 import edu.ycp.cs496.eduapp.model.controllers.LoginController;
@@ -93,12 +103,96 @@ public class MyCourseList extends HttpServlet {
 					System.out.println("add yo");
 					AddCourse controller = new AddCourse();
 					
-					String code = req.getParameter("Course.code");
-					String title = req.getParameter("Course.courseTitle");
+					// Obtain all of the data out of the form
+					String code = req.getParameter("courseCode");
+					String title = req.getParameter("courseTitle");
+					String desc = req.getParameter("courseDesc");
+					int startHr = Integer.parseInt(req.getParameter("startHr"));
+					int startMin = Integer.parseInt(req.getParameter("startMin"));
+					int endHr = Integer.parseInt(req.getParameter("endHr"));
+					int endMin = Integer.parseInt(req.getParameter("endMin"));
+					// handle all the chkboxes
+					boolean sun = chkboxValue(req.getParameter("sunChk"));
+					boolean mon = chkboxValue(req.getParameter("monChk"));
+					boolean tue = chkboxValue(req.getParameter("tueChk"));
+					boolean wed = chkboxValue(req.getParameter("wedChk"));
+					boolean thu = chkboxValue(req.getParameter("thuChk"));
+					boolean fri = chkboxValue(req.getParameter("friChk"));
+					boolean sat = chkboxValue(req.getParameter("satChk"));
+					boolean[] days = {sun,mon,tue,wed,thu,fri,sat};
+					MeetingType type = loadType(req.getParameter("lecRad"),req.getParameter("labRad"));
+					String loc = req.getParameter("loc");
+					MeetingTime meetingTime = new MeetingTime((new TimeOfDay(startHr,startMin)),(new TimeOfDay(endHr,endMin)),loc,type,days);
 					
-					Course c = new Course(code, title);
-					controller.addCourse(c);
-					// use GetMainCourseList controller to fill an object to use in the view like inventory / myCourseList
+					System.out.println("courseCode = " + code);
+					System.out.println("startHr = " + startHr);
+					System.out.println("endHr = " + endHr);
+					System.out.println("sun = " + req.getParameter("sunChk"));
+					System.out.println("loc = " + loc);
+					
+					
+					// Construct the new course
+					Course newCourse = new Course(code,title,desc, meetingTime,new ArrayList<Notification>(), new ArrayList<Resource>());
+					boolean success = controller.addCourse(newCourse);
+					if(success)
+					{
+						System.out.println("Add Successful");
+						
+						// Initialize course to have this user in it.						
+						AddCourseRegEntry regController = new AddCourseRegEntry();
+						List<String> tempUserList = new ArrayList<String>();
+						tempUserList.add(thisUser.getUsername());
+						boolean entrySuccess = regController.addEntry(newCourse.getCode(), tempUserList);
+						
+						if(entrySuccess)
+						{
+							System.out.println("Reg entry successful");
+							req.setAttribute("action", "view");
+						}
+						else
+						{
+							System.out.println("Reg entry unsuccessful");
+						}
+						
+					}
+					else
+					{
+						System.out.println("Add UnSuccessful");
+						req.setAttribute("result", "Add Course Falied");
+					}
+					
+					
+				}
+				else if(action.trim().equals("register"))
+				{
+					// Register Users to the course...
+					// Get Options from regList
+					List<String> usernames = new ArrayList<String>();
+					ResultSet userRegistry = (ResultSet) req.getAttribute("regList");
+					try {
+						int index = 1;
+						while(userRegistry.next())
+						{
+							usernames.add("" + userRegistry.getString(index));
+							index++;
+						}
+					} catch (SQLException e) {
+						req.setAttribute("result", "Obtaining User's List Failed");
+					}
+					// Use controller and update the course registry...
+					AddCourseRegEntry controller = new AddCourseRegEntry();
+					boolean success = controller.addEntry(getCourseCode(req),usernames);
+					
+					if(success)
+					{
+						// Return to your course list
+						req.setAttribute("action", "view");
+						resp.sendRedirect(req.getContextPath() + "/MyCourseList/");
+					}
+					else
+					{
+						req.setAttribute("result", "Register Users Failed...");
+					}
 				}
 				else
 				{
@@ -123,7 +217,7 @@ public class MyCourseList extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/Login");
 		}
 	}
-	
+
 	private String getCourseCode(HttpServletRequest req) {
 		String courseCode = null;
 		String pathInfo = req.getPathInfo();
@@ -140,6 +234,8 @@ public class MyCourseList extends HttpServlet {
 	private void showUI(HttpServletRequest req, HttpServletResponse resp, String courseCode) throws ServletException, IOException {
 		if(courseCode == null)
 		{
+			// MyCourseList
+			
 			 //Have to assume that User has already been obtained from the session... 
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
@@ -166,27 +262,54 @@ public class MyCourseList extends HttpServlet {
 		else if(courseCode.equals("NewCourse")){
 			String action = "add";
 			req.setAttribute("action", action);
+			// Send all users list
+			GetAllUsers controller = new GetAllUsers();
+			List<User> allUsers = controller.getAllUsers();
+			req.setAttribute("userlist", allUsers);
 			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		else
 		{
-			// Adapt this code to use a controller to get a SPECIFIC Course from the main course list
-			/*
-				GetItemByName controller = new GetItemByName();
-				Item item = controller.getItem(itemName);
-				req.setAttribute("Item", item);
-				req.getRequestDispatcher("/_view/item.jsp").forward(req, resp);
-			*/
+			// Course
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
 			req.setAttribute("resourcelist", course.getResources());
-			req.setAttribute("meetingtimes", course.getMeetingTimes());
+			req.setAttribute("meetingtimes", course.getMeetingTime());
 			req.setAttribute("notelist", course.getNotifications());
 			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		
 	}
-
+	
+	
+	private MeetingType loadType(String inLecValue,String inLabValue)
+	{
+		if(inLecValue.equals("checked"))
+		{
+			return MeetingType.LECTURE;
+		}
+		else
+		{
+			return MeetingType.LAB;
+	
+		}
+	}
+	
+	private boolean chkboxValue(String inValue)
+	{
+		if(inValue == null)
+		{
+			return false;
+		}
+		if(inValue.equals("true"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 }
