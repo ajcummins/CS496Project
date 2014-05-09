@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.Notification;
 import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
@@ -207,7 +208,6 @@ public class LoginActivity extends Activity {
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
 		Button myCourse = (Button) findViewById(R.id.courseBackButton);
-		Button myCalender = (Button) findViewById(R.id.myCalenderButton);
 		
 		//courses
 		final List <Course> userCourses = getMyCourse(user);
@@ -240,21 +240,6 @@ public class LoginActivity extends Activity {
 					else {
 						Toast.makeText(LoginActivity.this, "There are no Courses", Toast.LENGTH_LONG).show();	
 					}
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		//when my calender button press
-		myCalender.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				try {
-					//go list of course
-					displayCalender(user, userCourses);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -313,16 +298,20 @@ public class LoginActivity extends Activity {
 		// Create Linear layout
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
+		
 		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
-
+	
+		
 		// Add back button
 		Button backButton = new Button(this);
-		backButton.setText("Back");
+		backButton.setText("Back to Home");
 		backButton.setLayoutParams(new LayoutParams(
 				LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
+		backButton.setX(20);
+		backButton.setY(20);
 		
 		//back button onClickListener
 		backButton.setOnClickListener(new View.OnClickListener() {
@@ -370,13 +359,15 @@ public class LoginActivity extends Activity {
     }
     
     //show only the single course
-    public void displaySingleCourseView(final User user,final List <Course> myCourses,int number) {
+    public void displaySingleCourseView(final User user,final List <Course> myCourses,final int number) {
 		
     	// Create layout
     	setContentView(R.layout.singlecourselist);
 
-		//back button
+		//buttons
 		Button backButton = (Button) findViewById(R.id.courseBackButton);
+		Button addEvent = (Button) findViewById(R.id.courseAddToCalendar);
+		Button viewSwitch = (Button) findViewById(R.id.viewSwitchButton);
 		
 		//Add ListView with course
 		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
@@ -385,7 +376,7 @@ public class LoginActivity extends Activity {
 		//TextViews
 		TextView courseTitle = (TextView) findViewById(R.id.courseTitle);
 		TextView courseTimes = (TextView) findViewById(R.id.meetingTime);
-		TextView courseInfo = (TextView) findViewById(R.id.courseInfo);
+		final TextView courseInfo = (TextView) findViewById(R.id.courseInfo);
 		
 		//set the description of the course
 		courseTitle.setText(myCourse.getTitle());
@@ -411,8 +402,9 @@ public class LoginActivity extends Activity {
 			courseMeetingInfo[i] = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
 		}
 		
-		courseTimes.setText(courseMeetingInfo[0]);
-		//back button onClickListener
+		courseTimes.setText(courseMeetingInfo[0] + courseMeetingInfo[1]);
+		
+		//back button to list of course
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -426,26 +418,15 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-
-    }
-    
-    public void displayCalender(final User user, List <Course> myCourse){
-    	// Create layout
-    	setContentView(R.layout.calendar);
-    	
-    	//back button to home view
-    	Button backButton = (Button) findViewById(R.id.calenderBackButton);
-    	
-    	//calender
-    	//Calendar courseCalendar = (Calendar) findViewById(R.id.calendarForCourse);
-		//back button onClickListener
-		backButton.setOnClickListener(new View.OnClickListener() {
+		
+		//switch the views of notification and course description 
+		viewSwitch.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				try {
 					//go back to list of courses
-					setHomeView(user);
+					displayNoteView(user, myCourses,number);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -453,12 +434,34 @@ public class LoginActivity extends Activity {
 			}
 		});
 		
-		Intent intent = new Intent(Intent.ACTION_INSERT);
-		intent.setType("vnd.android.cursor.item/event");
-		intent.putExtra(Events.TITLE, "Title");
-		intent.putExtra(Events.EVENT_LOCATION, "event location");
-		intent.putExtra(Events.DESCRIPTION, "description of event");
+		//addEvent button to
+		addEvent.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					//go back to list of courses
+					addCourseEventToCalendar(user, myCourse);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
+    }
+    
+    public void addCourseEventToCalendar(final User user, Course myCourse){
+    	
+		Intent intent = new Intent(Intent.ACTION_INSERT);
+		
+		//set the description of the Event
+		intent.setType("vnd.android.cursor.item/event");
+		intent.putExtra(Events.TITLE, myCourse.getTitle());
+		intent.putExtra(Events.DESCRIPTION, myCourse.getDescription());
+		intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTimes().get(0).getLocation());
+		
+		//String startdate = myCourse.getMeetingTimes().get(0).
 		// Setting dates
 		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 9);
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
@@ -467,15 +470,83 @@ public class LoginActivity extends Activity {
 		  calDate.getTimeInMillis());
 
 		// make it a full day event
-		intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+		//intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
 
 		// make it a recurring Event
 		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
 		
 		startActivity(intent);
-		Toast.makeText(LoginActivity.this, "Event created", Toast.LENGTH_LONG).show();
-
+		//Toast.makeText(LoginActivity.this, "Event Added", Toast.LENGTH_LONG).show();
     }
     
+    // Method for displaying notelist
+    public void displayNoteView(final User user,final List <Course> myCourses,final int number) {
+		// Create Linear layout
+    	
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT,
+				LinearLayout.LayoutParams.FILL_PARENT);
+		
+		// Add back button
+		Button backButton = new Button(this);
+		backButton.setText("Back to Course");
+		backButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		
+		backButton.setX(20);
+		backButton.setY(20);
+		
+		//back button onClickListener
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					displaySingleCourseView(user,myCourses,number);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		// Add button to layout
+		layout.addView(backButton);
+
+		List <Notification> courseNotes = myCourses.get(number).getNotifications();
+		//Add ListView with notes
+		final Notification[] courseNotesAsArray = courseNotes.toArray(new Notification[courseNotes.size()]);
+		String[] listArray = new String[courseNotesAsArray.length];
+		String simpleDate = null;
+		int numberOfNotes = courseNotesAsArray.length;
+		for (int i = 0; i < numberOfNotes;i++){
+			//display first few words of the note
+			// should display as Month, Day
+			simpleDate = courseNotesAsArray[i].getDate().getMonth() + "/" + courseNotesAsArray[i].getDate().getDay();
+			listArray[i] = simpleDate+" - "+courseNotesAsArray[i].getNoteText();
+		}
+		ListAdapter la = new ArrayAdapter<String>(this, R.layout.courselist, listArray);
+		ListView lv = new ListView(this);
+		lv.setAdapter(la);
+		layout.addView(lv);
+		
+		lv.setTextFilterEnabled(true);
+		// Register click callback for the course
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				//Toast.makeText(LoginActivity.this, myCourseAsArray[arg2].getTitle().toString(), Toast.LENGTH_LONG).show();
+				//go to the single course view
+				displaySingleCourseView(user,myCourses,arg2);
+			}
+	    });
+		
+		// Make inventory view visible
+		setContentView(layout,llp);    	
+    }
 
 }

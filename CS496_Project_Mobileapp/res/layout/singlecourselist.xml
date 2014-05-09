@@ -8,14 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity" >
 
-    <Button
-        android:id="@+id/courseBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/BackV2" />
-
     <TextView
         android:id="@+id/courseTitle"
         android:layout_width="wrap_content"
@@ -34,13 +26,38 @@
         android:layout_marginTop="31dp"
         android:text="@string/CourseInfo" />
 
+    <Button
+        android:id="@+id/courseAddToCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="44dp"
+        android:text="@string/addEventToCalender" />
+
+    <Button
+        android:id="@+id/viewSwitchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/courseTitle"
+        android:layout_toRightOf="@+id/courseBackButton"
+        android:text="@string/viewCourseInfo" />
+
     <TextView
         android:id="@+id/meetingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/courseInfo"
-        android:layout_below="@+id/courseInfo"
-        android:layout_marginTop="63dp"
+        android:layout_centerVertical="true"
         android:text="@string/CourseMeetingTimes" />
+
+    <Button
+        android:id="@+id/courseBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/BackV2" />
 
 </RelativeLayout>
