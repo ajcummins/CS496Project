@@ -1,6 +1,7 @@
 package edu.ycp.cs496.eduapp.model;
 
 public class CourseRegEntry {
+	private int entryID;
 	private int userID;
 	private int courseID;
 	private boolean isInstructor;
@@ -42,5 +43,13 @@ public class CourseRegEntry {
 
 	public void setInstructor(boolean isInstructor) {
 		this.isInstructor = isInstructor;
+	}
+
+	public int getEntryID() {
+		return entryID;
+	}
+
+	public void setEntryID(int entryID) {
+		this.entryID = entryID;
 	}
 }
