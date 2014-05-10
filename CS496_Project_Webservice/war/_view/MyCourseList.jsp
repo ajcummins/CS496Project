@@ -17,7 +17,7 @@
 	</head>
 	<body>
 		<h2>My Course List</h2>
-		<c:if test ="${validcourse == true}">
+		<c:if test ="${validcourse == 'true'}">
 			<table class="mycourselist">
 				<tr>
 					<th>Course ID</th>
@@ -31,7 +31,7 @@
 				</c:forEach>
 			</table>
 		</c:if>
-		<c:if test="${empty validcourse or validcourse == false}">
+		<c:if test="${empty validcourse or validcourse == 'false'}">
 			<p> You have no courses in your course list </p>
 		</c:if>
 		<div class="link"><a href="${pageContext.servletContext.contextPath}/MyCourseList/NewCourse?action=add">Add Course</a></div>

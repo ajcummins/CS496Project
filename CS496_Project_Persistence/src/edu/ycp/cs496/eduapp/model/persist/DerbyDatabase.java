@@ -112,16 +112,16 @@ public class DerbyDatabase implements IDatabase {
 							"  password varchar(20)," +
 							"  firstname varchar(20)," +
 							"  lastname varchar(20)," +
-							"  userType integer" + 
+							"  usertype integer" + 
 							")"
 					);
 					stmt.executeUpdate();
 					
 					stmt = conn.prepareStatement(
-							"create table courseReg (" +
+							"create table coursereg (" +
 							"  id integer primary key not null generated always as identity," +
-							"  userID integer ," +
-							"  courseID integer" +
+							"  userid integer ," +
+							"  courseid integer" +
 							")"
 					);
 					
@@ -224,7 +224,7 @@ public class DerbyDatabase implements IDatabase {
 	
 	private void loadCourse(Course course, ResultSet resultSet, int index) throws SQLException{
 		// FIXME: Do something with the course id from the table
-		course.setCourseID(resultSet.getInt(resultSet.getInt(index++)));
+		course.setCourseID(resultSet.getInt(index++));
 		course.setCode(resultSet.getString(index++));
 		course.setTitle(resultSet.getString(index++));
 		course.setDescription(resultSet.getString(index++));
@@ -232,9 +232,9 @@ public class DerbyDatabase implements IDatabase {
 	
 	private void loadEntry(CourseRegEntry entry, ResultSet resultSet, int index) throws SQLException{
 		// FIXME: Do something with the course id from the table
-		entry.setEntryID(resultSet.getInt(resultSet.getInt(index++)));
-		entry.setUserID(resultSet.getInt(resultSet.getInt(index++)));
-		entry.setCourseID(resultSet.getInt(resultSet.getInt(index++)));
+		entry.setEntryID(resultSet.getInt(index++));
+		entry.setUserID(resultSet.getInt(index++));
+		entry.setCourseID(resultSet.getInt(index++));
 	}
 	
 	
@@ -262,6 +262,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					User user = new User();
 					loadUser(user, resultSet,1);
+					printTables();
 					return user;
 				} finally {
 					DBUtil.closeQuietly(resultSet);
@@ -302,7 +303,7 @@ public class DerbyDatabase implements IDatabase {
 					*/
 					
 					
-					printTables();
+					
 					return true;
 				}
 				finally
@@ -335,7 +336,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					// use user id w/ course reg to get course id's
 					int userID = resultSet.getInt(1);//normally index++ not sure if it needs to be 1 or 2??
-					stmt = conn.prepareStatement("select courseReg.* from courseReg where courseReg.userID = ?");
+					stmt = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
 					stmt.setInt(1, userID);
 					
 					resultSet = stmt.executeQuery();
@@ -345,18 +346,18 @@ public class DerbyDatabase implements IDatabase {
 					}
 							
 					// get a list of course registry entries
-					List<CourseRegEntry> courseRegEntries = new ArrayList<CourseRegEntry>();
+					List<Integer> courseIDs = new ArrayList<Integer>();
 					int index = 1;
-					while(!resultSet.next())
+					while(resultSet.next())
 					{
-						courseRegEntries.add(new CourseRegEntry(resultSet.getInt(index++),resultSet.getInt(index++)));
+						courseIDs.add(resultSet.getInt(index++));
 					}
 					// get all the courses w/ the id's
 					List<Course> courses = new ArrayList<Course>();
-					for(int i = 0; i < courseRegEntries.size(); i++)
+					for(int i = 0; i < courseIDs.size(); i++)
 					{
 						stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
-						stmt.setInt(1, courseRegEntries.get(i).getCourseID());
+						stmt.setInt(1, courseIDs.get(i));
 						
 						resultSet = stmt.executeQuery();
 						
@@ -506,7 +507,7 @@ public class DerbyDatabase implements IDatabase {
 					for(int i = 0; i < userIDs.size(); i++)
 					{
 						stmt = conn.prepareStatement(
-								"insert into courseReg (userID,courseID) values (?,?)",
+								"insert into coursereg (userid,courseid) values (?,?)",
 								PreparedStatement.RETURN_GENERATED_KEYS
 						);
 						
@@ -516,8 +517,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						stmt.executeUpdate();
 					}
-					
-					printTables();
+				
 					
 					// Report true if successful
 					return true;
@@ -629,49 +629,40 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	public void printTables(){
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-				
-				try {
-					// Obtain Users table
-					List<User> userList = getAllUsers();
-					// Obtain courses Table
-					List<Course> courseList = getAllCourses();
-					// Obtain courseReg Table
-					List<CourseRegEntry> courseReg = getCourseReg();
-					// Print out users table
-					System.out.println("--------------------------------- Users Table -------------------------------------------");
-					for(int i = 0; i < userList.size(); i++)
-					{
-						System.out.println("UserID: " + userList.get(i).getUserID() + " Username: " + userList.get(i).getUsername() + " Password: " + userList.get(i).getPassword() +
-								" Firstname: " + userList.get(i).getFName() + " Lastname: " + userList.get(i).getLName());
-					}
-					System.out.println("--------------------------------- Courses Table -------------------------------------------");
-					// Print out courses table
-					for(int i = 0; i < courseList.size(); i++)
-					{
-						System.out.println("CourseID: " + courseList.get(i).getCourseID() + " CourseCode: " + courseList.get(i).getCode() 
-								+ " CourseTitle: " + courseList.get(i).getTitle() + "CourseDesc: " + courseList.get(i).getDescription());
-					}
-					System.out.println("--------------------------------- Course Registry -------------------------------------------");
-					// Print out courseReg table
-					for(int i = 0; i< courseReg.size(); i++)
-					{
-						System.out.println("EntryID: " + courseReg.get(i).getEntryID() + " UserID: " + courseReg.get(i).getUserID() + " CourseID: " + courseReg.get(i).getCourseID());
-					}
-					
-				} 
-				finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-				return null;
+	public void printTables() throws SQLException {
+		try {
+			// Obtain Users table
+			List<User> userList = getAllUsers();
+			// Obtain courses Table
+			List<Course> courseList = getAllCourses();
+			// Obtain courseReg Table
+			List<CourseRegEntry> courseReg = getCourseReg();
+			// Print out users table
+			System.out.println("--------------------------------- Users Table -------------------------------------------");
+			for(int i = 0; i < userList.size(); i++)
+			{
+				System.out.println("UserID: " + userList.get(i).getUserID() + " Username: " + userList.get(i).getUsername() + " Password: " + userList.get(i).getPassword() +
+						" Firstname: " + userList.get(i).getFName() + " Lastname: " + userList.get(i).getLName());
 			}
-		});
+			System.out.println("--------------------------------- Courses Table -------------------------------------------");
+			// Print out courses table
+			for(int i = 0; i < courseList.size(); i++)
+			{
+				System.out.println("CourseID: " + courseList.get(i).getCourseID() + " CourseCode: " + courseList.get(i).getCode() 
+						+ " CourseTitle: " + courseList.get(i).getTitle() + "CourseDesc: " + courseList.get(i).getDescription());
+			}
+			System.out.println("--------------------------------- Course Registry -------------------------------------------");
+			// Print out courseReg table
+			for(int i = 0; i< courseReg.size(); i++)
+			{
+				System.out.println("EntryID: " + courseReg.get(i).getEntryID() + " UserID: " + courseReg.get(i).getUserID() + " CourseID: " + courseReg.get(i).getCourseID());
+			}
+			
+		} 
+		catch(Exception e){
+			System.out.println("Print Tables ERROR ");
+			e.printStackTrace();
+		}
 	}
 	
 	// Utility methods

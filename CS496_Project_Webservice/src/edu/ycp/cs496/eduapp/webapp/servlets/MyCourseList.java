@@ -242,7 +242,8 @@ public class MyCourseList extends HttpServlet {
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
 			 if(mycourselist != null)
 			 {
-				 req.setAttribute("validcourse", true);
+				 System.out.println("MyCourseList SIZE = " + mycourselist.size());
+				 req.setAttribute("validcourse", "true");
 				 for(int i = 0; i < mycourselist.size(); i++)
 				 {
 					 System.out.println("Course : " + mycourselist.get(i).getCode());
@@ -253,7 +254,7 @@ public class MyCourseList extends HttpServlet {
 			 }
 			 else
 			 {
-				 req.setAttribute("validcourse", false);
+				 req.setAttribute("validcourse", "false");
 				 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp); 
 			 }
 			 
