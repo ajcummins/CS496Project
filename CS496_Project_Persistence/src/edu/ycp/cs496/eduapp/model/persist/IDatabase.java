@@ -23,4 +23,6 @@ public interface IDatabase {
 
 	void createAccount(User inUser);
 
+	void createAccount(User inUser, boolean isProf);
+
 }
