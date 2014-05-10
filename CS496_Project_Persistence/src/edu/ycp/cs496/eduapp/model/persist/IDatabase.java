@@ -21,6 +21,8 @@ public interface IDatabase {
 
 	void createAccount(User inUser);
 
+	void createAccount(User inUser, boolean isProf);
+
 	List<User> getAllUsers();
 
 	boolean addEntry(String courseCode, List<String> usernameList);

@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/loginPassTxtBox"
-        android:text="@string/LogMeInChkBoxStr" />
+        android:text="@string/LogMeInChkBoxStr" 
+        android:onClick="rememberLogin"/>
 
     <Button
         android:id="@+id/loginButton"
