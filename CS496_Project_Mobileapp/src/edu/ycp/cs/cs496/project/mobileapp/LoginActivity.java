@@ -81,20 +81,14 @@ public class LoginActivity extends Activity {
 				}
 			}
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
@@ -177,7 +171,6 @@ public class LoginActivity extends Activity {
 			fileInStream.close();
 			return userAndPass;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			//return null if no last User
 			return null;
 		}
@@ -252,19 +245,14 @@ public class LoginActivity extends Activity {
 						Toast.makeText(LoginActivity.this, "Account has been created, Please login",Toast.LENGTH_LONG).show();
 					}
 				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ParserConfigurationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (SAXException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -300,7 +288,6 @@ public class LoginActivity extends Activity {
 		logout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				//go to login page
 				try {
 					setDefaultView();
@@ -320,7 +307,6 @@ public class LoginActivity extends Activity {
 		myCourse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go list of course
 					if (userCourses != null){
@@ -351,13 +337,9 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go to home user account
 					authenticate();
-//					String test = getLastUser();
-//					Toast.makeText(LoginActivity.this, "test:"+test+"test", Toast.LENGTH_LONG).show();
-
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -371,11 +353,9 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go to create account
 					createAcct();
-					//Toast.makeText(LoginActivity.this, getLastUser(), Toast.LENGTH_LONG).show();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -409,7 +389,6 @@ public class LoginActivity extends Activity {
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					setHomeView(user);
 				}
@@ -439,8 +418,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
-				//Toast.makeText(LoginActivity.this, myCourseAsArray[arg2].getTitle().toString(), Toast.LENGTH_LONG).show();
 				//go to the single course view
 				displaySingleCourseView(user,myCourses,arg2);
 			}
@@ -475,26 +452,24 @@ public class LoginActivity extends Activity {
 		courseInfo.setText(myCourse.getDescription());
 
 		//covert list of meeting times to an array
-		List<MeetingTime> meetingTimes = myCourse.getMeetingTimes();
-		MeetingTime[] meetingTimesAsArray = meetingTimes.toArray(new MeetingTime[meetingTimes.size()]);
+		MeetingTime meetingTimes = myCourse.getMeetingTime();
 
 		String location,days,starttimes,endtimes;
-		String courseMeetingInfo[] = new String[meetingTimesAsArray.length];
-
+		String courseMeetingInfo = new String();
+//TODO: fix location
 		//get courses times and location
-		for (int i = 0; i < meetingTimesAsArray.length;i++){
-			location = meetingTimesAsArray[i].getLocation();
-			days = meetingTimesAsArray[i].getDay().toString();
-			starttimes = meetingTimesAsArray[i].getStartTime().getHour() 
-					+":"+meetingTimesAsArray[i].getStartTime().getMin();
-			endtimes = meetingTimesAsArray[i].getEndTime().getHour() 
-					+":"+meetingTimesAsArray[i].getEndTime().getMin();
-
-			//set textviews on courses
-			courseMeetingInfo[i] = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
-		}
-
-		courseTimes.setText(courseMeetingInfo[0] + courseMeetingInfo[1]);
+//		location = meetingTimes.getLocation();
+//		days = meetingTimes.getDays().toString();
+//		starttimes = meetingTimes.getStartTime().getHour() 
+//				+":"+meetingTimes.getStartTime().getMin();
+//		endtimes = meetingTimes.getEndTime().getHour() 
+//				+":"+meetingTimes.getEndTime().getMin();
+//
+//		//set textviews on courses
+//		courseMeetingInfo = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
+//
+//
+//		courseTimes.setText(courseMeetingInfo);
 
 		//back button to list of course
 		backButton.setOnClickListener(new View.OnClickListener() {
@@ -515,7 +490,6 @@ public class LoginActivity extends Activity {
 		viewSwitch.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go back to list of courses
 					displayNoteView(user, myCourses,number);
@@ -530,7 +504,6 @@ public class LoginActivity extends Activity {
 		addEvent.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go back to list of courses
 					addCourseEventToCalendar(user, myCourse);
@@ -551,7 +524,7 @@ public class LoginActivity extends Activity {
 		intent.setType("vnd.android.cursor.item/event");
 		intent.putExtra(Events.TITLE, myCourse.getTitle());
 		intent.putExtra(Events.DESCRIPTION, myCourse.getDescription());
-		intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTimes().get(0).getLocation());
+		//intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTime().getLocation());
 
 		//String startdate = myCourse.getMeetingTimes().get(0).
 		// Setting dates
@@ -595,7 +568,6 @@ public class LoginActivity extends Activity {
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					displaySingleCourseView(user,myCourses,number);
 				}
@@ -630,8 +602,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
-				//Toast.makeText(LoginActivity.this, myCourseAsArray[arg2].getTitle().toString(), Toast.LENGTH_LONG).show();
 				//go to the single course view
 				displaySingleCourseView(user,myCourses,arg2);
 			}
