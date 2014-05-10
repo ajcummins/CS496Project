@@ -73,7 +73,8 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true");
+		//Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
+		Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Mr_E/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Anthony
 		
 		// Set autocommit to false to allow multiple the execution of
 		// multiple queries/statements as part of the same transaction.
