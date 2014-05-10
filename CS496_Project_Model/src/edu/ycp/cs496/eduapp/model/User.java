@@ -2,7 +2,7 @@ package edu.ycp.cs496.eduapp.model;
 
 
 public class User {
-	//private int userID;
+	private int userID;
 	private String username;
 	private String password;
 	private String firstName;
@@ -71,6 +71,14 @@ public class User {
 	public UserType getUserType()
 	{
 		return userType;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 

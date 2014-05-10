@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Course {
+	private int courseID;
 	private String code;
 	//private User professor;
 	private String title;
@@ -129,5 +130,13 @@ public class Course {
 
 	public void setMeetingTime(MeetingTime meetingTime) {
 		this.meetingTime = meetingTime;
+	}
+
+	public int getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(int courseID) {
+		this.courseID = courseID;
 	}
 }
