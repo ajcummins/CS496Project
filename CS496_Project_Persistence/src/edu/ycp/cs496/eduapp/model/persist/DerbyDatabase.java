@@ -323,6 +323,8 @@ public class DerbyDatabase implements IDatabase {
 			@Override
 			public List<Course> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
+				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				
 				try{
@@ -337,14 +339,14 @@ public class DerbyDatabase implements IDatabase {
 					
 					// use user id w/ course reg to get course id's
 					int userID = resultSet.getInt(1);//normally index++ not sure if it needs to be 1 or 2??
-					stmt = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
-					stmt.setInt(1, userID);
+					stmt2 = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
+					stmt2.setInt(1, userID);
 					
-					resultSet = stmt.executeQuery();
-					if(!resultSet.next())
+					resultSet = stmt2.executeQuery();
+					/*if(!resultSet.next())
 					{
 						return null;
-					}
+					}*/
 							
 					// get a list of course registry entries
 					List<Integer> courseIDs = new ArrayList<Integer>();
@@ -357,12 +359,13 @@ public class DerbyDatabase implements IDatabase {
 					List<Course> courses = new ArrayList<Course>();
 					for(int i = 0; i < courseIDs.size(); i++)
 					{
-						stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
-						stmt.setInt(1, courseIDs.get(i));
+						stmt3 = conn.prepareStatement("select courses.* from courses where courses.id = ?");
+						stmt3.setInt(1, courseIDs.get(i));
 						
-						resultSet = stmt.executeQuery();
+						resultSet = stmt3.executeQuery();
 						
 						// fill the list object with the newly found courses
+						resultSet.next();
 						Course course = new Course();
 						loadCourse(course,resultSet,1);
 						courses.add(course);
@@ -445,7 +448,6 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt.executeUpdate();
 					
-					printTables();
 					return true;
 				}
 				catch(Exception e){
