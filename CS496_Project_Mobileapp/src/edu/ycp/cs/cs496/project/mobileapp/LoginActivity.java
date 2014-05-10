@@ -1,7 +1,11 @@
 package edu.ycp.cs.cs496.project.mobileapp;
 
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -11,23 +15,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
-import edu.ycp.cs496.eduapp.model.Course;
-import edu.ycp.cs496.eduapp.model.MeetingTime;
-import edu.ycp.cs496.eduapp.model.Notification;
-import edu.ycp.cs496.eduapp.model.TimeOfDay;
-import edu.ycp.cs496.eduapp.model.User;
-import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
-import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
-import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
-import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
-import android.net.Uri;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -35,30 +29,80 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.Notification;
+import edu.ycp.cs496.eduapp.model.User;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.CreateAcctController;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMainCourseList;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.GetMyCourseList;
+import edu.ycp.cs496.eduapp.model.mobliecontrollers.LoginController;
 
 public class LoginActivity extends Activity {
+
+	//where the username and password are stored
+	String FileName = "UserStorage";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = 
-				new StrictMode.ThreadPolicy.Builder().permitAll().build();
+					new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
 		setDefaultView();
+		//try to login auto
+		try {
+			String userAndPass = getLastUser();
+			//go to login sceen
+			if (userAndPass == null || userAndPass.equals("")){
+				setDefaultView();
+			}
+			//go to home page with the last user
+			else {
+				int locationOfSlash = userAndPass.indexOf("/");
+				String user = userAndPass.substring(0, locationOfSlash);
+				String pass = userAndPass.substring(locationOfSlash+1);
+				User lastUser = getUserAccount(user, pass);
+				if (lastUser != null){
+					setHomeView(lastUser);
+				}
+				//go to login if last user is nonsense
+				else {
+					setDefaultView();
+				}
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 	//handlers for get my course list
 	public List <Course> getMyCourse(User user) throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
-		
+
 		GetMyCourseList controller = new GetMyCourseList();
 		List <Course> userCourses = controller.getMyCourseList(user.getUsername());
 		//show list of courses 
@@ -84,7 +128,7 @@ public class LoginActivity extends Activity {
 		User mainUser = controller.authenticateUser(user, pass);
 		return mainUser;
 	}
-	
+
 	//creating user
 	public boolean createUserAccount(User user,boolean isProf)throws URISyntaxException, ClientProtocolException,
 	IOException, ParserConfigurationException, SAXException{
@@ -100,6 +144,44 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	//if checkbox is click
+	public void rememberLogin(View v) throws IOException {
+		//get username and password
+		EditText userTextInput = (EditText) findViewById(R.id.loginUsernameTxtBox);
+		EditText passTextInput = (EditText) findViewById(R.id.loginPassTxtBox);
+		String userText = userTextInput.getText().toString();
+		String passText = passTextInput.getText().toString();
+		String fileStuff = "";
+		// Check if box is set or not
+		if (((CheckBox) v).isChecked()) {
+			// store the username in a file
+			fileStuff = userText + "/" + passText;
+		} else {
+			// store nothing in the file
+			fileStuff = "";
+		}
+		FileOutputStream fileOutStream = openFileOutput (FileName, Context.MODE_PRIVATE);
+		fileOutStream.write(fileStuff.getBytes());
+		fileOutStream.close();
+	}
+
+	//get the username 
+	public String getLastUser() throws URISyntaxException, ParserConfigurationException, SAXException {
+		try {
+			//obtain the user and pass from last session
+			FileInputStream fileInStream =  openFileInput(FileName);
+			InputStreamReader isr = new InputStreamReader(fileInStream); 
+			BufferedReader reader = new BufferedReader(isr);
+			String userAndPass = reader.readLine();
+			fileInStream.read();
+			fileInStream.close();
+			return userAndPass;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//return null if no last User
+			return null;
+		}
+	}
 	//login
 	public void authenticate() throws ClientProtocolException, URISyntaxException, IOException, ParserConfigurationException, SAXException
 	{
@@ -109,6 +191,8 @@ public class LoginActivity extends Activity {
 		//Check if Username/Password isn't empty | Error if it is
 		String userText = userTextInput.getText().toString();
 		String passText = passTextInput.getText().toString();
+
+		//login with the textboxes
 		if(userText.equals("") || passText.equals("") || userText != null || passText != null)
 		{
 			User user = new User();
@@ -133,7 +217,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.createuser);
 		Button submitCreateAcc = (Button) findViewById(R.id.submitCreateUser);
 		Button backToLogin = (Button) findViewById(R.id.backButton); 
-		
+
 		submitCreateAcc.setOnClickListener(new View.OnClickListener() {
 			//on click
 			@Override
@@ -145,7 +229,7 @@ public class LoginActivity extends Activity {
 					EditText checkPassword = (EditText) findViewById(R.id.confirmPassTxtBox);
 					EditText fName = (EditText) findViewById(R.id.createFirstNameTxtBox);
 					EditText lName = (EditText) findViewById(R.id.createLastNameTxtBox);
-					
+
 					String userNameStr = userName.getText().toString();
 					String passwordStr = password.getText().toString();
 					String checkPasswordStr = checkPassword.getText().toString();
@@ -204,29 +288,34 @@ public class LoginActivity extends Activity {
 		//welcome message to user shows first and last name
 		TextView welcomeMsg = (TextView) findViewById(R.id.WelcomeMsg);
 		welcomeMsg.setText("Welcome "+user.getLName()+", "+user.getFName());
-		
+
 		//buttons on home page
 		Button logout = (Button) findViewById(R.id.logout);
 		Button myCourse = (Button) findViewById(R.id.courseBackButton);
-		
+
 		//courses
 		final List <Course> userCourses = getMyCourse(user);
-		
+
 		//when logout button press
 		logout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				//go to login page
 				try {
-					//go to login page
 					setDefaultView();
+					//remove the user and pass from the save file
+					String fileStuff = "";
+					FileOutputStream fileOutStream = openFileOutput (FileName, Context.MODE_PRIVATE);
+					fileOutStream.write(fileStuff.getBytes());
+					fileOutStream.close();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
+
 		//when my course button press
 		myCourse.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -246,14 +335,13 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-				
+
 	}
 
 	//default view 
 	public void setDefaultView() {
 		//login page
 		setContentView(R.layout.login);
-
 		//buttons on main page
 		Button createAccount = (Button) findViewById(R.id.createAcctBut);
 		Button login = (Button) findViewById(R.id.loginButton);
@@ -267,6 +355,9 @@ public class LoginActivity extends Activity {
 				try {
 					//go to home user account
 					authenticate();
+//					String test = getLastUser();
+//					Toast.makeText(LoginActivity.this, "test:"+test+"test", Toast.LENGTH_LONG).show();
+
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -284,6 +375,7 @@ public class LoginActivity extends Activity {
 				try {
 					//go to create account
 					createAcct();
+					//Toast.makeText(LoginActivity.this, getLastUser(), Toast.LENGTH_LONG).show();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -292,18 +384,18 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
-	
+
 	// Method for displaying My Course list
-    public void displayCoursesView(final User user,final List <Course> myCourses) {
+	public void displayCoursesView(final User user,final List <Course> myCourses) {
 		// Create Linear layout
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
-		
+
 		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
-	
-		
+
+
 		// Add back button
 		Button backButton = new Button(this);
 		backButton.setText("Back to Home");
@@ -312,7 +404,7 @@ public class LoginActivity extends Activity {
 				LayoutParams.WRAP_CONTENT));
 		backButton.setX(20);
 		backButton.setY(20);
-		
+
 		//back button onClickListener
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -340,7 +432,7 @@ public class LoginActivity extends Activity {
 		ListView lv = new ListView(this);
 		lv.setAdapter(la);
 		layout.addView(lv);
-		
+
 		lv.setTextFilterEnabled(true);
 		// Register click callback for the course
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -352,23 +444,23 @@ public class LoginActivity extends Activity {
 				//go to the single course view
 				displaySingleCourseView(user,myCourses,arg2);
 			}
-	    });
-		
+		});
+
 		// Make inventory view visible
 		setContentView(layout,llp);    	
-    }
-    
-    //show only the single course
-    public void displaySingleCourseView(final User user,final List <Course> myCourses,final int number) {
-		
-    	// Create layout
-    	setContentView(R.layout.singlecourselist);
+	}
+
+	//show only the single course
+	public void displaySingleCourseView(final User user,final List <Course> myCourses,final int number) {
+
+		// Create layout
+		setContentView(R.layout.singlecourselist);
 
 		//buttons
 		Button backButton = (Button) findViewById(R.id.courseBackButton);
 		Button addEvent = (Button) findViewById(R.id.courseAddToCalendar);
 		Button viewSwitch = (Button) findViewById(R.id.viewSwitchButton);
-		
+
 		//Add ListView with course
 		Course[] myCourseAsArray = myCourses.toArray(new Course[myCourses.size()]);
 		final Course myCourse = myCourseAsArray[number];
@@ -377,18 +469,18 @@ public class LoginActivity extends Activity {
 		TextView courseTitle = (TextView) findViewById(R.id.courseTitle);
 		TextView courseTimes = (TextView) findViewById(R.id.meetingTime);
 		final TextView courseInfo = (TextView) findViewById(R.id.courseInfo);
-		
+
 		//set the description of the course
 		courseTitle.setText(myCourse.getTitle());
 		courseInfo.setText(myCourse.getDescription());
-		
+
 		//covert list of meeting times to an array
 		List<MeetingTime> meetingTimes = myCourse.getMeetingTimes();
 		MeetingTime[] meetingTimesAsArray = meetingTimes.toArray(new MeetingTime[meetingTimes.size()]);
-		
+
 		String location,days,starttimes,endtimes;
 		String courseMeetingInfo[] = new String[meetingTimesAsArray.length];
-		
+
 		//get courses times and location
 		for (int i = 0; i < meetingTimesAsArray.length;i++){
 			location = meetingTimesAsArray[i].getLocation();
@@ -397,13 +489,13 @@ public class LoginActivity extends Activity {
 					+":"+meetingTimesAsArray[i].getStartTime().getMin();
 			endtimes = meetingTimesAsArray[i].getEndTime().getHour() 
 					+":"+meetingTimesAsArray[i].getEndTime().getMin();
-			
+
 			//set textviews on courses
 			courseMeetingInfo[i] = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
 		}
-		
+
 		courseTimes.setText(courseMeetingInfo[0] + courseMeetingInfo[1]);
-		
+
 		//back button to list of course
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -418,7 +510,7 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-		
+
 		//switch the views of notification and course description 
 		viewSwitch.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -433,7 +525,7 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-		
+
 		//addEvent button to
 		addEvent.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -449,56 +541,56 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-    }
-    
-    public void addCourseEventToCalendar(final User user, Course myCourse){
-    	
+	}
+
+	public void addCourseEventToCalendar(final User user, Course myCourse){
+
 		Intent intent = new Intent(Intent.ACTION_INSERT);
-		
+
 		//set the description of the Event
 		intent.setType("vnd.android.cursor.item/event");
 		intent.putExtra(Events.TITLE, myCourse.getTitle());
 		intent.putExtra(Events.DESCRIPTION, myCourse.getDescription());
 		intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTimes().get(0).getLocation());
-		
+
 		//String startdate = myCourse.getMeetingTimes().get(0).
 		// Setting dates
 		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 9);
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-		  calDate.getTimeInMillis());
+				calDate.getTimeInMillis());
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-		  calDate.getTimeInMillis());
+				calDate.getTimeInMillis());
 
 		// make it a full day event
 		//intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
 
 		// make it a recurring Event
 		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
-		
+
 		startActivity(intent);
 		//Toast.makeText(LoginActivity.this, "Event Added", Toast.LENGTH_LONG).show();
-    }
-    
-    // Method for displaying notelist
-    public void displayNoteView(final User user,final List <Course> myCourses,final int number) {
+	}
+
+	// Method for displaying notelist
+	public void displayNoteView(final User user,final List <Course> myCourses,final int number) {
 		// Create Linear layout
-    	
+
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.FILL_PARENT);
-		
+
 		// Add back button
 		Button backButton = new Button(this);
 		backButton.setText("Back to Course");
 		backButton.setLayoutParams(new LayoutParams(
 				LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
-		
+
 		backButton.setX(20);
 		backButton.setY(20);
-		
+
 		//back button onClickListener
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -531,7 +623,7 @@ public class LoginActivity extends Activity {
 		ListView lv = new ListView(this);
 		lv.setAdapter(la);
 		layout.addView(lv);
-		
+
 		lv.setTextFilterEnabled(true);
 		// Register click callback for the course
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -543,10 +635,10 @@ public class LoginActivity extends Activity {
 				//go to the single course view
 				displaySingleCourseView(user,myCourses,arg2);
 			}
-	    });
-		
+		});
+
 		// Make inventory view visible
 		setContentView(layout,llp);    	
-    }
+	}
 
 }
