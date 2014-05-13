@@ -236,7 +236,6 @@ public class MyCourseList extends HttpServlet {
 				courseCode = courseCode.substring(1);
 			}
 		}
-		System.out.println("courseCode = " + courseCode);
 		return courseCode;
 	}
 	
@@ -251,12 +250,7 @@ public class MyCourseList extends HttpServlet {
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
 			 if(mycourselist != null)
 			 {
-				 System.out.println("MyCourseList SIZE = " + mycourselist.size());
 				 req.setAttribute("validcourse", "true");
-				 for(int i = 0; i < mycourselist.size(); i++)
-				 {
-					 System.out.println("Course : " + mycourselist.get(i).getCode());
-				 }
 				 req.setAttribute("MyCourseList",mycourselist);
 				 //req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp);
 				 req.getRequestDispatcher("/_view/MyCourseList.jsp").forward(req, resp); 
@@ -284,9 +278,40 @@ public class MyCourseList extends HttpServlet {
 			GetCourseByID controller = new GetCourseByID();
 			Course course = controller.getCourseByCode(courseCode);
 			req.setAttribute("Course", course);
-			req.setAttribute("resourcelist", course.getResources());
-			req.setAttribute("meetingtimes", course.getMeetingTime());
-			req.setAttribute("notelist", course.getNotifications());
+			
+			// Check all values make sure they are not null or size = 0
+			List<Resource> resources = course.getResources();
+			MeetingTime meetingTime = course.getMeetingTime();
+			List<Notification> notes = course.getNotifications();
+			
+			if(resources != null && resources.size() > 0)
+			{
+				// There is something in resources
+				req.setAttribute("validresources", "true");
+				req.setAttribute("resourcelist", resources);
+			}
+			else
+			{
+				// There isn't anything in resources display a message instead
+				req.setAttribute("validresources", "false");
+				
+			}
+			
+			if(notes != null && notes.size() > 0)
+			{
+				// There is something in notes
+				req.setAttribute("validnotes", "true");
+				req.setAttribute("notelist", notes);
+			}
+			else
+			{
+				// There isn't anything in notes display a message instead
+				req.setAttribute("validnotes", "true");
+			}
+			
+			// Meetingtime should always have something in it because it is set @ creation...
+			
+			req.setAttribute("MeetingTime", meetingTime);
 			req.getRequestDispatcher("/_view/Course.jsp").forward(req, resp);
 		}
 		
