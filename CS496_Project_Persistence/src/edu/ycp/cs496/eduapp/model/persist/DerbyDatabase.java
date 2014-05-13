@@ -351,6 +351,36 @@ public class DerbyDatabase implements IDatabase {
 		entry.setCourseID(resultSet.getInt(index++));
 	}
 	
+	private User getUserByUsername(final String username)
+	{
+		return executeTransaction(new Transaction<User>() {
+			@Override
+			public User execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try{
+					stmt = conn.prepareStatement("select users.* from users where users.username = ?");
+					stmt.setString(1, username);	
+					
+					resultSet = stmt.executeQuery();
+					
+					if(!resultSet.next()){
+						// invalid User parameters, User could not be found
+						return null;
+					}
+					
+					User user = new User();
+					loadUser(user, resultSet,1);
+					return user;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+
+		});
+	}
 	
 // Controller Methods	
 
@@ -485,6 +515,64 @@ public class DerbyDatabase implements IDatabase {
 		
 	}
 
+	
+	@Override
+	public List<Course> getMyCourseList(final String inUsername) {
+		return executeTransaction(new Transaction<List<Course>>() {
+			@Override
+			public List<Course> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try{
+					// get user id from the passed user
+					User tempUser = getUserByUsername(inUsername);
+					
+					int userID = tempUser.getUserID();
+					stmt = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
+					stmt.setInt(1, userID);
+					
+					resultSet = stmt.executeQuery();
+							
+					// get a list of course registry entries
+					List<Integer> courseIDs = new ArrayList<Integer>();
+					int index = 1;
+					while(resultSet.next())
+					{
+						courseIDs.add(resultSet.getInt(index));
+					}
+					// get all the courses w/ the id's
+					List<Course> courses = new ArrayList<Course>();
+					for(int i = 0; i < courseIDs.size(); i++)
+					{
+						stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
+						stmt.setInt(1, courseIDs.get(i));
+						
+						resultSet = stmt.executeQuery();
+						
+						// fill the list object with the newly found courses
+						resultSet.next();
+						Course course = new Course();
+						loadCourse(course,resultSet,1);
+						courses.add(course);
+					}
+					return courses;
+						
+				} catch(Exception e){
+					e.printStackTrace();
+					return null;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+
+		});		
+		
+	}
+	
+	
 	@Override
 	public Course getCourseByCode(final String inCourseCode) {
 		return executeTransaction(new Transaction<Course>() {

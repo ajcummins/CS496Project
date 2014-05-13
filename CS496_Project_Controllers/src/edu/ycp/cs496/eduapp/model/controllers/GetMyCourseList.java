@@ -12,4 +12,9 @@ public class GetMyCourseList {
 		IDatabase db = DatabaseProvider.getInstance();
 		return db.getMyCourseList(inUser);
 	}
+	
+	public List<Course> getMyCourseList(String inUsername) {
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getMyCourseList(inUsername);
+	}
 }

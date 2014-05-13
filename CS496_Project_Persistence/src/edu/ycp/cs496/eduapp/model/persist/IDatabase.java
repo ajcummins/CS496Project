@@ -27,4 +27,6 @@ public interface IDatabase {
 
 	List<Course> getMyCourseList(User inUser);
 
+	List<Course> getMyCourseList(String inUsername);
+
 }
