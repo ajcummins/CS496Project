@@ -240,7 +240,7 @@ public class MyCourseList extends HttpServlet {
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
 			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
-			 if(mycourselist != null)
+			 if(mycourselist != null && mycourselist.size() != 0)
 			 {
 				 System.out.println("MyCourseList SIZE = " + mycourselist.size());
 				 req.setAttribute("validcourse", "true");
