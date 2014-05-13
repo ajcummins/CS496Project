@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ycp.cs496.eduapp.model.Course;
+import edu.ycp.cs496.eduapp.model.CourseDate;
 import edu.ycp.cs496.eduapp.model.CourseRegEntry;
 import edu.ycp.cs496.eduapp.model.MeetingTime;
 import edu.ycp.cs496.eduapp.model.MeetingType;
@@ -117,7 +118,13 @@ public class DerbyDatabase implements IDatabase {
 							" endhr integer," + 
 							" endmin integer," + 
 							" location varchar(20)," + 
-							" type integer" + 
+							" type integer," + 
+							" startmon integer," + 
+							" startday integer," + 
+							" startyr integer," + 
+							" endmon integer," + 
+							" endday integer," + 
+							" endyr integer" + 
 							")"
 							// type is either 0 = LECTURE or 1 = LAB
 							//FIXME: meetingTimes, noteList, resourceList
@@ -252,7 +259,15 @@ public class DerbyDatabase implements IDatabase {
 			stmt.setInt(index++, 1);
 		}
 		
+		// set Start CourseDate Mon, Day, Year
+		stmt.setInt(index++, inCourse.getStartDate().getMonth());
+		stmt.setInt(index++, inCourse.getStartDate().getDay());
+		stmt.setInt(index++, inCourse.getStartDate().getYear());
 		
+		// set End CourseDate Mon, Day, Year
+		stmt.setInt(index++, inCourse.getEndDate().getMonth());
+		stmt.setInt(index++, inCourse.getEndDate().getDay());
+		stmt.setInt(index++, inCourse.getEndDate().getYear());
 	}
 	
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
@@ -323,6 +338,10 @@ public class DerbyDatabase implements IDatabase {
 		}
 		course.setMeetingTime(meet);
 		
+		// Set Start CourseDate
+		course.setStartDate(new CourseDate(resultSet.getInt(index++),resultSet.getInt(index++),resultSet.getInt(index++)));
+		// Set End CourseDate
+		course.setEndDate(new CourseDate(resultSet.getInt(index++),resultSet.getInt(index++),resultSet.getInt(index++)));
 	}
 	
 	private void loadEntry(CourseRegEntry entry, ResultSet resultSet, int index) throws SQLException{
@@ -535,7 +554,8 @@ public class DerbyDatabase implements IDatabase {
 				
 				try{
 					stmt = conn.prepareStatement(
-							"insert into courses (code,title,description,sun,mon,tue,wed,thu,fri,sat,starthr,startmin,endhr,endmin,location,type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+							"insert into courses (code,title,description,sun,mon,tue,wed,thu,fri,sat,starthr,startmin,endhr,endmin,location,type,startmon,startday,startyr,endmon,endday,endyr) " +
+							"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							PreparedStatement.RETURN_GENERATED_KEYS);
 					
 					storeCourseNoId(inCourse,stmt,1);
@@ -752,6 +772,8 @@ public class DerbyDatabase implements IDatabase {
 				System.out.println("Meeting Times-> StartHr"+ courseList.get(i).getMeetingTime().getStartTime().getHour() + " StartMin: " + courseList.get(i).getMeetingTime().getStartTime().getMin() + 
 						" EndHr: " + courseList.get(i).getMeetingTime().getEndTime().getHour() + " EndMin: " + courseList.get(i).getMeetingTime().getEndTime().getMin());
 				System.out.println("Meeting Location : " + courseList.get(i).getMeetingTime().getLocation() +" Meeting Type: " + courseList.get(i).getMeetingTime().getType());
+				System.out.println("Start Date -> Mon: " + courseList.get(i).getStartDate().getMonth() + " Day: " + courseList.get(i).getStartDate().getDay()  + " Year: " + courseList.get(i).getStartDate().getYear());
+				System.out.println("End Date -> Mon: " + courseList.get(i).getEndDate().getMonth() + " Day: " + courseList.get(i).getEndDate().getDay()  + " Year: " + courseList.get(i).getEndDate().getYear());
 			}
 			System.out.println("--------------------------------- Course Registry -------------------------------------------");
 			// Print out courseReg table

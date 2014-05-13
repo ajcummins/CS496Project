@@ -212,6 +212,41 @@
 						<tr>
 						</tr>
 						<tr>
+							<td>
+								Start Date:
+							</td>
+							<td>
+								Month:
+							</td>
+							<td>
+								Day:
+							</td>
+							<td>
+								Year:
+							</td>
+							<td>
+								End Date:
+							</td>
+							<td>
+								Month:
+							</td>
+							<td>
+								Day:
+							</td>
+							<td>
+								Year:
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type = "text" name="startMon" size="10" ></input></td>
+							<td><input type = "text" name="startDay" size="10" ></input></td>
+							<td><input type = "text" name="startYr" size="10" ></input></td>
+							<td></td>
+							<td><input type = "text" name="endMon" size="10" ></input></td>
+							<td><input type = "text" name="endDay" size="10" ></input></td>
+							<td><input type = "text" name="endYr" size="10" ></input></td>
+						<tr>
 							<td>Type of Meeting :</td>
 							<td>Lecture : <input type="radio" name="lecRad" value="checked"></input></td>
 							<td>Lab : <input type="radio" name="labRad" value="checked"></input></td>

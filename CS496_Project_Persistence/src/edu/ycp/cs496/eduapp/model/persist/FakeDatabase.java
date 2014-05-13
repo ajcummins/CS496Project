@@ -259,13 +259,13 @@ public class FakeDatabase /*implements IDatabase*/ {
 			
 		}
 
-		@Override
+//		@Override
 		public List<User> getAllUsers() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
-		@Override
+//		@Override
 		public boolean addEntry(String courseCode, List<String> usernameList) {
 			// TODO Auto-generated method stub
 			return false;
