@@ -137,41 +137,56 @@
 							<td><textarea rows="4" cols="50" name="courseDesc">Enter your course description here</textarea></td>
 						</tr>
 					</table>
+					<h4>Course Start and End Dates </h4>
+					<table>
+						<tr>
+							Start Date: <input type="date" name="startDate">
+						</tr>
+						<tr>
+							End Date: <input type="date" name="endDate">
+						</tr>
+					</table>
 					<h4>Course Meeting Times</h4>
 					<table>
 						<tr>
-							<td>Start Time</td>
-							<td></td>
-							<td>End Time</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							Class is held from (HH:MM) &nbsp<input type = "text" name="startHr" size="10" ></input> : 
+							<input type = "text" name="startMin" size="10" ></input> to <input type = "text" name="endHr" size="10" ></input> : 
+							<input type = "text" name="endMin" size="10" >
 						</tr>
+					</table>
+					<br>
+					<table>
 						<tr>
-							<td>HH</td>
-							<td>MM</td>
-							<td>HH</td>
-							<td>MM</td>
-							<td>Sun</td>
-							<td>Mon</td>
-							<td>Tue</td>
-							<td>Wed</td>
-							<td>Thu</td>
-							<td>Fri</td>
-							<td>Sat</td>
-						</tr>
-						<tr>
-							<td><input type = "text" name="startHr" size="10" ></input></td>
-							<td><input type = "text" name="startMin" size="10" ></input></td>
-							<td><input type = "text" name="endHr" size="10" ></input></td>
-							<td><input type = "text" name="endMin" size="10" ></input></td>
 							<td>
-								<input type = "checkbox" name="sunChk" value="true"></input>
+							</td>
+							<td>
+								Sun
+							</td>
+							<td>
+								Mon
+							</td>
+							<td>
+								Tue
+							</td>
+							<td>
+								Wed
+							</td>
+							<td>
+								Thu
+							</td>
+							<td>
+								Fri
+							</td>
+							<td>
+								Sat
+							</td>
+						</tr>
+						<tr>
+							<td>
+								On these days: &nbsp
+							</td>
+							<td>
+							<input type = "checkbox" name="sunChk" value="true"></input>
 							</td>
 							<td>
 								<input type = "checkbox" name="monChk" value="true"></input>
@@ -192,53 +207,20 @@
 								<input type = "checkbox" name="satChk" value="true"></input>
 							</td>
 						</tr>
+					</table>
+					<br>
+					<table>
 						<tr>
-						</tr>
-						<tr>
-							<td>
-								Start Date:
-							</td>
-							<td>
-								Month:
-							</td>
-							<td>
-								Day:
-							</td>
-							<td>
-								Year:
-							</td>
-							<td>
-								End Date:
-							</td>
-							<td>
-								Month:
-							</td>
-							<td>
-								Day:
-							</td>
-							<td>
-								Year:
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><input type = "text" name="startMon" size="10" ></input></td>
-							<td><input type = "text" name="startDay" size="10" ></input></td>
-							<td><input type = "text" name="startYr" size="10" ></input></td>
-							<td></td>
-							<td><input type = "text" name="endMon" size="10" ></input></td>
-							<td><input type = "text" name="endDay" size="10" ></input></td>
-							<td><input type = "text" name="endYr" size="10" ></input></td>
-						<tr>
-							<td>Type of Meeting :</td>
+							<td>Type of Class :&nbsp</td>
 							<td>Lecture : <input type="radio" name="lecRad" value="checked"></input></td>
 							<td>Lab : <input type="radio" name="labRad" value="checked"></input></td>
-						</tr>
-						<tr>
+							<td>&nbsp</td>
+							<td>&nbsp</td>
+							<td>&nbsp</td>
 							<td>Location : </td>
 							<td><input type = "text" name="loc" size="10" ></input></td>
-						</tr>
 					</table>
+				<br>
 				<input type="submit" name="submit" value="Submit">
 			</fieldset>
 		</c:if>

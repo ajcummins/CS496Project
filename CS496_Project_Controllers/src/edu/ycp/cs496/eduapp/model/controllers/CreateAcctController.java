@@ -5,9 +5,9 @@ import edu.ycp.cs496.eduapp.model.persist.DatabaseProvider;
 import edu.ycp.cs496.eduapp.model.persist.IDatabase;
 
 public class CreateAcctController {
-	public void createAccount(User inUser) {
+	public User createAccount(User inUser) {
 		IDatabase db = DatabaseProvider.getInstance();
-		db.createAccount(inUser);
+		return db.createAccount(inUser);
 	}
 	
 	public boolean checkIfProf(String inProfPass)

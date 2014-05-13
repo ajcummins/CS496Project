@@ -1,5 +1,6 @@
 package edu.ycp.cs496.eduapp.webapp.main;
 
+import java.util.Date;
 import java.util.Scanner;
 
 import org.eclipse.jetty.server.Server;
@@ -31,7 +32,7 @@ public class Main {
 				break;
 			}
 		}
-		
+
 		System.out.println("Shutting down...");
 		server.stop();
 		server.join();

@@ -9,8 +9,6 @@ public interface IDatabase {
 
 	User authenticateUser(String user, String pass);
 
-	List<Course> getMyCourseList(String inUsername);
-
 	Course getCourseByCode(String courseCode);
 	
 	boolean editCourse(Course course);
@@ -19,12 +17,14 @@ public interface IDatabase {
 
 	boolean checkIfProf(String inProfPass);
 
-	void createAccount(User inUser);
+	User createAccount(User inUser);
 
 	void createAccount(User inUser, boolean isProf);
 
 	List<User> getAllUsers();
 
 	boolean addEntry(String courseCode, List<String> usernameList);
+
+	List<Course> getMyCourseList(User inUser);
 
 }

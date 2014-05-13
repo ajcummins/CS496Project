@@ -80,7 +80,6 @@ public class MyCourseList extends HttpServlet {
 				if(action.trim().equals("edit"))
 				{
 					// EDIT
-					System.out.println("Edit yo");
 					
 					//GetCourseByID controller = new GetCourseByID();
 					//Course course = controller.getCourseByCode(courseCode);
@@ -88,7 +87,6 @@ public class MyCourseList extends HttpServlet {
 				else if(action.trim().equals("delete"))
 				{
 					// DELETE
-					System.out.println("delete yo");
 					DeleteCourse controller = new DeleteCourse();
 					
 					String code = req.getParameter("Course.code");
@@ -101,7 +99,6 @@ public class MyCourseList extends HttpServlet {
 				else if(action.trim().equals("add"))
 				{
 					// ADD
-					System.out.println("add yo");
 					AddCourse controller = new AddCourse();
 					
 					// Obtain all of the data out of the form
@@ -112,12 +109,9 @@ public class MyCourseList extends HttpServlet {
 					int startMin = Integer.parseInt(req.getParameter("startMin"));
 					int endHr = Integer.parseInt(req.getParameter("endHr"));
 					int endMin = Integer.parseInt(req.getParameter("endMin"));
-					int startMon = Integer.parseInt(req.getParameter("startMon"));
-					int startDay = Integer.parseInt(req.getParameter("startDay"));
-					int startYr = Integer.parseInt(req.getParameter("startYr"));
-					int endMon = Integer.parseInt(req.getParameter("endMon"));
-					int endDay = Integer.parseInt(req.getParameter("endDay"));
-					int endYr = Integer.parseInt(req.getParameter("endYr"));
+					CourseDate startDate = toCourseDate(req.getParameter("startDate"));
+					CourseDate endDate = toCourseDate(req.getParameter("endDate"));
+					
 					// handle all the chkboxes
 					boolean sun = chkboxValue(req.getParameter("sunChk"));
 					boolean mon = chkboxValue(req.getParameter("monChk"));
@@ -140,12 +134,11 @@ public class MyCourseList extends HttpServlet {
 					
 					// Construct the new course
 					Course newCourse = new Course(code,title,desc, meetingTime,new ArrayList<Notification>(), new ArrayList<Resource>());
-					newCourse.setStartDate(new CourseDate(startMon,startDay,startYr));
-					newCourse.setEndDate(new CourseDate(endMon,endDay,endYr));
+					newCourse.setStartDate(startDate);
+					newCourse.setEndDate(endDate);
 					boolean success = controller.addCourse(newCourse);
 					if(success)
 					{
-						System.out.println("Add Successful");
 						
 						// Initialize course to have this user in it.						
 						AddCourseRegEntry regController = new AddCourseRegEntry();
@@ -155,18 +148,15 @@ public class MyCourseList extends HttpServlet {
 						
 						if(entrySuccess)
 						{
-							System.out.println("Reg entry successful");
 							req.setAttribute("action", "view");
 						}
 						else
 						{
-							System.out.println("Reg entry unsuccessful");
 						}
 						
 					}
 					else
 					{
-						System.out.println("Add UnSuccessful");
 						req.setAttribute("result", "Add Course Falied");
 					}
 					
@@ -247,7 +237,7 @@ public class MyCourseList extends HttpServlet {
 			 //Have to assume that User has already been obtained from the session... 
 			 //There is a check at the beginning of the GET and POST
 			 GetMyCourseList myCourseListController = new GetMyCourseList();
-			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser.getUsername());
+			 List<Course> mycourselist = myCourseListController.getMyCourseList(thisUser);
 			 if(mycourselist != null)
 			 {
 				 req.setAttribute("validcourse", "true");
@@ -345,6 +335,15 @@ public class MyCourseList extends HttpServlet {
 		{
 			return false;
 		}
+	}
+	
+	private CourseDate toCourseDate(String inStringDate)
+	{
+		CourseDate coursedate = new CourseDate();
+		coursedate.setYear(Integer.parseInt(inStringDate.substring(0, 4)));
+		coursedate.setMonth(Integer.parseInt(inStringDate.substring(5, 7)));
+		coursedate.setDay(Integer.parseInt(inStringDate.substring(8, 10)));
+		return coursedate;
 	}
 	
 }

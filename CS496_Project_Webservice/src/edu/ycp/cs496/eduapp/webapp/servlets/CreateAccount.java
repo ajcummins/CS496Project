@@ -65,7 +65,7 @@ public class CreateAccount extends HttpServlet {
 				User newUser = new User(username,pass,firstName,lastName);
 				
 				// There is nothing in this field, so it must be a student
-				controller.createAccount(newUser);
+				newUser = controller.createAccount(newUser);
 				// Add User to session
 				HttpSession session = req.getSession();
 				session.setAttribute("User", newUser);

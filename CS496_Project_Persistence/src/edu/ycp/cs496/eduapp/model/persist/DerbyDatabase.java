@@ -78,9 +78,9 @@ public class DerbyDatabase implements IDatabase {
 
 	private Connection connect() throws SQLException {
 
-		//Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
+		Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
 		//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Mr_E/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Anthony
-		Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Supersith9/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Tom
+		//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Supersith9/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Tom
 
 		// Set autocommit to false to allow multiple the execution of
 		// multiple queries/statements as part of the same transaction.
@@ -388,10 +388,10 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public void createAccount(final User inUser) {
-		executeTransaction(new Transaction<Boolean>() {
+	public User createAccount(final User inUser) {
+		executeTransaction(new Transaction<User>() {
 			@Override
-			public Boolean execute(Connection conn) throws SQLException {
+			public User execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet generatedKeys = null;
 				
@@ -405,20 +405,20 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt.executeUpdate();
 					
-					/*
-					//used to check the id's of new user's
+					//Get the User ID back
 					generatedKeys = stmt.getGeneratedKeys();
 					if(!generatedKeys.next()){
 						throw new SQLException("Could not get auto-generated key for inserted User");
 					}
 					
 					int userID = generatedKeys.getInt(1);
-					System.out.println("New user has id " + userID);
-					*/
+					inUser.setUserID(userID);					
 					
-					
-					
-					return true;
+					return inUser;
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					return null;
 				}
 				finally
 				{
@@ -428,54 +428,40 @@ public class DerbyDatabase implements IDatabase {
 			}
 		
 		});
+		return null;
 	}
 
 	@Override
-	public List<Course> getMyCourseList(final String inUsername) {
+	public List<Course> getMyCourseList(final User inUser) {
 		return executeTransaction(new Transaction<List<Course>>() {
 			@Override
 			public List<Course> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
-				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;
 				ResultSet resultSet = null;
 				
 				try{
-					// get user id w/ username
-					stmt = conn.prepareStatement("select users.id from users where users.username = ?");
-					stmt.setString(1, inUsername);
+					// get user id from the passed user
+					int userID = inUser.getUserID();
+					stmt = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
+					stmt.setInt(1, userID);
 					
 					resultSet = stmt.executeQuery();
-					if(!resultSet.next()){
-						return null;
-					}
-					
-					// use user id w/ course reg to get course id's
-					int userID = resultSet.getInt(1);//normally index++ not sure if it needs to be 1 or 2??
-					stmt2 = conn.prepareStatement("select coursereg.courseid from coursereg where coursereg.userid = ?");								//!! Not returning anything...
-					stmt2.setInt(1, userID);
-					
-					resultSet = stmt2.executeQuery();
-					/*if(!resultSet.next())
-					{
-						return null;
-					}*/
 							
 					// get a list of course registry entries
 					List<Integer> courseIDs = new ArrayList<Integer>();
 					int index = 1;
 					while(resultSet.next())
 					{
-						courseIDs.add(resultSet.getInt(index++));
+						courseIDs.add(resultSet.getInt(index));
 					}
 					// get all the courses w/ the id's
 					List<Course> courses = new ArrayList<Course>();
 					for(int i = 0; i < courseIDs.size(); i++)
 					{
-						stmt3 = conn.prepareStatement("select courses.* from courses where courses.id = ?");
-						stmt3.setInt(1, courseIDs.get(i));
+						stmt = conn.prepareStatement("select courses.* from courses where courses.id = ?");
+						stmt.setInt(1, courseIDs.get(i));
 						
-						resultSet = stmt3.executeQuery();
+						resultSet = stmt.executeQuery();
 						
 						// fill the list object with the newly found courses
 						resultSet.next();
@@ -486,6 +472,7 @@ public class DerbyDatabase implements IDatabase {
 					return courses;
 						
 				} catch(Exception e){
+					e.printStackTrace();
 					return null;
 				}
 				finally {
