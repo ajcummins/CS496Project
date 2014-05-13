@@ -11,7 +11,7 @@ public class DatabaseInitListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent e) {
-		DatabaseProvider.setInstance(new FakeDatabase()); //DerbyDatabase()
+		DatabaseProvider.setInstance(new DerbyDatabase()); //FakeDatabase()
 		System.out.println("Database initialized!");
 	}
 

@@ -427,6 +427,44 @@ public class LoginActivity extends Activity {
 		setContentView(layout,llp);    	
 	}
 
+	//return a string of days
+	public String getDays(MeetingTime meetingTimes){
+		//get the days
+		boolean[] days = new boolean[7];
+		days = meetingTimes.getDays();
+		int classDaysSize = 0;
+		String[] classDay = new String[7];
+		String classDaysTotal = "";
+		//get the number of days that are class days
+		for (int i = 0; i < days.length;i++){
+			if (days[i]==true){
+				classDaysSize++;
+			}
+			classDay[i] = "";
+		}
+		//put classdays into a string
+		//SU,MO,TU,WE,TH,FR,SA
+		for (int i = 0; i < classDaysSize;i++){
+			classDay[i] = "";
+			if (days[0] == true){
+				classDay[i] = "SU";
+			}if (days[1] == true){
+				classDay[i] = "MO";
+			}if (days[2] == true){
+				classDay[i] = "TU";
+			}if (days[3] == true){
+				classDay[i] = "WE";
+			}if (days[4] == true){
+				classDay[i] = "TH";
+			}if (days[5] == true){
+				classDay[i] = "FR";
+			}if (days[6] == true){
+				classDay[i] = "SA";
+			}
+			classDaysTotal = classDaysTotal+","+classDay[i];
+		}
+		return classDaysTotal;
+	}
 	//show only the single course
 	public void displaySingleCourseView(final User user,final List <Course> myCourses,final int number) {
 
@@ -456,22 +494,19 @@ public class LoginActivity extends Activity {
 
 		String location,starttimes,endtimes,classDays;
 		String courseMeetingInfo = "Unknown Dates";
-		boolean[] days = new boolean[7];
-		//TODO: change delete hard code
 		//get courses times and location
 		
+		classDays = getDays(meetingTimes);
+		
 		location = meetingTimes.getLocation();
-		days = meetingTimes.getDays();
-		for (int i = 0; i < 7; i++){
-			
-		}
+		
 		starttimes = meetingTimes.getStartTime().getHour() 
 				+":"+meetingTimes.getStartTime().getMin();
 		endtimes = meetingTimes.getEndTime().getHour() 
 				+":"+meetingTimes.getEndTime().getMin();
 
 		//set textviews on courses
-		courseMeetingInfo = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
+		courseMeetingInfo = "location: "+location+" Days: "+classDays+" "+starttimes+"-"+endtimes+"\n";
 		
 
 		courseTimes.setText(courseMeetingInfo);
@@ -548,6 +583,7 @@ public class LoginActivity extends Activity {
 		intent.putExtra(Events.CALENDAR_COLOR, "GREEN");
 		
 		// make it a recurring Event
+		//SU,MO,TU,WE,TH,FR,SA
 		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
 
 		startActivity(intent);
