@@ -11,6 +11,8 @@ public class Course {
 	private String title;
 	private String description;
 	private MeetingTime meetingTime;
+	private CourseDate startDate;
+	private CourseDate endDate;
 	private List<Notification> noteList;	
 	private List<Resource> resourceList; 
 	
@@ -138,5 +140,21 @@ public class Course {
 
 	public void setCourseID(int courseID) {
 		this.courseID = courseID;
+	}
+
+	public CourseDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(CourseDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public CourseDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(CourseDate endDate) {
+		this.endDate = endDate;
 	}
 }

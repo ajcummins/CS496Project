@@ -13,7 +13,7 @@
     <string name="FirstName">First Name</string>
     <string name="LastName">Last Name</string>
     <string name="Submit">Submit</string>
-    <string name="Logout">Logout</string>
+    <string name="Logout">Sign Out/Switch to Another User</string>
     <string name="Back">Back to Login</string>
     <string name="MyCourseList">My Courses</string>
     <string name="BackV2">Back</string>

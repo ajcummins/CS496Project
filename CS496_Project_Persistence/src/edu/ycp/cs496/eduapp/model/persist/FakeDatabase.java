@@ -16,7 +16,7 @@ import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 
 // Keeping this here just in case
-public class FakeDatabase /*FIXME: implements IDatabase */{
+public class FakeDatabase /*implements IDatabase*/ {
 		private List<Course> allCourses;
 		private List<User> allUsers;
 		private List<CourseRegEntry> courseReg;
@@ -38,6 +38,7 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 			User ao = new User("ao","test","Anthony","O");
 			User dhove = new User("dhove","test","David","Hovemeyer");
 			User dbab = new User("dbab","test","David","Babcock");
+			User test = new User("test","test","First","Last");
 			
 			// Set Professors
 			dbab.setToProfessor();
@@ -48,14 +49,22 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 			allUsers.add(ajcummins);
 			allUsers.add(ao);
 			allUsers.add(thon);
+			allUsers.add(test);
 			
-			
+			//
+			boolean[] days = new boolean[7];
+			for (int i = 0; i < 7; i++){
+				days[i] = false;
+			}
+			//tues and thurs dates are true
+			days[2] = true;
+			days[4] = true;
 			// Create Courses add to allCourses List
 			Course cs496 = new Course("CS496","Web and Mobile App Development");
 			cs496.setDescription("Learn about how to utilize the android programming language in conjunction with with web services");
 			cs496.addNote(new Notification(new Date(98547), "web and mobile test notification"));
 			cs496.addResource(new Resource("CS496 Course Home Page","http://ycpcs.github.io/cs496-spring2014/"));
-//			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.TUESDAY,"KEC119 and KEC127", MeetingType.LECTURE));
+			cs496.setMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15),"KEC119 and KEC127" ,MeetingType.LECTURE , days));
 //			cs496.addMeetingTime(new MeetingTime(new TimeOfDay(11,00),new TimeOfDay(12,15), Day.THURSDAY,"KEC119 and KEC127", MeetingType.LECTURE));
 			
 			Course cs456 = new Course("CS456","Social and Professional Issues in Computing");	
@@ -242,6 +251,24 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 		public Course deleteCourse(Course course) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+//		@Override
+		public void createAccount(User inUser) {
+			// TODO Auto-generated method stub
+			
+		}
+
+//		@Override
+		public List<User> getAllUsers() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+//		@Override
+		public boolean addEntry(String courseCode, List<String> usernameList) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 }
 
