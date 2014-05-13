@@ -20,41 +20,24 @@
 		
 		<c:if test="${empty action or action == 'view'}">
 			<table width="100%">
-				<td><center><a  method="post" href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit Course</a></center></td>
+				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=edit">Edit Course</a></center></td>
 				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=delete">Delete Course</a></center></td>
 				<td><center><a href="${pageContext.servletContext.contextPath}/MyCourseList/${Course.code}?action=register">Register Users</a></center></td>
 			</table>
+			<br>
 			<title>${Course.code} : ${Course.title} </title>
-			<strong>${Course.code} : ${Course.title} </strong>
+			<h2 {text-alight:center}>${Course.code} : ${Course.title} </h2>
 			
 			<h2>Course Description</h2>
-				<p>${Course.description}</p>
-			<h2>Resources</h2>
-				<table>
-					<c:forEach var="resource" items="${resourcelist}">
-						<tr>
-							<td><a href="${resource.link}">${resource.id}</a></td>
-						</tr>
-					</c:forEach>
-				</table>
+				<p>${Course.description}</p>																	
 			<h2>Course Location & Time</h2>
-				<c:forEach var="MeetingTime" items="${meetingtimes}">
-					<table>
-						<tr>
-							<td>Implement MeetingTimes...</td>
-							<td>${MeetingTime.location}</td>
-						</tr>
-					</table>
-				</c:forEach>
-			<h2>Notifications</h2>
-				<c:forEach var="Notification" items="${notelist}">
-					<table>
-						<tr>
-							<td>Implement Note Date...</td>
-							<td>${Notification.noteText}</td>
-						</tr>
-					</table>
-				</c:forEach>
+				<table >
+					<tr>
+						<td>Implement MeetingTimes...</td>
+						<td>${MeetingTime.location}</td>
+					</tr>
+				</table>
+																						
 		</c:if>
 		
 		<!-- TODO: UIs for other actions (edit, add, delete) -->
