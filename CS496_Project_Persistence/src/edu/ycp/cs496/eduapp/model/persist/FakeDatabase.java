@@ -16,7 +16,7 @@ import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 
 // Keeping this here just in case
-public class FakeDatabase implements IDatabase {
+public class FakeDatabase /*implements IDatabase*/ {
 		private List<Course> allCourses;
 		private List<User> allUsers;
 		private List<CourseRegEntry> courseReg;
@@ -97,7 +97,7 @@ public class FakeDatabase implements IDatabase {
 			
 		}
 
-		@Override
+//		@Override
 		public User authenticateUser(String user, String pass) {
 			User temp = null;
 			for(int i = 0; i < allUsers.size(); i++)
@@ -114,7 +114,7 @@ public class FakeDatabase implements IDatabase {
 			// returns the User or returns null
 		}
 		
-		@Override
+//		@Override
 		public void createAccount(User inUser,boolean isProf) {
 			
 			if(inUser != null)
@@ -132,7 +132,7 @@ public class FakeDatabase implements IDatabase {
 			}
 		}
 
-		@Override
+//		@Override
 		public List<Course> getMyCourseList(String inUsername) {
 			// Using the Course registry
 			// 1st using the username get the user's ID
@@ -162,12 +162,12 @@ public class FakeDatabase implements IDatabase {
 			
 		}
 
-		@Override
+//		@Override
 		public List<Course> getMainCourseList() {
 			return allCourses;
 		}
 
-		@Override
+//		@Override
 		public Course getCourseByCode(String courseCode) {
 			
 			Course temp = null;
@@ -184,7 +184,7 @@ public class FakeDatabase implements IDatabase {
 			// if temp != null then we know the course was found
 		}
 
-		@Override
+//		@Override
 		public boolean checkIfProf(String inProfPass) {
 			boolean key = false;
 			for(int i = 0; i < profPasses.size(); i++)
@@ -225,7 +225,7 @@ public class FakeDatabase implements IDatabase {
 			return -1;
 		}
 
-		@Override
+//		@Override
 		public Course editCourse(Course courseToEdit) {
 			/*int index = findCourseIndex(courseToEdit);
 			
@@ -241,19 +241,19 @@ public class FakeDatabase implements IDatabase {
 			
 		}
 
-		@Override
+//		@Override
 		public Course addCourse(Course course) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
-		@Override
+//		@Override
 		public Course deleteCourse(Course course) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
-		@Override
+//		@Override
 		public void createAccount(User inUser) {
 			// TODO Auto-generated method stub
 			
