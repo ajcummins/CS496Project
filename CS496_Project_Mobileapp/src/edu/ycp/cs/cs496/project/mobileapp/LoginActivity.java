@@ -454,22 +454,27 @@ public class LoginActivity extends Activity {
 		//covert list of meeting times to an array
 		MeetingTime meetingTimes = myCourse.getMeetingTime();
 
-		String location,days,starttimes,endtimes;
-		String courseMeetingInfo = new String();
-//TODO: fix location
+		String location,starttimes,endtimes,classDays;
+		String courseMeetingInfo = "Unknown Dates";
+		boolean[] days = new boolean[7];
+		//TODO: change delete hard code
 		//get courses times and location
-//		location = meetingTimes.getLocation();
-//		days = meetingTimes.getDays().toString();
-//		starttimes = meetingTimes.getStartTime().getHour() 
-//				+":"+meetingTimes.getStartTime().getMin();
-//		endtimes = meetingTimes.getEndTime().getHour() 
-//				+":"+meetingTimes.getEndTime().getMin();
-//
-//		//set textviews on courses
-//		courseMeetingInfo = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
-//
-//
-//		courseTimes.setText(courseMeetingInfo);
+		
+		location = meetingTimes.getLocation();
+		days = meetingTimes.getDays();
+		for (int i = 0; i < 7; i++){
+			
+		}
+		starttimes = meetingTimes.getStartTime().getHour() 
+				+":"+meetingTimes.getStartTime().getMin();
+		endtimes = meetingTimes.getEndTime().getHour() 
+				+":"+meetingTimes.getEndTime().getMin();
+
+		//set textviews on courses
+		courseMeetingInfo = "location: "+location+" Days: "+days+" "+starttimes+"-"+endtimes+"\n";
+		
+
+		courseTimes.setText(courseMeetingInfo);
 
 		//back button to list of course
 		backButton.setOnClickListener(new View.OnClickListener() {
@@ -528,15 +533,20 @@ public class LoginActivity extends Activity {
 
 		//String startdate = myCourse.getMeetingTimes().get(0).
 		// Setting dates
-		GregorianCalendar calDate = new GregorianCalendar(2014, 05, 9);
+		//dates: year, month, day, hour, minute
+		GregorianCalendar startDate = new GregorianCalendar(2014, 05, 9, 8, 30);
+		GregorianCalendar endDate = new GregorianCalendar(2014, 05, 9, 9, 30);
+		
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-				calDate.getTimeInMillis());
+				startDate.getTimeInMillis());
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-				calDate.getTimeInMillis());
-
+				endDate.getTimeInMillis());
 		// make it a full day event
 		//intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-
+		
+		//color
+		intent.putExtra(Events.CALENDAR_COLOR, "GREEN");
+		
 		// make it a recurring Event
 		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
 
