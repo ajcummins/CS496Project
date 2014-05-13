@@ -76,9 +76,11 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	private Connection connect() throws SQLException {
+
 		Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
 		//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Mr_E/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Anthony
-		
+		//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Supersith9/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Tom
+
 		// Set autocommit to false to allow multiple the execution of
 		// multiple queries/statements as part of the same transaction.
 		conn.setAutoCommit(false);
@@ -130,7 +132,7 @@ public class DerbyDatabase implements IDatabase {
 							"  password varchar(20)," +
 							"  firstname varchar(20)," +
 							"  lastname varchar(20)," +
-							"  usertype integer" + 
+							"  userType integer" + 
 							")"
 					);
 					stmt.executeUpdate();
@@ -763,6 +765,12 @@ public class DerbyDatabase implements IDatabase {
 			System.out.println("Print Tables ERROR ");
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void createAccount(User inUser, boolean isProf) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	// Utility methods

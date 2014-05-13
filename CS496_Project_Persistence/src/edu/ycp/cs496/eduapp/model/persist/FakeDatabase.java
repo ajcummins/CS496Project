@@ -16,7 +16,7 @@ import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 
 // Keeping this here just in case
-public class FakeDatabase /*FIXME: implements IDatabase */{
+public class FakeDatabase /*implements IDatabase*/ {
 		private List<Course> allCourses;
 		private List<User> allUsers;
 		private List<CourseRegEntry> courseReg;
@@ -242,6 +242,12 @@ public class FakeDatabase /*FIXME: implements IDatabase */{
 		public Course deleteCourse(Course course) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+//		@Override
+		public void createAccount(User inUser) {
+			// TODO Auto-generated method stub
+			
 		}
 }
 
