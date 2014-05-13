@@ -26,16 +26,50 @@
 			</table>
 			<br>
 			<title>${Course.code} : ${Course.title} </title>
-			<h2 {text-alight:center}>${Course.code} : ${Course.title} </h2>
+			<center><h2 {text-alight:center}>${Course.code} : ${Course.title} </h2></center>
+			
+			<fieldset>
+				<legend>Course Location & Time</legend>
+				<table>
+					<td><p><font size="5">${classDays}	&nbsp&nbsp&nbsp</font></p></td>
+					<td><p><font size="5">${startTime.hour}:${startTime.min}-${endTime.hour}:${endTime.min}</font></p></td> 
+					<td><p><font size="5">&nbsp&nbsp&nbsp${MeetingTime.location}</font></p></td>
+				</table>
+			</fieldset>
+			
+			<h2>Resources</h2>
+			<c:if test="${validresources == 'true'}">
+				<table>
+					<c:forEach var="resource" items="${resourcelist}">
+						<td><a href="${resource.link}">${resource.id}</a></td>
+					</c:forEach>
+				</table>
+			</c:if>
+			<c:if test="${validresources == 'false'}">
+				<p>There are no resources.</p>
+			</c:if>
+			
+			<h2>Notifications</h2>
+			<c:if test="${validnotes == 'true'}">
+				<table>
+					<c:forEach var="note" items="${notelist}">
+						<td><p>${note.noteText}</p></td>
+					</c:forEach>
+				</table>
+			</c:if>
+			<c:if test="${validnotes == 'false'}">
+				<p>There are no notifications.</p>
+			</c:if>
+			
+			<h2>Class Dates</h2>
+			<p>Class Starts: ${classDateS} Class Ends on: ${classDateE}</p>
+			
+			
+			
+			
 			
 			<h2>Course Description</h2>
-				<p>${Course.description}</p>																	
-			<h2>Course Location & Time</h2>
-				<table >
-					<tr>
-						<td>Implement MeetingTimes...</td>
-						<td>${MeetingTime.location}</td>
-					</tr>
+				<p>${Course.description}</p>
 				</table>
 																						
 		</c:if>
@@ -66,9 +100,9 @@
 						<td>
 							<table>
 								<c:forEach var="resource" items="${resourcelist}">
-										<td><input type = "text" name="${resource.id}" size="50" value="${resource.id}"></td>
-										<td><input type = "text" name="${resource.link}" size="50" value="${resource.link}"></td>
-										<td><a href="${resource.link}">${resource.id}</a></td>
+									<td><input type = "text" name="${resource.id}" size="50" value="${resource.id}"></td>
+									<td><input type = "text" name="${resource.link}" size="50" value="${resource.link}"></td>
+									<td><a href="${resource.link}">${resource.id}</a></td>
 								</c:forEach>
 							</table>
 						</td>

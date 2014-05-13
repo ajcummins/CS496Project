@@ -296,8 +296,29 @@ public class MyCourseList extends HttpServlet {
 			else
 			{
 				// There isn't anything in notes display a message instead
-				req.setAttribute("validnotes", "true");
+				req.setAttribute("validnotes", "false");
 			}
+			
+			boolean[] days = meetingTime.getDays();
+			String[] day = {"SUN","M", "T","W", "Th","F","SAT"};
+			
+			String classDays="";
+			
+			for(int i=0;i<days.length;i++){
+				if(days[i]){
+					classDays+=day[i]+" ";
+				}
+			}
+			
+			String classDateS = ""+course.getStartDate().getMonth()+"/"+course.getStartDate().getDay()+"/"+course.getStartDate().getYear();
+			String classDateE = ""+course.getEndDate().getMonth()+"/"+course.getEndDate().getDay()+"/"+course.getEndDate().getYear();
+			
+			req.setAttribute("classDateE", classDateE);
+			req.setAttribute("classDateS", classDateS);
+			req.setAttribute("classDays", classDays);
+			
+			req.setAttribute("startTime", meetingTime.getStartTime());
+			req.setAttribute("endTime", meetingTime.getEndTime());
 			
 			// Meetingtime should always have something in it because it is set @ creation...
 			
