@@ -10,6 +10,9 @@ import java.util.List;
 
 import edu.ycp.cs496.eduapp.model.Course;
 import edu.ycp.cs496.eduapp.model.CourseRegEntry;
+import edu.ycp.cs496.eduapp.model.MeetingTime;
+import edu.ycp.cs496.eduapp.model.MeetingType;
+import edu.ycp.cs496.eduapp.model.TimeOfDay;
 import edu.ycp.cs496.eduapp.model.User;
 import edu.ycp.cs496.eduapp.model.UserType;
 
@@ -73,8 +76,8 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	private Connection connect() throws SQLException {
-		//Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
-		Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Mr_E/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Anthony
+		Connection conn = DriverManager.getConnection("jdbc:derby:E:/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Josh
+		//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Mr_E/git/CS496Project/CS496_Project_Persistence/test.db;create=true"); //Anthony
 		
 		// Set autocommit to false to allow multiple the execution of
 		// multiple queries/statements as part of the same transaction.
@@ -99,8 +102,22 @@ public class DerbyDatabase implements IDatabase {
 							"  id integer primary key not null generated always as identity," +
 							"  code varchar(40) unique," +
 							"  title varchar(80)," +
-							"  description varchar(800)" +
+							"  description varchar(800)," +
+							"  sun integer," +
+							"  mon integer," +
+							"  tue integer," +
+							"  wed integer," +
+							"  thu integer," +
+							"  fri integer," +
+							"  sat integer," +
+							" starthr integer," + 
+							" startmin integer," + 
+							" endhr integer," + 
+							" endmin integer," + 
+							" location varchar(20)," + 
+							" type integer" + 
 							")"
+							// type is either 0 = LECTURE or 1 = LAB
 							//FIXME: meetingTimes, noteList, resourceList
 					);
 					
@@ -198,6 +215,42 @@ public class DerbyDatabase implements IDatabase {
 		stmt.setString(index++, inCourse.getCode());
 		stmt.setString(index++, inCourse.getTitle());
 		stmt.setString(index++, inCourse.getDescription());
+		
+		//Set Day Fields
+		boolean[] days = inCourse.getMeetingTime().getDays();
+		for(int i = 0; i < days.length; i++)
+		{
+			// Goes in order sun,mon,tue..... to sat
+			if(days[i])
+			{
+				// days[i] is true, set to 1
+				stmt.setInt(index++, 1);
+			}
+			else
+			{
+				stmt.setInt(index++, 0);
+			}
+		}
+		
+		// Set TimeOfDay Fields
+		stmt.setInt(index++, inCourse.getMeetingTime().getStartTime().getHour());
+		stmt.setInt(index++, inCourse.getMeetingTime().getStartTime().getMin());
+		stmt.setInt(index++, inCourse.getMeetingTime().getEndTime().getHour());
+		stmt.setInt(index++, inCourse.getMeetingTime().getEndTime().getMin());
+		
+		stmt.setString(index++, inCourse.getMeetingTime().getLocation());
+		
+		// Determine the type to send
+		if(inCourse.getMeetingTime().getType() == MeetingType.LECTURE)
+		{
+			stmt.setInt(index++, 0);
+		}
+		else
+		{
+			stmt.setInt(index++, 1);
+		}
+		
+		
 	}
 	
 	private void loadUser(User user, ResultSet resultSet, int index) throws SQLException {
@@ -229,6 +282,45 @@ public class DerbyDatabase implements IDatabase {
 		course.setCode(resultSet.getString(index++));
 		course.setTitle(resultSet.getString(index++));
 		course.setDescription(resultSet.getString(index++));
+		
+		// Fill a meeting time object to set within the course object
+		MeetingTime meet = new MeetingTime();
+		//Set Day Fields
+		boolean[] days = new boolean[7];
+		for(int i = 0; i < days.length; i++)
+		{
+			int daysResult = resultSet.getInt(index++);
+			if(daysResult == 1)
+			{
+				// true
+				days[i] = true;
+			}
+			else
+			{
+				days[i] = false;
+			}
+		}
+		meet.setDays(days);
+		
+		// Set TimeOfDay Fields
+		meet.setStartTime(new TimeOfDay(resultSet.getInt(index++),resultSet.getInt(index++)));
+		meet.setEndTime(new TimeOfDay(resultSet.getInt(index++),resultSet.getInt(index++)));
+		
+		// Set Location
+		meet.setLocation(resultSet.getString(index++));
+		
+		// Determine the type to send
+		int typeResult = resultSet.getInt(index++);
+		if(typeResult == 0)
+		{
+			meet.setType(MeetingType.LECTURE);
+		}
+		else
+		{
+			meet.setType(MeetingType.LAB);
+		}
+		course.setMeetingTime(meet);
+		
 	}
 	
 	private void loadEntry(CourseRegEntry entry, ResultSet resultSet, int index) throws SQLException{
@@ -441,7 +533,7 @@ public class DerbyDatabase implements IDatabase {
 				
 				try{
 					stmt = conn.prepareStatement(
-							"insert into courses (code,title,description) values (?,?,?)",
+							"insert into courses (code,title,description,sun,mon,tue,wed,thu,fri,sat,starthr,startmin,endhr,endmin,location,type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							PreparedStatement.RETURN_GENERATED_KEYS);
 					
 					storeCourseNoId(inCourse,stmt,1);
@@ -653,6 +745,11 @@ public class DerbyDatabase implements IDatabase {
 			{
 				System.out.println("CourseID: " + courseList.get(i).getCourseID() + " CourseCode: " + courseList.get(i).getCode() 
 						+ " CourseTitle: " + courseList.get(i).getTitle() + "CourseDesc: " + courseList.get(i).getDescription());
+				System.out.println("MeetingTime Days-> Sun: " + courseList.get(i).getMeetingTime().getDays()[0] + " Mon: " + courseList.get(i).getMeetingTime().getDays()[1] + 
+						 " Tue: " + courseList.get(i).getMeetingTime().getDays()[2] + " Wed: " + courseList.get(i).getMeetingTime().getDays()[3]);
+				System.out.println("Meeting Times-> StartHr"+ courseList.get(i).getMeetingTime().getStartTime().getHour() + " StartMin: " + courseList.get(i).getMeetingTime().getStartTime().getMin() + 
+						" EndHr: " + courseList.get(i).getMeetingTime().getEndTime().getHour() + " EndMin: " + courseList.get(i).getMeetingTime().getEndTime().getMin());
+				System.out.println("Meeting Location : " + courseList.get(i).getMeetingTime().getLocation() +" Meeting Type: " + courseList.get(i).getMeetingTime().getType());
 			}
 			System.out.println("--------------------------------- Course Registry -------------------------------------------");
 			// Print out courseReg table
