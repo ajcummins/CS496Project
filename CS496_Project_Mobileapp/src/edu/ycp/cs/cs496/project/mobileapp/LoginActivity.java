@@ -444,25 +444,28 @@ public class LoginActivity extends Activity {
 		}
 		//put classdays into a string
 		//SU,MO,TU,WE,TH,FR,SA
-		for (int i = 0; i < classDaysSize;i++){
-			classDay[i] = "";
-			if (days[0] == true){
-				classDay[i] = "SU";
-			}if (days[1] == true){
-				classDay[i] = "MO";
-			}if (days[2] == true){
-				classDay[i] = "TU";
-			}if (days[3] == true){
-				classDay[i] = "WE";
-			}if (days[4] == true){
-				classDay[i] = "TH";
-			}if (days[5] == true){
-				classDay[i] = "FR";
-			}if (days[6] == true){
-				classDay[i] = "SA";
-			}
-			classDaysTotal = classDaysTotal+","+classDay[i];
+		if (days[0] == true) 
+			classDay[0] = "SU";
+		if (days[1] == true)
+			classDay[1] = "MO";
+		if (days[2] == true)
+			classDay[2] = "TU";
+		if (days[3] == true)
+			classDay[3] = "WE";
+		if (days[4] == true)
+			classDay[4] = "TH";
+		if (days[5] == true)
+			classDay[5] = "FR";
+		if (days[6] == true){
+			classDay[6] = "SA";
 		}
+		for (int i = 0; i<7; i++){
+			if (days[i]==true){
+				classDaysTotal = classDaysTotal+","+classDay[i];
+			}
+		}
+		//remove first comma
+		classDaysTotal = classDaysTotal.substring(1, classDaysTotal.length());
 		return classDaysTotal;
 	}
 	//show only the single course
@@ -515,7 +518,6 @@ public class LoginActivity extends Activity {
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					//go back to list of courses
 					displayCoursesView(user, myCourses);
@@ -564,28 +566,47 @@ public class LoginActivity extends Activity {
 		intent.setType("vnd.android.cursor.item/event");
 		intent.putExtra(Events.TITLE, myCourse.getTitle());
 		intent.putExtra(Events.DESCRIPTION, myCourse.getDescription());
-		//intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTime().getLocation());
+		intent.putExtra(Events.EVENT_LOCATION, myCourse.getMeetingTime().getLocation());
 
 		//String startdate = myCourse.getMeetingTimes().get(0).
-		// Setting dates
+		//Setting dates
 		//dates: year, month, day, hour, minute
-		GregorianCalendar startDate = new GregorianCalendar(2014, 05, 9, 8, 30);
-		GregorianCalendar endDate = new GregorianCalendar(2014, 05, 9, 9, 30);
+		GregorianCalendar startDate = new GregorianCalendar(
+				myCourse.getStartDate().getYear(),
+				myCourse.getStartDate().getMonth(), 
+				myCourse.getStartDate().getDay(),
+				myCourse.getMeetingTime().getStartTime().getHour(),
+				myCourse.getMeetingTime().getStartTime().getMin());
+		
+		GregorianCalendar endDate = new GregorianCalendar(
+				myCourse.getStartDate().getYear(),
+				myCourse.getStartDate().getMonth(), 
+				myCourse.getStartDate().getDay(),
+				myCourse.getMeetingTime().getEndTime().getHour(),
+				myCourse.getMeetingTime().getEndTime().getMin());
+		//last day of class
+		GregorianCalendar lastDate = new GregorianCalendar(
+				myCourse.getEndDate().getYear(),
+				myCourse.getEndDate().getMonth(), 
+				myCourse.getEndDate().getDay(),
+				myCourse.getMeetingTime().getEndTime().getHour(),
+				myCourse.getMeetingTime().getEndTime().getMin());
 		
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
 				startDate.getTimeInMillis());
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
 				endDate.getTimeInMillis());
+		
 		// make it a full day event
 		//intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-		
 		//color
 		intent.putExtra(Events.CALENDAR_COLOR, "GREEN");
 		
 		// make it a recurring Event
 		//SU,MO,TU,WE,TH,FR,SA
-		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
-
+		//intent.putExtra(Events.RRULE, "FREQ=WEEKLY;COUNT=11;WKST=SU;BYDAY=TU,TH");
+		intent.putExtra(Events.RRULE, "FREQ=WEEKLY;WKST=SU;BYDAY="+getDays(myCourse.getMeetingTime())
+				+";UNTIL="+lastDate.getTimeInMillis());
 		startActivity(intent);
 		//Toast.makeText(LoginActivity.this, "Event Added", Toast.LENGTH_LONG).show();
 	}
